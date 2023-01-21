@@ -1,0 +1,17 @@
+// TODO implement sample Orkes playground workflow
+type GreetingTaskInput { "input" : String }
+
+workflow HelloWorld(
+    input : { "name": String },
+    description: "This is a sample workflow",
+    version : 1
+) : { "data" : String, "factLength" : Integer } {
+    def greetingTaskResult = execute GreetingTask(input : name)
+    return httpResponse.output
+}
+
+task GreetingTask(
+    "input": GreetingTaskInput,
+    "output":  { "success": Boolean },
+    "description": "A Longer description"
+)

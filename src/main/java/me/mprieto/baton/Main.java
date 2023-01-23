@@ -14,13 +14,10 @@ package me.mprieto.baton;
 
 
 import me.mprieto.baton.grammar.BatonLexer;
-import me.mprieto.baton.grammar.BatonListener;
-import me.mprieto.baton.grammar.BatonListenerImpl;
 import me.mprieto.baton.grammar.BatonParser;
-import org.antlr.v4.runtime.CharStream;
+import me.mprieto.baton.listeners.ConductorJsonTranslator;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTree;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
 
@@ -55,7 +52,7 @@ public class Main {
             var parser = new BatonParser(tokens);
             var tree = parser.batonUnit();
             var walker = new ParseTreeWalker();
-            BatonListener listener = new BatonListenerImpl();
+            var listener = new ConductorJsonTranslator();
             walker.walk(listener, tree);
 
             // listener.getWorkflows()

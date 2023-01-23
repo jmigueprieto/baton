@@ -1,67 +1,75 @@
 grammar Baton;
 
 batonUnit
-    : typeDeclaration* taskDeclaration*  workflowDeclaration
+    : structDeclaration* taskDeclaration*  workflowDeclaration
     ;
 
-typeDeclaration
-    : TYPE IDENTIFIER parameters
+structDeclaration
+    : STRUCT IDENTIFIER structDef
     ;
 
-taskDeclaration
-    : TASK IDENTIFIER parameters
-    ;
+structDef
+    : LBRACE structKeyValuePair? (COMMA structKeyValuePair)* RBRACE;
 
-parameters
-    : LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
+structKeyValuePair
+    : key COLON (type | structDef) // nested struct definition
     ;
-
-keyValuePair
-    : key COLON type
-    | key COLON value
-    | key COLON object
-    ;
-
-key
-    : STRING_LITERAL
-    | IDENTIFIER;
 
 type
     : TYPE_BOOLEAN
     | TYPE_STRING
     | TYPE_INTEGER
     | TYPE_DECIMAL
-    | customType;
+    | IDENTIFIER // Named Type or variable
+    ;
 
-customType : IDENTIFIER;
+taskDeclaration
+    : TASK IDENTIFIER object
+    ;
 
 object
    : LBRACE keyValuePair (COMMA keyValuePair)* RBRACE
    | LBRACE RBRACE
    ;
 
+keyValuePair
+    : key COLON (type | value)
+    ;
+
+key
+    : STRING_LITERAL
+    | IDENTIFIER
+    ;
+
+value
+   : IDENTIFIER
+   | literal
+   | array
+   | object
+   ;
+
+literal
+   : STRING_LITERAL
+   | NUMBER_LITERAL
+   | BOOL_LITERAL
+   | NULL_LITERAL
+   ;
+
+
+parameters
+    : LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
+    ;
+
 array
    : LBRACK value (COMMA value)* RBRACK
    | LBRACK RBRACK
    ;
 
-value
-   : IDENTIFIER
-   | STRING_LITERAL
-   | NUMBER_LITERAL
-   | BOOL_LITERAL
-   | NULL_LITERAL
-   | array
-   | object
-   ;
-
 workflowDeclaration
-    : WORKFLOW IDENTIFIER parameters? COLON parameters workflowBlock
+    : WORKFLOW IDENTIFIER parameters? (COLON workflowOutput)? block
     ;
 
-workflowBlock
-    : LBRACE statement* returnStatement RBRACE
-    ;
+workflowOutput: structDef | IDENTIFIER;
 
 block
     : LBRACE statement* RBRACE
@@ -72,10 +80,9 @@ statement
     | WHILE parExpression block // while
     | DEF IDENTIFIER ASSIGNMENT expression // variable declaration
     | IDENTIFIER ASSIGNMENT expression // variable assignment
+    | RETURN expression
     | expression
     ;
-
-returnStatement: RETURN expression;
 
 expression
     : primary
@@ -105,7 +112,7 @@ LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
 
 WORKFLOW:           'workflow';
 TASK:               'task';
-TYPE:               'type';
+STRUCT:             'struct';
 DEF:                'def';
 EXECUTE:            'execute';
 TYPE_STRING:        'String';

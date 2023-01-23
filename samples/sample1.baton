@@ -1,17 +1,17 @@
 // TODO implement sample Orkes playground workflow
-type GreetingTaskInput (name : String, somethingElse : { op: String } )
+struct GreetingTaskInput { name : String, somethingElse : { op: String } }
 
-task GreetingTask(
+task GreetingTask {
     input: GreetingTaskInput,
     output:  { success: Boolean },
     description: "A Longer description"
-)
+}
 
-workflow HelloWorld(
+workflow HelloWorld (
     input : { name: String },
     description: "This is a sample workflow",
     version : 1
-) : ( data : String, "fact Length" : Integer) {
+) : { data : String, "fact Length" : Integer } {
     def greetingTaskResult = execute GreetingTask(input : name)
 
     /*

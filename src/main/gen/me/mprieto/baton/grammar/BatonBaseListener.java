@@ -29,13 +29,49 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTypeDeclaration(BatonParser.TypeDeclarationContext ctx) { }
+	@Override public void enterStructDeclaration(BatonParser.StructDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTypeDeclaration(BatonParser.TypeDeclarationContext ctx) { }
+	@Override public void exitStructDeclaration(BatonParser.StructDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStructDef(BatonParser.StructDefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStructDef(BatonParser.StructDefContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterType(BatonParser.TypeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitType(BatonParser.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -53,13 +89,13 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameters(BatonParser.ParametersContext ctx) { }
+	@Override public void enterObject(BatonParser.ObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameters(BatonParser.ParametersContext ctx) { }
+	@Override public void exitObject(BatonParser.ObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -89,37 +125,37 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType(BatonParser.TypeContext ctx) { }
+	@Override public void enterValue(BatonParser.ValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType(BatonParser.TypeContext ctx) { }
+	@Override public void exitValue(BatonParser.ValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterCustomType(BatonParser.CustomTypeContext ctx) { }
+	@Override public void enterLiteral(BatonParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitCustomType(BatonParser.CustomTypeContext ctx) { }
+	@Override public void exitLiteral(BatonParser.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterObject(BatonParser.ObjectContext ctx) { }
+	@Override public void enterParameters(BatonParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitObject(BatonParser.ObjectContext ctx) { }
+	@Override public void exitParameters(BatonParser.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -137,18 +173,6 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterValue(BatonParser.ValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitValue(BatonParser.ValueContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
 	@Override public void enterWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -161,13 +185,13 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWorkflowBlock(BatonParser.WorkflowBlockContext ctx) { }
+	@Override public void enterWorkflowOutput(BatonParser.WorkflowOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWorkflowBlock(BatonParser.WorkflowBlockContext ctx) { }
+	@Override public void exitWorkflowOutput(BatonParser.WorkflowOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -192,18 +216,6 @@ public class BatonBaseListener implements BatonListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitStatement(BatonParser.StatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterReturnStatement(BatonParser.ReturnStatementContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitReturnStatement(BatonParser.ReturnStatementContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

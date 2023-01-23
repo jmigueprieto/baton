@@ -28,25 +28,95 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitTypeDeclaration(BatonParser.TypeDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#params}.
+	 * Enter a parse tree produced by {@link BatonParser#taskDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterParams(BatonParser.ParamsContext ctx);
+	void enterTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#params}.
+	 * Exit a parse tree produced by {@link BatonParser#taskDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitParams(BatonParser.ParamsContext ctx);
+	void exitTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#param}.
+	 * Enter a parse tree produced by {@link BatonParser#parameters}.
 	 * @param ctx the parse tree
 	 */
-	void enterParam(BatonParser.ParamContext ctx);
+	void enterParameters(BatonParser.ParametersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#param}.
+	 * Exit a parse tree produced by {@link BatonParser#parameters}.
 	 * @param ctx the parse tree
 	 */
-	void exitParam(BatonParser.ParamContext ctx);
+	void exitParameters(BatonParser.ParametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#keyValuePair}.
+	 * @param ctx the parse tree
+	 */
+	void enterKeyValuePair(BatonParser.KeyValuePairContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#keyValuePair}.
+	 * @param ctx the parse tree
+	 */
+	void exitKeyValuePair(BatonParser.KeyValuePairContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#key}.
+	 * @param ctx the parse tree
+	 */
+	void enterKey(BatonParser.KeyContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#key}.
+	 * @param ctx the parse tree
+	 */
+	void exitKey(BatonParser.KeyContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void enterType(BatonParser.TypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#type}.
+	 * @param ctx the parse tree
+	 */
+	void exitType(BatonParser.TypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#customType}.
+	 * @param ctx the parse tree
+	 */
+	void enterCustomType(BatonParser.CustomTypeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#customType}.
+	 * @param ctx the parse tree
+	 */
+	void exitCustomType(BatonParser.CustomTypeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#object}.
+	 * @param ctx the parse tree
+	 */
+	void enterObject(BatonParser.ObjectContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#object}.
+	 * @param ctx the parse tree
+	 */
+	void exitObject(BatonParser.ObjectContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void enterArray(BatonParser.ArrayContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#array}.
+	 * @param ctx the parse tree
+	 */
+	void exitArray(BatonParser.ArrayContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void enterValue(BatonParser.ValueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#value}.
+	 * @param ctx the parse tree
+	 */
+	void exitValue(BatonParser.ValueContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BatonParser#workflowDeclaration}.
 	 * @param ctx the parse tree
@@ -68,26 +138,6 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitWorkflowBlock(BatonParser.WorkflowBlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#taskDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void enterTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#taskDeclaration}.
-	 * @param ctx the parse tree
-	 */
-	void exitTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BatonParser#taskBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterTaskBlock(BatonParser.TaskBlockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#taskBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitTaskBlock(BatonParser.TaskBlockContext ctx);
-	/**
 	 * Enter a parse tree produced by {@link BatonParser#block}.
 	 * @param ctx the parse tree
 	 */
@@ -107,6 +157,16 @@ public interface BatonListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitStatement(BatonParser.StatementContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link BatonParser#returnStatement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStatement(BatonParser.ReturnStatementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link BatonParser#returnStatement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStatement(BatonParser.ReturnStatementContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BatonParser#expression}.
 	 * @param ctx the parse tree
@@ -137,44 +197,4 @@ public interface BatonListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitParExpression(BatonParser.ParExpressionContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BatonParser#propertiesBlock}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertiesBlock(BatonParser.PropertiesBlockContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#propertiesBlock}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertiesBlock(BatonParser.PropertiesBlockContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BatonParser#propertiesPair}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertiesPair(BatonParser.PropertiesPairContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#propertiesPair}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertiesPair(BatonParser.PropertiesPairContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BatonParser#propertiesArray}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertiesArray(BatonParser.PropertiesArrayContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#propertiesArray}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertiesArray(BatonParser.PropertiesArrayContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link BatonParser#propertiesValue}.
-	 * @param ctx the parse tree
-	 */
-	void enterPropertiesValue(BatonParser.PropertiesValueContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link BatonParser#propertiesValue}.
-	 * @param ctx the parse tree
-	 */
-	void exitPropertiesValue(BatonParser.PropertiesValueContext ctx);
 }

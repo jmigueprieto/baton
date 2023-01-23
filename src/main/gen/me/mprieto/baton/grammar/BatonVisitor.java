@@ -23,17 +23,59 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTypeDeclaration(BatonParser.TypeDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#params}.
+	 * Visit a parse tree produced by {@link BatonParser#taskDeclaration}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParams(BatonParser.ParamsContext ctx);
+	T visitTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#param}.
+	 * Visit a parse tree produced by {@link BatonParser#parameters}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitParam(BatonParser.ParamContext ctx);
+	T visitParameters(BatonParser.ParametersContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#keyValuePair}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKeyValuePair(BatonParser.KeyValuePairContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#key}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitKey(BatonParser.KeyContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#type}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitType(BatonParser.TypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#customType}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCustomType(BatonParser.CustomTypeContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObject(BatonParser.ObjectContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#array}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitArray(BatonParser.ArrayContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#value}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitValue(BatonParser.ValueContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BatonParser#workflowDeclaration}.
 	 * @param ctx the parse tree
@@ -47,18 +89,6 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitWorkflowBlock(BatonParser.WorkflowBlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#taskDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BatonParser#taskBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitTaskBlock(BatonParser.TaskBlockContext ctx);
-	/**
 	 * Visit a parse tree produced by {@link BatonParser#block}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -70,6 +100,12 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitStatement(BatonParser.StatementContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link BatonParser#returnStatement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnStatement(BatonParser.ReturnStatementContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BatonParser#expression}.
 	 * @param ctx the parse tree
@@ -88,28 +124,4 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitParExpression(BatonParser.ParExpressionContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BatonParser#propertiesBlock}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropertiesBlock(BatonParser.PropertiesBlockContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BatonParser#propertiesPair}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropertiesPair(BatonParser.PropertiesPairContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BatonParser#propertiesArray}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropertiesArray(BatonParser.PropertiesArrayContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link BatonParser#propertiesValue}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitPropertiesValue(BatonParser.PropertiesValueContext ctx);
 }

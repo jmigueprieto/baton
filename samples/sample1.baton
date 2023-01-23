@@ -1,57 +1,33 @@
+// TODO implement sample Orkes playground workflow
+type GreetingTaskInput (name : String, somethingElse : { op: String } )
 
-type GreetingTaskInput { "input" : String }
+task GreetingTask(
+    input: GreetingTaskInput,
+    output:  { success: Boolean },
+    description: "A Longer description"
+)
 
-workflow HelloWorld {
-    input { "name": String }
-    properties { "description": "This is a sample workflow" }
+workflow HelloWorld(
+    input : { name: String },
+    description: "This is a sample workflow",
+    version : 1
+) : ( data : String, "fact Length" : Integer) {
+    def greetingTaskResult = execute GreetingTask(input : name)
 
-    execute GreetingTask { "input" : name }
-/*
-    def ref = execute GreetingTask { "input": { "nested" : 1 }, "label": "someLabel" }
-
-    if (ref.success) {
+    /*
+    if (greetingTaskResult.output["greeting"] == "Hola Jose!") {
         execute AnotherTask { "label": "someLabel" }
     }
 
     def variable = false
 
     while (!variable) {
-        def httpResponse = execute http { "input": { "url": "https://somewhere.io/something"} }
+        def httpResponse = execute http ( input: { url: "https://somewhere.io/something"} )
         if (httpResponse.status == 200) {
             variable = true
         }
     }
+    */
 
     return httpResponse.output
-*/
 }
-
-task GreetingTask {
-    input GreetingTaskInput
-    output { "success": Boolean }
-    properties {
-        "description": "A Longer description",
-        "retry": {
-            "count":  3,
-            "logic": FIXED, // FIXED |EXPONENTIAL_BACKOFF
-            "delay": 10 // SECONDS
-        },
-        "timeout": {
-            "policy": RETRY // RETRY|TIMEOUT_WF|ALERT_ONLY
-        },
-        "concurrency": {
-            "limit": 0
-        },
-        "rateLimit": {
-          "frequencyInSeconds": 0,
-          "perFrequency": 0
-        }
-    }
-}
-
-/*
-task AnotherTask {
-    input { "name" : String }
-    runtime { image: "ubuntu:latest" }
-}
-*/

@@ -14,6 +14,8 @@ package me.mprieto.baton;
 
 
 import me.mprieto.baton.grammar.BatonLexer;
+import me.mprieto.baton.grammar.BatonListener;
+import me.mprieto.baton.grammar.BatonListenerImpl;
 import me.mprieto.baton.grammar.BatonParser;
 import org.antlr.v4.runtime.CharStream;
 import org.antlr.v4.runtime.CharStreams;
@@ -48,10 +50,17 @@ public class Main {
 
     private static void transformToJson(String sourceFile, String outputFile) throws IOException {
         try (PrintStream outputStream = output(outputFile)) {
-            CharStream charStream = CharStreams.fromFileName(sourceFile);
-            CommonTokenStream tokens = new CommonTokenStream(new BatonLexer(charStream));
-            BatonParser parser = new BatonParser(tokens);
-            ParseTree parseTree = parser.batonUnit();
+            var charStream = CharStreams.fromFileName(sourceFile);
+            var tokens = new CommonTokenStream(new BatonLexer(charStream));
+            var parser = new BatonParser(tokens);
+            var tree = parser.batonUnit();
+            var walker = new ParseTreeWalker();
+            BatonListener listener = new BatonListenerImpl();
+            walker.walk(listener, tree);
+
+            // listener.getWorkflows()
+            // listener.getTasks()
+
             /*
              *  // Create a generic parse tree walker that can trigger callbacks
              *         ParseTreeWalker walker = new ParseTreeWalker();

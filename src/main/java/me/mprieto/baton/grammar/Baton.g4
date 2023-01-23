@@ -1,35 +1,66 @@
 grammar Baton;
 
 batonUnit
-    : typeDeclaration*  workflowDeclaration taskDeclaration*
+    : typeDeclaration* taskDeclaration*  workflowDeclaration
     ;
 
 typeDeclaration
-    : TYPE IDENTIFIER params
-    ;
-
-params
-    : LBRACE param (COMMA param)* RBRACE
-    ;
-
-param
-    : STRING_LITERAL COLON (TYPE_BOOLEAN | TYPE_STRING | TYPE_INTEGER | TYPE_DECIMAL | IDENTIFIER)
-    ;
-
-workflowDeclaration
-    : WORKFLOW IDENTIFIER workflowBlock
-    ;
-
-workflowBlock
-    : LBRACE (INPUT (params | IDENTIFIER))? (OUTPUT (params | IDENTIFIER))? (PROPERTIES propertiesBlock)? statement+ RBRACE
+    : TYPE IDENTIFIER parameters
     ;
 
 taskDeclaration
-    : TASK IDENTIFIER taskBlock
+    : TASK IDENTIFIER parameters
     ;
 
-taskBlock
-    : LBRACE (INPUT (params | IDENTIFIER))? (OUTPUT (params | IDENTIFIER))? (PROPERTIES propertiesBlock) RBRACE
+parameters
+    : LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
+    ;
+
+keyValuePair
+    : key COLON type
+    | key COLON value
+    | key COLON object
+    ;
+
+key
+    : STRING_LITERAL
+    | IDENTIFIER;
+
+type
+    : TYPE_BOOLEAN
+    | TYPE_STRING
+    | TYPE_INTEGER
+    | TYPE_DECIMAL
+    | customType;
+
+customType : IDENTIFIER;
+
+object
+   : LBRACE keyValuePair (COMMA keyValuePair)* RBRACE
+   | LBRACE RBRACE
+   ;
+
+array
+   : LBRACK value (COMMA value)* RBRACK
+   | LBRACK RBRACK
+   ;
+
+value
+   : IDENTIFIER
+   | STRING_LITERAL
+   | NUMBER_LITERAL
+   | BOOL_LITERAL
+   | NULL_LITERAL
+   | array
+   | object
+   ;
+
+workflowDeclaration
+    : WORKFLOW IDENTIFIER parameters? COLON parameters workflowBlock
+    ;
+
+workflowBlock
+    : LBRACE statement* returnStatement RBRACE
     ;
 
 block
@@ -44,12 +75,11 @@ statement
     | expression
     ;
 
-//returnStatement
-//    : RETURN
+returnStatement: RETURN expression;
 
 expression
     : primary
-    | EXECUTE (IDENTIFIER | STRING_LITERAL) propertiesBlock
+    | EXECUTE (IDENTIFIER | STRING_LITERAL) parameters
     | expression DOT IDENTIFIER expression?
     | ('!' | '-') expression
     | expression ('==' | '!=') expression
@@ -69,30 +99,6 @@ parExpression
     : LPAREN expression RPAREN
     ;
 
-propertiesBlock
-   : LBRACE propertiesPair (COMMA propertiesPair)* RBRACE
-   | LBRACE RBRACE
-   ;
-
-propertiesPair
-   : STRING_LITERAL COLON propertiesValue
-   ;
-
-propertiesArray
-   : LBRACK propertiesValue (COMMA propertiesValue)* RBRACK
-   | LBRACK RBRACK
-   ;
-
-propertiesValue
-   : IDENTIFIER
-   | STRING_LITERAL
-   | NUMBER_LITERAL
-   | BOOL_LITERAL
-   | NULL_LITERAL
-   | propertiesArray
-   | propertiesBlock
-   ;
-
 WS :                ('\t' | '\r' | '\n' | ' ')+ -> skip;
 COMMENT:            '/*' .*? '*/'    -> channel(HIDDEN);
 LINE_COMMENT:       '//' ~[\r\n]*    -> channel(HIDDEN);
@@ -102,9 +108,6 @@ TASK:               'task';
 TYPE:               'type';
 DEF:                'def';
 EXECUTE:            'execute';
-INPUT:              'input';
-OUTPUT:             'output';
-PROPERTIES:         'properties';
 TYPE_STRING:        'String';
 TYPE_BOOLEAN:       'Boolean';
 TYPE_INTEGER:       'Integer';
@@ -125,6 +128,7 @@ IF:                 'if';
 ELSE:               'else';
 VAR:                'var';
 WHILE:              'while';
+RETURN:             'return';
 BOOL_LITERAL:       'true' | 'false';
 STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
 NUMBER_LITERAL:     '-'? INT ('.' [0-9] +)? EXP?;

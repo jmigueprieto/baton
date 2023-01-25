@@ -1,12 +1,22 @@
 package me.mprieto.baton.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
 @Getter
-public abstract class BatonModel<T extends Nameable, C extends ParserRuleContext> {
+abstract class BObject<T extends BObject.BProperty, C extends ParserRuleContext> {
+
+    @AllArgsConstructor
+    @Getter
+    public static abstract class BProperty<T> {
+        private final String name;
+        private final T valueType;
+        private final Object value;
+    }
 
     private final String name;
 
@@ -14,7 +24,7 @@ public abstract class BatonModel<T extends Nameable, C extends ParserRuleContext
 
     private final Map<String, T> properties = new LinkedHashMap<>();
 
-    public BatonModel(C ctx, String name) {
+    public BObject(C ctx, String name) {
         this.name = name;
         this.ctx = ctx;
     }

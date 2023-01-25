@@ -16,9 +16,10 @@ struct AnotherStruct { n: Integer }
  }*/
 
 task GreetingTask {
-    input: GreetingTaskInput,
-    output:  { success: Boolean },
-    description: "A Longer description"
+    input: GreetingTaskInput, // IDENTIFIER
+    output:  { success: Boolean }, // output is an Object, Boolean is a TYPE_DEF
+    description: "A Longer description" // LITERAL_STRING
+    version: 1
 }
 
 workflow HelloWorld (

@@ -12,7 +12,11 @@ structDef
     : LBRACE structKeyValuePair? (COMMA structKeyValuePair)* RBRACE;
 
 structKeyValuePair
-    : key COLON (type | structDef) // nested struct definition
+    : key COLON (
+        type            // Basic types e.g.: String, Boolean
+        | IDENTIFIER    // named type
+        | structDef     // nested struct
+    )
     ;
 
 type
@@ -20,7 +24,6 @@ type
     | TYPE_STRING
     | TYPE_INTEGER
     | TYPE_DECIMAL
-    | IDENTIFIER // Named Type or variable
     ;
 
 taskDeclaration
@@ -33,27 +36,28 @@ object
    ;
 
 keyValuePair
-    : key COLON (type | value)
+    : key COLON value
     ;
 
 key
-    : STRING_LITERAL
+    : LITERAL_STRING
     | IDENTIFIER
     ;
 
 value
    : IDENTIFIER
+   | type
    | literal
    | array
    | object
    ;
 
 literal
-   : STRING_LITERAL
-   | INTEGER_LITERAL
-   | DECIMAL_LITERAL
-   | BOOL_LITERAL
-   | NULL_LITERAL
+   : LITERAL_STRING
+   | LITERAL_INTEGER
+   | LITERAL_DECIMAL
+   | LITERAL_BOOL
+   | LITERAL_NULL
    ;
 
 parameters
@@ -86,7 +90,7 @@ statement
 
 expression
     : primary
-    | EXECUTE (IDENTIFIER | STRING_LITERAL) parameters
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) parameters
     | expression DOT IDENTIFIER expression?
     | ('!' | '-') expression
     | expression ('==' | '!=') expression
@@ -94,12 +98,8 @@ expression
     ;
 
 primary
-    : BOOL_LITERAL
-    | STRING_LITERAL
-    | INTEGER_LITERAL
-    | DECIMAL_LITERAL
-    | NULL_LITERAL
-    | IDENTIFIER
+    : IDENTIFIER
+    | literal
     | parExpression
     ;
 
@@ -137,11 +137,11 @@ ELSE:               'else';
 VAR:                'var';
 WHILE:              'while';
 RETURN:             'return';
-BOOL_LITERAL:       'true' | 'false';
-STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
-INTEGER_LITERAL:     '-'? '0' | [1-9] [0-9]*;
-DECIMAL_LITERAL:     INTEGER_LITERAL ('.' [0-9] +)?;
-NULL_LITERAL:       'null';
+LITERAL_BOOL:       'true' | 'false';
+LITERAL_STRING:     '"' (~["\\\r\n] | EscapeSequence)* '"';
+LITERAL_INTEGER:     '-'? '0' | [1-9] [0-9]*;
+LITERAL_DECIMAL:     LITERAL_INTEGER ('.' [0-9] +)?;
+LITERAL_NULL:       'null';
 
 IDENTIFIER:         Letter LetterOrDigit*;
 

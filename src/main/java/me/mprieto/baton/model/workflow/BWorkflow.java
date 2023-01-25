@@ -3,12 +3,10 @@ package me.mprieto.baton.model.workflow;
 
 import lombok.Builder;
 import lombok.Getter;
-import me.mprieto.baton.model.Nameable;
-import me.mprieto.baton.model.struct.BatonStructType;
 
 @Builder
 @Getter
-public class BatonWorkflow implements Nameable {
+public class BWorkflow {
 
     private String name;
 
@@ -17,8 +15,6 @@ public class BatonWorkflow implements Nameable {
 
     @Builder.Default
     private String description = "";
-
-    private BatonStructType input;
 
 }
 

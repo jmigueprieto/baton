@@ -16,6 +16,7 @@ package me.mprieto.baton;
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
 import me.mprieto.baton.visitors.StructVisitor;
+import me.mprieto.baton.visitors.TaskVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.cli.*;
@@ -28,18 +29,18 @@ public class Main {
     public static void main(String[] args) throws IOException {
         final Options options = cmdOptions();
         try {
-            CommandLineParser parser = new DefaultParser();
-            CommandLine cmd = parser.parse(options, args);
+            var parser = new DefaultParser();
+            var cmd = parser.parse(options, args);
 
-            String sourceFile = cmd.getOptionValue("s");
-            String outputFile = cmd.getOptionValue("o");
+            var sourceFile = cmd.getOptionValue("f");
+            var outputDir = cmd.getOptionValue("d");
 
-            transformToJson(sourceFile, outputFile);
+            transformToJson(sourceFile, outputDir);
 
         } catch (ParseException e) {
             System.out.println(e.getMessage());
             HelpFormatter formatter = new HelpFormatter();
-            formatter.printHelp("java -jar baton.jar -s source.baton -o output.json", options);
+            formatter.printHelp("java -jar baton.jar -f source.baton -d ./dir/", options);
             System.exit(-1);
         }
     }
@@ -51,34 +52,26 @@ public class Main {
             var parser = new BatonParser(tokens);
             var tree = parser.batonUnit();
 
-            //FIXME Don't use a listener
-            // 1. Walk the tree to load the structs
+            /* ## Listener Example
+             * 1. Create a parse tree walker that can trigger callbacks
+             * ```
+             * var walker = new ParseTreeWalker();
+             * ```
+             * 2. Walk the tree created during the parse, trigger callbacks
+             * ```
+             * var listener = new BatonListenerImpl();
+             * walker.walk(titleParser, tree);
+             * ```
+             */
+
             var structVisitor = new StructVisitor();
             var structs = structVisitor.visit(tree);
-            System.out.println(structs);
-            // 2. With the structs loaded, walk the tree to load the Task
-            // 3. Walk the tree to load the workflow
 
+            var taskVisitor = new TaskVisitor(structs);
+            var tasks = taskVisitor.visit(tree);
 
-            // listener.getWorkflows()
-            // listener.getTasks()
-
-            /*
-             *  // Create a generic parse tree walker that can trigger callbacks
-             *         ParseTreeWalker walker = new ParseTreeWalker();
-             *         // Walk the tree created during the parse, trigger callbacks
-             *         TitleParserListenerImpl titleParser = new TitleParserListenerImpl();
-             *         walker.walk(titleParser, tree);
-             *
-             *         if (outputFile != null) {
-             *             System.out.println("XML document saved to " + outputFile);
-             *         }
-             *
-             *         XmlMapper xmlMapper = new XmlMapper();
-             *         xmlMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
-             *         String xml = xmlMapper.writerWithDefaultPrettyPrinter().writeValueAsString(titleParser.getParsedTitle());
-             *         xmlOutput.println(xml);
-             */
+            //TODO Walk the tree to load the workflow
+            //TODO translate to JSON
         }
     }
 

@@ -1,5 +1,19 @@
 // TODO implement sample Orkes playground workflow
-struct GreetingTaskInput { name : String, somethingElse : { op: String } }
+
+// A struct is a Type definition
+struct GreetingTaskInput {
+    name : String,
+    implicitStruct : { key: String },
+    another: AnotherStruct
+}
+
+struct AnotherStruct { n: Integer }
+
+/* struct Error {
+    nested : {
+        key : DoesNotExist
+    }
+ }*/
 
 task GreetingTask {
     input: GreetingTaskInput,

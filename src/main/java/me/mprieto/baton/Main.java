@@ -15,10 +15,9 @@ package me.mprieto.baton;
 
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.listeners.ConductorJsonTranslator;
+import me.mprieto.baton.visitors.StructVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
 
 import java.io.File;
@@ -51,9 +50,15 @@ public class Main {
             var tokens = new CommonTokenStream(new BatonLexer(charStream));
             var parser = new BatonParser(tokens);
             var tree = parser.batonUnit();
-            var walker = new ParseTreeWalker();
-            var listener = new ConductorJsonTranslator();
-            walker.walk(listener, tree);
+
+            //FIXME Don't use a listener
+            // 1. Walk the tree to load the structs
+            var structVisitor = new StructVisitor();
+            var structs = structVisitor.visit(tree);
+            System.out.println(structs);
+            // 2. With the structs loaded, walk the tree to load the Task
+            // 3. Walk the tree to load the workflow
+
 
             // listener.getWorkflows()
             // listener.getTasks()

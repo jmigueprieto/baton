@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class BatonObjectProperty {
+public class BatonObjectProperty implements Nameable {
     private final String name;
-    private final BatonType type;
+    private final BatonObjectType type;
     private final Object value;
 }

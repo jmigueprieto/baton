@@ -1,7 +1,7 @@
 grammar Baton;
 
 batonUnit
-    : structDeclaration* taskDeclaration*  workflowDeclaration
+    : (structDeclaration | taskDeclaration)* workflowDeclaration
     ;
 
 structDeclaration
@@ -50,11 +50,11 @@ value
 
 literal
    : STRING_LITERAL
-   | NUMBER_LITERAL
+   | INTEGER_LITERAL
+   | DECIMAL_LITERAL
    | BOOL_LITERAL
    | NULL_LITERAL
    ;
-
 
 parameters
     : LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
@@ -94,9 +94,10 @@ expression
     ;
 
 primary
-    : NUMBER_LITERAL
+    : BOOL_LITERAL
     | STRING_LITERAL
-    | BOOL_LITERAL
+    | INTEGER_LITERAL
+    | DECIMAL_LITERAL
     | NULL_LITERAL
     | IDENTIFIER
     | parExpression
@@ -138,7 +139,8 @@ WHILE:              'while';
 RETURN:             'return';
 BOOL_LITERAL:       'true' | 'false';
 STRING_LITERAL:     '"' (~["\\\r\n] | EscapeSequence)* '"';
-NUMBER_LITERAL:     '-'? INT ('.' [0-9] +)? EXP?;
+INTEGER_LITERAL:     '-'? '0' | [1-9] [0-9]*;
+DECIMAL_LITERAL:     INTEGER_LITERAL ('.' [0-9] +)?;
 NULL_LITERAL:       'null';
 
 IDENTIFIER:         Letter LetterOrDigit*;
@@ -152,14 +154,6 @@ fragment EscapeSequence
 fragment HexDigit
     : [0-9a-fA-F]
     ;
-
-fragment INT
-   : '0' | [1-9] [0-9]*
-   ;
-
-fragment EXP
-   : [Ee] [+\-]? INT
-   ;
 
 fragment LetterOrDigit
     : Letter

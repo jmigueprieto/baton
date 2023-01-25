@@ -1,4 +1,4 @@
-package me.mprieto.baton.visitors;
+package me.mprieto.baton.tree;
 
 import me.mprieto.baton.grammar.BatonBaseVisitor;
 import me.mprieto.baton.grammar.BatonParser;
@@ -13,7 +13,6 @@ import java.util.Map;
 
 import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_NESTED_STRUCT;
 import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_STRUCT;
-
 
 public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
 
@@ -32,7 +31,6 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         }
 
         structs.values().forEach(this::typeCheck);
-
         return structs;
     }
 

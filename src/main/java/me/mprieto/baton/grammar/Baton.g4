@@ -80,27 +80,21 @@ block
     ;
 
 statement
-    : IF parExpression block (ELSE block)? // if
-    | WHILE parExpression block // while
-    | DEF IDENTIFIER ASSIGNMENT expression // variable declaration
-    | IDENTIFIER ASSIGNMENT expression // variable assignment
-    | RETURN expression
-    | expression
+    : IF parExpression block (ELSE block)?              # ifStmt
+    | WHILE parExpression block                         # whileStmt
+    | DEF IDENTIFIER (ASSIGNMENT expression)?           # varDeclStmt
+    | IDENTIFIER ASSIGNMENT expression                  # assignmentStmt
+    | RETURN expression                                 # returnStmt
+    | expression                                        # exprStmt
     ;
 
 expression
-    : primary
-    | EXECUTE (IDENTIFIER | LITERAL_STRING) parameters
-    | expression DOT IDENTIFIER expression?
-    | ('!' | '-') expression
-    | expression ('==' | '!=') expression
-    | expression ('&&' | '||') expression
-    ;
-
-primary
-    : IDENTIFIER
-    | literal
-    | parExpression
+    : (IDENTIFIER | literal | parExpression)            # primary
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) parameters  # execute
+    | expression DOT IDENTIFIER expression?             # dotOp
+    | ('!' | '-') expression                            # prefixOp
+    | expression ('==' | '!=') expression               # eqOp
+    | expression ('&&' | '||') expression               # logicOp
     ;
 
 parExpression

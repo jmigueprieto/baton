@@ -1,10 +1,10 @@
-package me.mprieto.baton.visitors;
+package me.mprieto.baton.tree;
 
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.model.BStructObj.TypeDef;
 
 
-public class Utils {
+class Utils {
 
     public static TypeDef toTypeDef(int tokenType) {
         switch (tokenType) {

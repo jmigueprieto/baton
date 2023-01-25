@@ -1,5 +1,6 @@
-package me.mprieto.baton.visitors;
+package me.mprieto.baton.tree;
 
+import lombok.RequiredArgsConstructor;
 import me.mprieto.baton.grammar.BatonBaseVisitor;
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
@@ -14,16 +15,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+@RequiredArgsConstructor
 public class TaskVisitor extends BatonBaseVisitor<Map<String, BGenericObj>> {
 
     private final Map<String, BGenericObj> tasks = new HashMap<>();
 
     private final Map<String, BStructObj> structs;
-
-    public TaskVisitor(Map<String, BStructObj> structs) {
-        this.structs = structs;
-    }
-
 
     @Override
     public Map<String, BGenericObj> visitBatonUnit(BatonParser.BatonUnitContext ctx) {

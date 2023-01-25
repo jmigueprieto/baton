@@ -1,7 +1,6 @@
 package me.mprieto.baton.model;
 
 import lombok.Builder;
-import lombok.experimental.SuperBuilder;
 import me.mprieto.baton.grammar.BatonParser;
 
 public class BGenericObj extends BObject<BGenericObj.Property, BatonParser.ObjectContext> {

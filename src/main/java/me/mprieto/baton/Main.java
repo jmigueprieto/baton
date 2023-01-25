@@ -15,8 +15,8 @@ package me.mprieto.baton;
 
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.visitors.StructVisitor;
-import me.mprieto.baton.visitors.TaskVisitor;
+import me.mprieto.baton.tree.StructVisitor;
+import me.mprieto.baton.tree.TaskVisitor;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.apache.commons.cli.*;
@@ -95,19 +95,19 @@ public class Main {
     private static Options cmdOptions() {
         Options options = new Options();
         options.addOption(
-                Option.builder("s")
-                        .longOpt("source")
+                Option.builder("f")
+                        .longOpt("file")
                         .hasArg(true)
                         .desc("Source file in Baton format")
                         .type(File.class)
                         .required()
                         .build());
         options.addOption(
-                Option.builder("o")
+                Option.builder("d")
                         .longOpt("output")
                         .hasArg(true)
                         .type(File.class)
-                        .desc("Output file in JSON Format")
+                        .desc("Output directory")
                         .required(false)
                         .build());
         return options;

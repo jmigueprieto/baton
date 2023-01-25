@@ -1,0 +1,8 @@
+struct SampleStruct {
+    name : String,
+    coordinates: Coordinates,
+    n : Integer,
+    output : { success: Boolean, message: String }
+}
+
+struct Coordinates { x: Decimal, y : Decimal }

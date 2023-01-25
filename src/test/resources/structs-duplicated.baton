@@ -1,0 +1,2 @@
+struct Coordinates { x: Decimal, y : Decimal }
+struct Coordinates { x: Decimal, y : Decimal }

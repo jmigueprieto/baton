@@ -1,0 +1,16 @@
+struct Input {
+    name : String
+}
+
+struct Output {
+    message: String
+}
+
+task HelloWorldTask {
+    input: Input,
+    output: Output,
+    description: "Simple hello world workflow",
+    retryLogic: "FIXED",
+    ownerEmail: "foo@bar.com",
+    retryDelaySeconds: 600
+}

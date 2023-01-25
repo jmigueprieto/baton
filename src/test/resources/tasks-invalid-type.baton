@@ -1,0 +1,5 @@
+task HelloWorldTask {
+    input: Input,
+    output: Output,
+    description: "Simple hello world workflow"
+}

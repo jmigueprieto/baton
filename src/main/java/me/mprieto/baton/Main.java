@@ -13,13 +13,17 @@
 package me.mprieto.baton;
 
 
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
+import me.mprieto.baton.workflows.WorkflowListener;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
+import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
 
 import java.io.File;
@@ -27,6 +31,10 @@ import java.io.IOException;
 import java.io.PrintStream;
 
 public class Main {
+
+    private static final ObjectMapper objectMapper = new ObjectMapper()
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
+
     public static void main(String[] args) throws IOException {
         final Options options = cmdOptions();
         try {
@@ -55,26 +63,20 @@ public class Main {
             parser.setErrorHandler(new BailErrorStrategy());
             var tree = parser.batonUnit();
 
-            /* ## Listener Example
-             * 1. Create a parse tree walker that can trigger callbacks
-             * ```
-             * var walker = new ParseTreeWalker();
-             * ```
-             * 2. Walk the tree created during the parse, trigger callbacks
-             * ```
-             * var listener = new BatonListenerImpl();
-             * walker.walk(titleParser, tree);
-             * ```
-             */
-
             var structVisitor = new StructVisitor();
             var structs = structVisitor.visit(tree);
 
             var taskVisitor = new TaskVisitor(structs);
             var tasks = taskVisitor.visit(tree);
 
-            //TODO Walk the tree to load the workflow
-            //TODO translate to JSON
+            var listener = new WorkflowListener(structs, tasks);
+            var walker = new ParseTreeWalker();
+
+            walker.walk(listener, tree);
+
+            objectMapper
+                    .writerWithDefaultPrettyPrinter()
+                    .writeValue(outputStream, listener.getWorkflowDef());
         }
     }
 

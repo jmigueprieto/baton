@@ -22,9 +22,14 @@ public class WorkflowListener extends BatonBaseListener {
 
     @Override
     public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) {
+        //TODO
         workflowDef.setName(ctx.IDENTIFIER().getText());
         if (ctx.workflowParameters() != null) {
             var parameters = objectParser.parse("_", ctx.workflowParameters().parameters());
+            if (parameters.get("description") != null) {
+                var desc = parameters.get("description");
+                workflowDef.setDescription((String) desc.getValue());
+            }
         }
         super.enterWorkflowDeclaration(ctx);
     }
@@ -32,5 +37,9 @@ public class WorkflowListener extends BatonBaseListener {
     @Override
     public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
         super.enterWorkflowOutput(ctx);
+    }
+
+    public WorkflowDef getWorkflowDef() {
+        return this.workflowDef;
     }
 }

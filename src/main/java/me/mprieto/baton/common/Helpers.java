@@ -1,7 +1,7 @@
 package me.mprieto.baton.common;
 
 import me.mprieto.baton.grammar.BatonLexer;
-import me.mprieto.baton.structs.model.BStructObj.TypeDef;
+import me.mprieto.baton.common.model.TypeDef;
 
 
 public class Helpers {
@@ -20,4 +20,5 @@ public class Helpers {
 
         return null;
     }
+
 }

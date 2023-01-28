@@ -1,19 +1,19 @@
 package me.mprieto.baton.structs;
 
-import me.mprieto.baton.grammar.BatonBaseVisitor;
-import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.structs.model.BStructObj;
-import me.mprieto.baton.structs.model.BStructObj.TypeDef;
+import me.mprieto.baton.common.Helpers;
 import me.mprieto.baton.common.exceptions.DuplicateException;
 import me.mprieto.baton.common.exceptions.InvalidTypeException;
 import me.mprieto.baton.common.exceptions.UnknownTypeException;
-import me.mprieto.baton.common.Helpers;
+import me.mprieto.baton.common.model.TypeDef;
+import me.mprieto.baton.grammar.Baton;
+import me.mprieto.baton.grammar.BatonBaseVisitor;
+import me.mprieto.baton.structs.model.BStructObj;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static me.mprieto.baton.structs.model.BStructObj.TypeDef.TYPE_DEF_NESTED_STRUCT;
-import static me.mprieto.baton.structs.model.BStructObj.TypeDef.TYPE_DEF_STRUCT;
+import static me.mprieto.baton.common.model.TypeDef.TYPE_DEF_NESTED_STRUCT;
+import static me.mprieto.baton.common.model.TypeDef.TYPE_DEF_STRUCT;
 
 
 public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
@@ -21,8 +21,8 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
     private final Map<String, BStructObj> structs = new HashMap<>();
 
     @Override
-    public Map<String, BStructObj> visitBatonUnit(BatonParser.BatonUnitContext ctx) {
-        for (BatonParser.StructDeclarationContext decl : ctx.structDeclaration()) {
+    public Map<String, BStructObj> visitBatonUnit(Baton.BatonUnitContext ctx) {
+        for (Baton.StructDeclarationContext decl : ctx.structDeclaration()) {
             var name = decl.IDENTIFIER().getText();
             if (structs.containsKey(name)) {
                 int line = decl.getStart().getLine();
@@ -49,11 +49,11 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         }
     }
 
-    private BStructObj parseStructDef(String name, BatonParser.StructDefContext structCtx) {
+    private BStructObj parseStructDef(String name, Baton.StructDefContext structCtx) {
         var struct = new BStructObj(structCtx, name);
         var keyValuePairs = structCtx.structKeyValuePair();
 
-        for (BatonParser.StructKeyValuePairContext ctx : keyValuePairs) {
+        for (Baton.StructKeyValuePairContext ctx : keyValuePairs) {
             var key = ctx.key().getText();
             var type = getType(ctx);
             var value = getValue(ctx);
@@ -67,7 +67,7 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         return struct;
     }
 
-    private Object getValue(BatonParser.StructKeyValuePairContext ctx) {
+    private Object getValue(Baton.StructKeyValuePairContext ctx) {
         if (ctx.IDENTIFIER() != null) {
             return ctx.IDENTIFIER().getText();
         } else if (ctx.structDef() != null) {
@@ -77,7 +77,7 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         return null;
     }
 
-    private TypeDef getType(BatonParser.StructKeyValuePairContext ctx) {
+    private TypeDef getType(Baton.StructKeyValuePairContext ctx) {
         if (ctx.type() != null) {
             var typeDef = Helpers.toTypeDef(ctx.type().getStart().getType());
             if (typeDef != null) {

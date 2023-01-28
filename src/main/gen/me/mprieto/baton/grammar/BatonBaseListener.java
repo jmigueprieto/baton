@@ -17,349 +17,373 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBatonUnit(BatonParser.BatonUnitContext ctx) { }
+	@Override public void enterBatonUnit(Baton.BatonUnitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBatonUnit(BatonParser.BatonUnitContext ctx) { }
+	@Override public void exitBatonUnit(Baton.BatonUnitContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStructDeclaration(BatonParser.StructDeclarationContext ctx) { }
+	@Override public void enterStructDeclaration(Baton.StructDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStructDeclaration(BatonParser.StructDeclarationContext ctx) { }
+	@Override public void exitStructDeclaration(Baton.StructDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStructDef(BatonParser.StructDefContext ctx) { }
+	@Override public void enterStructDef(Baton.StructDefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStructDef(BatonParser.StructDefContext ctx) { }
+	@Override public void exitStructDef(Baton.StructDefContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx) { }
+	@Override public void enterStructKeyValuePair(Baton.StructKeyValuePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx) { }
+	@Override public void exitStructKeyValuePair(Baton.StructKeyValuePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterType(BatonParser.TypeContext ctx) { }
+	@Override public void enterType(Baton.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitType(BatonParser.TypeContext ctx) { }
+	@Override public void exitType(Baton.TypeContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTaskDeclaration(BatonParser.TaskDeclarationContext ctx) { }
+	@Override public void enterTaskDeclaration(Baton.TaskDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTaskDeclaration(BatonParser.TaskDeclarationContext ctx) { }
+	@Override public void exitTaskDeclaration(Baton.TaskDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterObject(BatonParser.ObjectContext ctx) { }
+	@Override public void enterObject(Baton.ObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitObject(BatonParser.ObjectContext ctx) { }
+	@Override public void exitObject(Baton.ObjectContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterKeyValuePair(BatonParser.KeyValuePairContext ctx) { }
+	@Override public void enterKeyValuePair(Baton.KeyValuePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitKeyValuePair(BatonParser.KeyValuePairContext ctx) { }
+	@Override public void exitKeyValuePair(Baton.KeyValuePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterKey(BatonParser.KeyContext ctx) { }
+	@Override public void enterKey(Baton.KeyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitKey(BatonParser.KeyContext ctx) { }
+	@Override public void exitKey(Baton.KeyContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterValue(BatonParser.ValueContext ctx) { }
+	@Override public void enterValue(Baton.ValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitValue(BatonParser.ValueContext ctx) { }
+	@Override public void exitValue(Baton.ValueContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLiteral(BatonParser.LiteralContext ctx) { }
+	@Override public void enterLiteral(Baton.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLiteral(BatonParser.LiteralContext ctx) { }
+	@Override public void exitLiteral(Baton.LiteralContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParameters(BatonParser.ParametersContext ctx) { }
+	@Override public void enterArray(Baton.ArrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParameters(BatonParser.ParametersContext ctx) { }
+	@Override public void exitArray(Baton.ArrayContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArray(BatonParser.ArrayContext ctx) { }
+	@Override public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArray(BatonParser.ArrayContext ctx) { }
+	@Override public void exitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx) { }
+	@Override public void enterWorkflowParameters(Baton.WorkflowParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx) { }
+	@Override public void exitWorkflowParameters(Baton.WorkflowParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWorkflowOutput(BatonParser.WorkflowOutputContext ctx) { }
+	@Override public void enterParameters(Baton.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWorkflowOutput(BatonParser.WorkflowOutputContext ctx) { }
+	@Override public void exitParameters(Baton.ParametersContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterBlock(BatonParser.BlockContext ctx) { }
+	@Override public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitBlock(BatonParser.BlockContext ctx) { }
+	@Override public void exitWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterIfStmt(BatonParser.IfStmtContext ctx) { }
+	@Override public void enterBlock(Baton.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitIfStmt(BatonParser.IfStmtContext ctx) { }
+	@Override public void exitBlock(Baton.BlockContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterWhileStmt(BatonParser.WhileStmtContext ctx) { }
+	@Override public void enterIfStmt(Baton.IfStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitWhileStmt(BatonParser.WhileStmtContext ctx) { }
+	@Override public void exitIfStmt(Baton.IfStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterVarDeclStmt(BatonParser.VarDeclStmtContext ctx) { }
+	@Override public void enterWhileStmt(Baton.WhileStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitVarDeclStmt(BatonParser.VarDeclStmtContext ctx) { }
+	@Override public void exitWhileStmt(Baton.WhileStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterAssignmentStmt(BatonParser.AssignmentStmtContext ctx) { }
+	@Override public void enterVarDeclStmt(Baton.VarDeclStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitAssignmentStmt(BatonParser.AssignmentStmtContext ctx) { }
+	@Override public void exitVarDeclStmt(Baton.VarDeclStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReturnStmt(BatonParser.ReturnStmtContext ctx) { }
+	@Override public void enterAssignmentStmt(Baton.AssignmentStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReturnStmt(BatonParser.ReturnStmtContext ctx) { }
+	@Override public void exitAssignmentStmt(Baton.AssignmentStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExprStmt(BatonParser.ExprStmtContext ctx) { }
+	@Override public void enterReturnStmt(Baton.ReturnStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExprStmt(BatonParser.ExprStmtContext ctx) { }
+	@Override public void exitReturnStmt(Baton.ReturnStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrefixOp(BatonParser.PrefixOpContext ctx) { }
+	@Override public void enterExprStmt(Baton.ExprStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrefixOp(BatonParser.PrefixOpContext ctx) { }
+	@Override public void exitExprStmt(Baton.ExprStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterEqOp(BatonParser.EqOpContext ctx) { }
+	@Override public void enterPrefixOp(Baton.PrefixOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitEqOp(BatonParser.EqOpContext ctx) { }
+	@Override public void exitPrefixOp(Baton.PrefixOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterLogicOp(BatonParser.LogicOpContext ctx) { }
+	@Override public void enterEqOp(Baton.EqOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitLogicOp(BatonParser.LogicOpContext ctx) { }
+	@Override public void exitEqOp(Baton.EqOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterExecute(BatonParser.ExecuteContext ctx) { }
+	@Override public void enterLogicOp(Baton.LogicOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitExecute(BatonParser.ExecuteContext ctx) { }
+	@Override public void exitLogicOp(Baton.LogicOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterPrimary(BatonParser.PrimaryContext ctx) { }
+	@Override public void enterExecute(Baton.ExecuteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitPrimary(BatonParser.PrimaryContext ctx) { }
+	@Override public void exitExecute(Baton.ExecuteContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterDotOp(BatonParser.DotOpContext ctx) { }
+	@Override public void enterPrimary(Baton.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitDotOp(BatonParser.DotOpContext ctx) { }
+	@Override public void exitPrimary(Baton.PrimaryContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterParExpression(BatonParser.ParExpressionContext ctx) { }
+	@Override public void enterDotOp(Baton.DotOpContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitParExpression(BatonParser.ParExpressionContext ctx) { }
+	@Override public void exitDotOp(Baton.DotOpContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterTaskParameters(Baton.TaskParametersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitTaskParameters(Baton.TaskParametersContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterParExpression(Baton.ParExpressionContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitParExpression(Baton.ParExpressionContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

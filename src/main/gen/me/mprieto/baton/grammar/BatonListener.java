@@ -4,321 +4,341 @@ import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**
  * This interface defines a complete listener for a parse tree produced by
- * {@link BatonParser}.
+ * {@link Baton}.
  */
 public interface BatonListener extends ParseTreeListener {
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#batonUnit}.
+	 * Enter a parse tree produced by {@link Baton#batonUnit}.
 	 * @param ctx the parse tree
 	 */
-	void enterBatonUnit(BatonParser.BatonUnitContext ctx);
+	void enterBatonUnit(Baton.BatonUnitContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#batonUnit}.
+	 * Exit a parse tree produced by {@link Baton#batonUnit}.
 	 * @param ctx the parse tree
 	 */
-	void exitBatonUnit(BatonParser.BatonUnitContext ctx);
+	void exitBatonUnit(Baton.BatonUnitContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#structDeclaration}.
+	 * Enter a parse tree produced by {@link Baton#structDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructDeclaration(BatonParser.StructDeclarationContext ctx);
+	void enterStructDeclaration(Baton.StructDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#structDeclaration}.
+	 * Exit a parse tree produced by {@link Baton#structDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructDeclaration(BatonParser.StructDeclarationContext ctx);
+	void exitStructDeclaration(Baton.StructDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#structDef}.
+	 * Enter a parse tree produced by {@link Baton#structDef}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructDef(BatonParser.StructDefContext ctx);
+	void enterStructDef(Baton.StructDefContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#structDef}.
+	 * Exit a parse tree produced by {@link Baton#structDef}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructDef(BatonParser.StructDefContext ctx);
+	void exitStructDef(Baton.StructDefContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#structKeyValuePair}.
+	 * Enter a parse tree produced by {@link Baton#structKeyValuePair}.
 	 * @param ctx the parse tree
 	 */
-	void enterStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx);
+	void enterStructKeyValuePair(Baton.StructKeyValuePairContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#structKeyValuePair}.
+	 * Exit a parse tree produced by {@link Baton#structKeyValuePair}.
 	 * @param ctx the parse tree
 	 */
-	void exitStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx);
+	void exitStructKeyValuePair(Baton.StructKeyValuePairContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#type}.
+	 * Enter a parse tree produced by {@link Baton#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterType(BatonParser.TypeContext ctx);
+	void enterType(Baton.TypeContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#type}.
+	 * Exit a parse tree produced by {@link Baton#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitType(BatonParser.TypeContext ctx);
+	void exitType(Baton.TypeContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#taskDeclaration}.
+	 * Enter a parse tree produced by {@link Baton#taskDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
+	void enterTaskDeclaration(Baton.TaskDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#taskDeclaration}.
+	 * Exit a parse tree produced by {@link Baton#taskDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitTaskDeclaration(BatonParser.TaskDeclarationContext ctx);
+	void exitTaskDeclaration(Baton.TaskDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#object}.
+	 * Enter a parse tree produced by {@link Baton#object}.
 	 * @param ctx the parse tree
 	 */
-	void enterObject(BatonParser.ObjectContext ctx);
+	void enterObject(Baton.ObjectContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#object}.
+	 * Exit a parse tree produced by {@link Baton#object}.
 	 * @param ctx the parse tree
 	 */
-	void exitObject(BatonParser.ObjectContext ctx);
+	void exitObject(Baton.ObjectContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#keyValuePair}.
+	 * Enter a parse tree produced by {@link Baton#keyValuePair}.
 	 * @param ctx the parse tree
 	 */
-	void enterKeyValuePair(BatonParser.KeyValuePairContext ctx);
+	void enterKeyValuePair(Baton.KeyValuePairContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#keyValuePair}.
+	 * Exit a parse tree produced by {@link Baton#keyValuePair}.
 	 * @param ctx the parse tree
 	 */
-	void exitKeyValuePair(BatonParser.KeyValuePairContext ctx);
+	void exitKeyValuePair(Baton.KeyValuePairContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#key}.
+	 * Enter a parse tree produced by {@link Baton#key}.
 	 * @param ctx the parse tree
 	 */
-	void enterKey(BatonParser.KeyContext ctx);
+	void enterKey(Baton.KeyContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#key}.
+	 * Exit a parse tree produced by {@link Baton#key}.
 	 * @param ctx the parse tree
 	 */
-	void exitKey(BatonParser.KeyContext ctx);
+	void exitKey(Baton.KeyContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#value}.
+	 * Enter a parse tree produced by {@link Baton#value}.
 	 * @param ctx the parse tree
 	 */
-	void enterValue(BatonParser.ValueContext ctx);
+	void enterValue(Baton.ValueContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#value}.
+	 * Exit a parse tree produced by {@link Baton#value}.
 	 * @param ctx the parse tree
 	 */
-	void exitValue(BatonParser.ValueContext ctx);
+	void exitValue(Baton.ValueContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#literal}.
+	 * Enter a parse tree produced by {@link Baton#literal}.
 	 * @param ctx the parse tree
 	 */
-	void enterLiteral(BatonParser.LiteralContext ctx);
+	void enterLiteral(Baton.LiteralContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#literal}.
+	 * Exit a parse tree produced by {@link Baton#literal}.
 	 * @param ctx the parse tree
 	 */
-	void exitLiteral(BatonParser.LiteralContext ctx);
+	void exitLiteral(Baton.LiteralContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#parameters}.
+	 * Enter a parse tree produced by {@link Baton#array}.
 	 * @param ctx the parse tree
 	 */
-	void enterParameters(BatonParser.ParametersContext ctx);
+	void enterArray(Baton.ArrayContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#parameters}.
+	 * Exit a parse tree produced by {@link Baton#array}.
 	 * @param ctx the parse tree
 	 */
-	void exitParameters(BatonParser.ParametersContext ctx);
+	void exitArray(Baton.ArrayContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#array}.
+	 * Enter a parse tree produced by {@link Baton#workflowDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void enterArray(BatonParser.ArrayContext ctx);
+	void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#array}.
+	 * Exit a parse tree produced by {@link Baton#workflowDeclaration}.
 	 * @param ctx the parse tree
 	 */
-	void exitArray(BatonParser.ArrayContext ctx);
+	void exitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#workflowDeclaration}.
+	 * Enter a parse tree produced by {@link Baton#workflowParameters}.
 	 * @param ctx the parse tree
 	 */
-	void enterWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx);
+	void enterWorkflowParameters(Baton.WorkflowParametersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#workflowDeclaration}.
+	 * Exit a parse tree produced by {@link Baton#workflowParameters}.
 	 * @param ctx the parse tree
 	 */
-	void exitWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx);
+	void exitWorkflowParameters(Baton.WorkflowParametersContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#workflowOutput}.
+	 * Enter a parse tree produced by {@link Baton#parameters}.
 	 * @param ctx the parse tree
 	 */
-	void enterWorkflowOutput(BatonParser.WorkflowOutputContext ctx);
+	void enterParameters(Baton.ParametersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#workflowOutput}.
+	 * Exit a parse tree produced by {@link Baton#parameters}.
 	 * @param ctx the parse tree
 	 */
-	void exitWorkflowOutput(BatonParser.WorkflowOutputContext ctx);
+	void exitParameters(Baton.ParametersContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#block}.
+	 * Enter a parse tree produced by {@link Baton#workflowOutput}.
 	 * @param ctx the parse tree
 	 */
-	void enterBlock(BatonParser.BlockContext ctx);
+	void enterWorkflowOutput(Baton.WorkflowOutputContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#block}.
+	 * Exit a parse tree produced by {@link Baton#workflowOutput}.
 	 * @param ctx the parse tree
 	 */
-	void exitBlock(BatonParser.BlockContext ctx);
+	void exitWorkflowOutput(Baton.WorkflowOutputContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link Baton#block}.
+	 * @param ctx the parse tree
+	 */
+	void enterBlock(Baton.BlockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link Baton#block}.
+	 * @param ctx the parse tree
+	 */
+	void exitBlock(Baton.BlockContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code ifStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterIfStmt(BatonParser.IfStmtContext ctx);
+	void enterIfStmt(Baton.IfStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code ifStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitIfStmt(BatonParser.IfStmtContext ctx);
+	void exitIfStmt(Baton.IfStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code whileStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterWhileStmt(BatonParser.WhileStmtContext ctx);
+	void enterWhileStmt(Baton.WhileStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code whileStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitWhileStmt(BatonParser.WhileStmtContext ctx);
+	void exitWhileStmt(Baton.WhileStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code varDeclStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterVarDeclStmt(BatonParser.VarDeclStmtContext ctx);
+	void enterVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code varDeclStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitVarDeclStmt(BatonParser.VarDeclStmtContext ctx);
+	void exitVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code assignmentStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterAssignmentStmt(BatonParser.AssignmentStmtContext ctx);
+	void enterAssignmentStmt(Baton.AssignmentStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code assignmentStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitAssignmentStmt(BatonParser.AssignmentStmtContext ctx);
+	void exitAssignmentStmt(Baton.AssignmentStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code returnStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterReturnStmt(BatonParser.ReturnStmtContext ctx);
+	void enterReturnStmt(Baton.ReturnStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code returnStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitReturnStmt(BatonParser.ReturnStmtContext ctx);
+	void exitReturnStmt(Baton.ReturnStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code exprStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterExprStmt(BatonParser.ExprStmtContext ctx);
+	void enterExprStmt(Baton.ExprStmtContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code exprStmt}
-	 * labeled alternative in {@link BatonParser#statement}.
+	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitExprStmt(BatonParser.ExprStmtContext ctx);
+	void exitExprStmt(Baton.ExprStmtContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code prefixOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrefixOp(BatonParser.PrefixOpContext ctx);
+	void enterPrefixOp(Baton.PrefixOpContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code prefixOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrefixOp(BatonParser.PrefixOpContext ctx);
+	void exitPrefixOp(Baton.PrefixOpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code eqOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterEqOp(BatonParser.EqOpContext ctx);
+	void enterEqOp(Baton.EqOpContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code eqOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitEqOp(BatonParser.EqOpContext ctx);
+	void exitEqOp(Baton.EqOpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code logicOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterLogicOp(BatonParser.LogicOpContext ctx);
+	void enterLogicOp(Baton.LogicOpContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code logicOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitLogicOp(BatonParser.LogicOpContext ctx);
+	void exitLogicOp(Baton.LogicOpContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code execute}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterExecute(BatonParser.ExecuteContext ctx);
+	void enterExecute(Baton.ExecuteContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code execute}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitExecute(BatonParser.ExecuteContext ctx);
+	void exitExecute(Baton.ExecuteContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code primary}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrimary(BatonParser.PrimaryContext ctx);
+	void enterPrimary(Baton.PrimaryContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code primary}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrimary(BatonParser.PrimaryContext ctx);
+	void exitPrimary(Baton.PrimaryContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code dotOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterDotOp(BatonParser.DotOpContext ctx);
+	void enterDotOp(Baton.DotOpContext ctx);
 	/**
 	 * Exit a parse tree produced by the {@code dotOp}
-	 * labeled alternative in {@link BatonParser#expression}.
+	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitDotOp(BatonParser.DotOpContext ctx);
+	void exitDotOp(Baton.DotOpContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#parExpression}.
+	 * Enter a parse tree produced by {@link Baton#taskParameters}.
 	 * @param ctx the parse tree
 	 */
-	void enterParExpression(BatonParser.ParExpressionContext ctx);
+	void enterTaskParameters(Baton.TaskParametersContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#parExpression}.
+	 * Exit a parse tree produced by {@link Baton#taskParameters}.
 	 * @param ctx the parse tree
 	 */
-	void exitParExpression(BatonParser.ParExpressionContext ctx);
+	void exitTaskParameters(Baton.TaskParametersContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link Baton#parExpression}.
+	 * @param ctx the parse tree
+	 */
+	void enterParExpression(Baton.ParExpressionContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link Baton#parExpression}.
+	 * @param ctx the parse tree
+	 */
+	void exitParExpression(Baton.ParExpressionContext ctx);
 }

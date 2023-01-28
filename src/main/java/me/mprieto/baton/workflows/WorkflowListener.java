@@ -1,26 +1,36 @@
 package me.mprieto.baton.workflows;
 
-import lombok.RequiredArgsConstructor;
+import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
+import me.mprieto.baton.common.BGenericObjectParser;
 import me.mprieto.baton.grammar.BatonBaseListener;
-import me.mprieto.baton.grammar.BatonParser;
+import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.common.model.BGenericObj;
 import me.mprieto.baton.structs.model.BStructObj;
 
 import java.util.Map;
 
-@RequiredArgsConstructor
 public class WorkflowListener extends BatonBaseListener {
 
     private final Map<String, BGenericObj> tasks;
-    private final Map<String, BStructObj> structs;
+    private final BGenericObjectParser objectParser;
+    private final WorkflowDef workflowDef = new WorkflowDef();
+
+    public WorkflowListener(Map<String, BStructObj> structs, Map<String, BGenericObj> tasks) {
+        this.objectParser = new BGenericObjectParser(structs);
+        this.tasks = tasks;
+    }
 
     @Override
-    public void enterWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx) {
+    public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) {
+        workflowDef.setName(ctx.IDENTIFIER().getText());
+        if (ctx.workflowParameters() != null) {
+            var parameters = objectParser.parse("_", ctx.workflowParameters().parameters());
+        }
         super.enterWorkflowDeclaration(ctx);
     }
 
     @Override
-    public void enterWorkflowOutput(BatonParser.WorkflowOutputContext ctx) {
+    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
         super.enterWorkflowOutput(ctx);
     }
 }

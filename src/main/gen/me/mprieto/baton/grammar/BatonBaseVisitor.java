@@ -18,201 +18,215 @@ public class BatonBaseVisitor<T> extends AbstractParseTreeVisitor<T> implements 
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBatonUnit(BatonParser.BatonUnitContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBatonUnit(Baton.BatonUnitContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructDeclaration(BatonParser.StructDeclarationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStructDeclaration(Baton.StructDeclarationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructDef(BatonParser.StructDefContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStructDef(Baton.StructDefContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitStructKeyValuePair(BatonParser.StructKeyValuePairContext ctx) { return visitChildren(ctx); }
+	@Override public T visitStructKeyValuePair(Baton.StructKeyValuePairContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitType(BatonParser.TypeContext ctx) { return visitChildren(ctx); }
+	@Override public T visitType(Baton.TypeContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitTaskDeclaration(BatonParser.TaskDeclarationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitTaskDeclaration(Baton.TaskDeclarationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitObject(BatonParser.ObjectContext ctx) { return visitChildren(ctx); }
+	@Override public T visitObject(Baton.ObjectContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitKeyValuePair(BatonParser.KeyValuePairContext ctx) { return visitChildren(ctx); }
+	@Override public T visitKeyValuePair(Baton.KeyValuePairContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitKey(BatonParser.KeyContext ctx) { return visitChildren(ctx); }
+	@Override public T visitKey(Baton.KeyContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitValue(BatonParser.ValueContext ctx) { return visitChildren(ctx); }
+	@Override public T visitValue(Baton.ValueContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLiteral(BatonParser.LiteralContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLiteral(Baton.LiteralContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParameters(BatonParser.ParametersContext ctx) { return visitChildren(ctx); }
+	@Override public T visitArray(Baton.ArrayContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitArray(BatonParser.ArrayContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWorkflowDeclaration(BatonParser.WorkflowDeclarationContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWorkflowParameters(Baton.WorkflowParametersContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWorkflowOutput(BatonParser.WorkflowOutputContext ctx) { return visitChildren(ctx); }
+	@Override public T visitParameters(Baton.ParametersContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitBlock(BatonParser.BlockContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWorkflowOutput(Baton.WorkflowOutputContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitIfStmt(BatonParser.IfStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitBlock(Baton.BlockContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitWhileStmt(BatonParser.WhileStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitIfStmt(Baton.IfStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitVarDeclStmt(BatonParser.VarDeclStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitWhileStmt(Baton.WhileStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitAssignmentStmt(BatonParser.AssignmentStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitVarDeclStmt(Baton.VarDeclStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitReturnStmt(BatonParser.ReturnStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitAssignmentStmt(Baton.AssignmentStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExprStmt(BatonParser.ExprStmtContext ctx) { return visitChildren(ctx); }
+	@Override public T visitReturnStmt(Baton.ReturnStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrefixOp(BatonParser.PrefixOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExprStmt(Baton.ExprStmtContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitEqOp(BatonParser.EqOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrefixOp(Baton.PrefixOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitLogicOp(BatonParser.LogicOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitEqOp(Baton.EqOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitExecute(BatonParser.ExecuteContext ctx) { return visitChildren(ctx); }
+	@Override public T visitLogicOp(Baton.LogicOpContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitPrimary(BatonParser.PrimaryContext ctx) { return visitChildren(ctx); }
+	@Override public T visitExecute(Baton.ExecuteContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitDotOp(BatonParser.DotOpContext ctx) { return visitChildren(ctx); }
+	@Override public T visitPrimary(Baton.PrimaryContext ctx) { return visitChildren(ctx); }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation returns the result of calling
 	 * {@link #visitChildren} on {@code ctx}.</p>
 	 */
-	@Override public T visitParExpression(BatonParser.ParExpressionContext ctx) { return visitChildren(ctx); }
+	@Override public T visitDotOp(Baton.DotOpContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitTaskParameters(Baton.TaskParametersContext ctx) { return visitChildren(ctx); }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation returns the result of calling
+	 * {@link #visitChildren} on {@code ctx}.</p>
+	 */
+	@Override public T visitParExpression(Baton.ParExpressionContext ctx) { return visitChildren(ctx); }
 }

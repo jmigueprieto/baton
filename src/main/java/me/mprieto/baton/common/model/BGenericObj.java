@@ -1,9 +1,9 @@
 package me.mprieto.baton.common.model;
 
 import lombok.Builder;
-import me.mprieto.baton.grammar.BatonParser;
+import org.antlr.v4.runtime.ParserRuleContext;
 
-public class BGenericObj extends BObject<BGenericObj.Property, BatonParser.ObjectContext> {
+public class BGenericObj extends BObject<BGenericObj.Property, ParserRuleContext> {
 
     public enum ValueType {
         TYPE_DEF, // Boolean, String, Integer, Decimal
@@ -26,7 +26,7 @@ public class BGenericObj extends BObject<BGenericObj.Property, BatonParser.Objec
         }
     }
 
-    public BGenericObj(BatonParser.ObjectContext ctx, String name) {
+    public BGenericObj(ParserRuleContext ctx, String name) {
         super(ctx, name);
     }
 

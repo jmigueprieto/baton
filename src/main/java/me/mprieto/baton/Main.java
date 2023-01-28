@@ -14,7 +14,7 @@ package me.mprieto.baton;
 
 
 import me.mprieto.baton.grammar.BatonLexer;
-import me.mprieto.baton.grammar.BatonParser;
+import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
 import org.antlr.v4.runtime.BailErrorStrategy;
@@ -50,7 +50,7 @@ public class Main {
         try (PrintStream outputStream = output(outputFile)) {
             var charStream = CharStreams.fromFileName(sourceFile);
             var tokens = new CommonTokenStream(new BatonLexer(charStream));
-            var parser = new BatonParser(tokens);
+            var parser = new Baton(tokens);
 
             parser.setErrorHandler(new BailErrorStrategy());
             var tree = parser.batonUnit();

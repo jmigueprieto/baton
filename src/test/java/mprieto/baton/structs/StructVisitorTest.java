@@ -1,10 +1,10 @@
 package mprieto.baton.structs;
 
-import me.mprieto.baton.structs.model.BStructObj;
-import me.mprieto.baton.structs.model.BStructObj.TypeDef;
 import me.mprieto.baton.common.exceptions.DuplicateException;
 import me.mprieto.baton.common.exceptions.UnknownTypeException;
+import me.mprieto.baton.common.model.TypeDef;
 import me.mprieto.baton.structs.StructVisitor;
+import me.mprieto.baton.structs.model.BStructObj;
 import mprieto.baton.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,6 +42,8 @@ public class StructVisitorTest {
         assertNotNull(structs);
 
         var sampleStruct = structs.get("SampleStruct");
+        assertNotNull(sampleStruct);
+
         var name = sampleStruct.get("name");
         assertEquals(TypeDef.TYPE_STRING, name.getValueType());
         assertNull(name.getValue());
@@ -75,6 +77,5 @@ public class StructVisitorTest {
         assertEquals(TypeDef.TYPE_DECIMAL, y.getValueType());
         assertNull(y.getValue());
     }
-
 
 }

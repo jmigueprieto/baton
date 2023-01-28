@@ -2,7 +2,7 @@ struct Input { name : String }
 
 task HelloWorldTask {
     input: Input,
-    description: "Simple hello world workflow",
+    description: "Simple hello world workflow"
 }
 
 task HelloWorldTask {

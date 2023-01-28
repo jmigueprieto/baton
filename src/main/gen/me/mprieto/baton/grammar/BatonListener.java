@@ -168,35 +168,149 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitBlock(BatonParser.BlockContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#statement}.
+	 * Enter a parse tree produced by the {@code ifStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterStatement(BatonParser.StatementContext ctx);
+	void enterIfStmt(BatonParser.IfStmtContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#statement}.
+	 * Exit a parse tree produced by the {@code ifStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitStatement(BatonParser.StatementContext ctx);
+	void exitIfStmt(BatonParser.IfStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#expression}.
+	 * Enter a parse tree produced by the {@code whileStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void enterExpression(BatonParser.ExpressionContext ctx);
+	void enterWhileStmt(BatonParser.WhileStmtContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#expression}.
+	 * Exit a parse tree produced by the {@code whileStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 */
-	void exitExpression(BatonParser.ExpressionContext ctx);
+	void exitWhileStmt(BatonParser.WhileStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link BatonParser#primary}.
+	 * Enter a parse tree produced by the {@code varDeclStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterVarDeclStmt(BatonParser.VarDeclStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code varDeclStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitVarDeclStmt(BatonParser.VarDeclStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignmentStmt(BatonParser.AssignmentStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignmentStmt(BatonParser.AssignmentStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code returnStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterReturnStmt(BatonParser.ReturnStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code returnStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitReturnStmt(BatonParser.ReturnStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code exprStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterExprStmt(BatonParser.ExprStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code exprStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitExprStmt(BatonParser.ExprStmtContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code prefixOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterPrefixOp(BatonParser.PrefixOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code prefixOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitPrefixOp(BatonParser.PrefixOpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code eqOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterEqOp(BatonParser.EqOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code eqOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitEqOp(BatonParser.EqOpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code logicOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterLogicOp(BatonParser.LogicOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code logicOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitLogicOp(BatonParser.LogicOpContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code execute}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExecute(BatonParser.ExecuteContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code execute}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExecute(BatonParser.ExecuteContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code primary}
+	 * labeled alternative in {@link BatonParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void enterPrimary(BatonParser.PrimaryContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link BatonParser#primary}.
+	 * Exit a parse tree produced by the {@code primary}
+	 * labeled alternative in {@link BatonParser#expression}.
 	 * @param ctx the parse tree
 	 */
 	void exitPrimary(BatonParser.PrimaryContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code dotOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterDotOp(BatonParser.DotOpContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code dotOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitDotOp(BatonParser.DotOpContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link BatonParser#parExpression}.
 	 * @param ctx the parse tree

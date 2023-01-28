@@ -24,14 +24,14 @@ public class TaskVisitor extends BatonBaseVisitor<Map<String, BGenericObj>> {
 
     @Override
     public Map<String, BGenericObj> visitBatonUnit(BatonParser.BatonUnitContext ctx) {
-        for (BatonParser.TaskDeclarationContext it : ctx.taskDeclaration()) {
-            var name = it.IDENTIFIER().getText();
+        for (BatonParser.TaskDeclarationContext decl : ctx.taskDeclaration()) {
+            var name = decl.IDENTIFIER().getText();
             if (tasks.containsKey(name)) {
-                int line = ctx.getStart().getLine();
-                throw new DuplicateException("struct " + name + " already exists. Line: " + line);
+                int line = decl.getStart().getLine();
+                throw new DuplicateException("task " + name + " already exists. Line: " + line);
             }
 
-            tasks.put(name, parseObject(name, it.object()));
+            tasks.put(name, parseObject(name, decl.object()));
         }
 
         return tasks;

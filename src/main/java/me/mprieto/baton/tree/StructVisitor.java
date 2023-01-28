@@ -14,20 +14,21 @@ import java.util.Map;
 import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_NESTED_STRUCT;
 import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_STRUCT;
 
+
 public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
 
     private final Map<String, BStructObj> structs = new HashMap<>();
 
     @Override
     public Map<String, BStructObj> visitBatonUnit(BatonParser.BatonUnitContext ctx) {
-        for (BatonParser.StructDeclarationContext it : ctx.structDeclaration()) {
-            var name = it.IDENTIFIER().getText();
+        for (BatonParser.StructDeclarationContext decl : ctx.structDeclaration()) {
+            var name = decl.IDENTIFIER().getText();
             if (structs.containsKey(name)) {
-                int line = ctx.getStart().getLine();
+                int line = decl.getStart().getLine();
                 throw new DuplicateException("struct " + name + " already exists. Line: " + line);
             }
 
-            structs.put(name, parseStructDef(name, it.structDef()));
+            structs.put(name, parseStructDef(name, decl.structDef()));
         }
 
         structs.values().forEach(this::typeCheck);

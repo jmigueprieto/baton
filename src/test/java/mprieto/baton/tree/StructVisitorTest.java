@@ -9,8 +9,6 @@ import mprieto.baton.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
-import java.util.Map;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 public class StructVisitorTest {
@@ -22,7 +20,7 @@ public class StructVisitorTest {
         var visitor = new StructVisitor();
         var thrown = assertThrows(DuplicateException.class, () -> visitor.visit(parseTree));
 
-        assertEquals("struct Coordinates already exists. Line: 1", thrown.getMessage());
+        assertEquals("struct Coordinates already exists. Line: 2", thrown.getMessage());
     }
 
     @DisplayName("it should throw an UnknownTypeException")

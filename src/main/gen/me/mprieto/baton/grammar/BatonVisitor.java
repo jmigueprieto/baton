@@ -107,23 +107,89 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitBlock(BatonParser.BlockContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#statement}.
+	 * Visit a parse tree produced by the {@code ifStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStatement(BatonParser.StatementContext ctx);
+	T visitIfStmt(BatonParser.IfStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#expression}.
+	 * Visit a parse tree produced by the {@code whileStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExpression(BatonParser.ExpressionContext ctx);
+	T visitWhileStmt(BatonParser.WhileStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link BatonParser#primary}.
+	 * Visit a parse tree produced by the {@code varDeclStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitVarDeclStmt(BatonParser.VarDeclStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignmentStmt(BatonParser.AssignmentStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code returnStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitReturnStmt(BatonParser.ReturnStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code exprStmt}
+	 * labeled alternative in {@link BatonParser#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExprStmt(BatonParser.ExprStmtContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code prefixOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitPrefixOp(BatonParser.PrefixOpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code eqOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitEqOp(BatonParser.EqOpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code logicOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitLogicOp(BatonParser.LogicOpContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code execute}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExecute(BatonParser.ExecuteContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code primary}
+	 * labeled alternative in {@link BatonParser#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitPrimary(BatonParser.PrimaryContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code dotOp}
+	 * labeled alternative in {@link BatonParser#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitDotOp(BatonParser.DotOpContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link BatonParser#parExpression}.
 	 * @param ctx the parse tree

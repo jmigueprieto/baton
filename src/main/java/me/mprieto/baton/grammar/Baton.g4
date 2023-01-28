@@ -1,7 +1,7 @@
 grammar Baton;
 
 batonUnit
-    : (structDeclaration | taskDeclaration)* workflowDeclaration
+    : (structDeclaration | taskDeclaration)* workflowDeclaration EOF
     ;
 
 structDeclaration

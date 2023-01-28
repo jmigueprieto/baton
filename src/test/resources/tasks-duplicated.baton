@@ -8,3 +8,6 @@ task HelloWorldTask {
 task HelloWorldTask {
 }
 
+workflow test {
+}
+

@@ -3,3 +3,6 @@ task HelloWorldTask {
     output: Output,
     description: "Simple hello world workflow"
 }
+
+workflow test {
+}

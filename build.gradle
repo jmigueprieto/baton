@@ -30,6 +30,8 @@ dependencies {
     implementation "com.fasterxml.jackson.core:jackson-core:${versions.jackson}"
     implementation "com.netflix.conductor:conductor-common:${versions.conductor}"
 
+    testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
+    testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     testImplementation "org.junit.jupiter:junit-jupiter-api:${versions.junit}"
     testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:${versions.junit}"
 }

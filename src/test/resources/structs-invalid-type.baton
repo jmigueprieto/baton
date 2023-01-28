@@ -1,1 +1,0 @@
-struct SampleStruct { name : String, coordinates: Coordinates, n : Integer }

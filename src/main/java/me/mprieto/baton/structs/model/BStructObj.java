@@ -1,7 +1,8 @@
-package me.mprieto.baton.model;
+package me.mprieto.baton.structs.model;
 
 import lombok.Builder;
 import me.mprieto.baton.grammar.BatonParser;
+import me.mprieto.baton.common.model.BObject;
 
 public class BStructObj extends BObject<BStructObj.Property, BatonParser.StructDefContext> {
 

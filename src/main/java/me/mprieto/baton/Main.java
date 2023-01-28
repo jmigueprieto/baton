@@ -15,8 +15,8 @@ package me.mprieto.baton;
 
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.tree.StructVisitor;
-import me.mprieto.baton.tree.TaskVisitor;
+import me.mprieto.baton.structs.StructVisitor;
+import me.mprieto.baton.tasks.TaskVisitor;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;

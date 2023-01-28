@@ -1,18 +1,19 @@
-package me.mprieto.baton.tree;
+package me.mprieto.baton.structs;
 
 import me.mprieto.baton.grammar.BatonBaseVisitor;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.model.BStructObj;
-import me.mprieto.baton.model.BStructObj.TypeDef;
-import me.mprieto.baton.model.exceptions.DuplicateException;
-import me.mprieto.baton.model.exceptions.InvalidTypeException;
-import me.mprieto.baton.model.exceptions.UnknownTypeException;
+import me.mprieto.baton.structs.model.BStructObj;
+import me.mprieto.baton.structs.model.BStructObj.TypeDef;
+import me.mprieto.baton.common.exceptions.DuplicateException;
+import me.mprieto.baton.common.exceptions.InvalidTypeException;
+import me.mprieto.baton.common.exceptions.UnknownTypeException;
+import me.mprieto.baton.common.Helpers;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_NESTED_STRUCT;
-import static me.mprieto.baton.model.BStructObj.TypeDef.TYPE_DEF_STRUCT;
+import static me.mprieto.baton.structs.model.BStructObj.TypeDef.TYPE_DEF_NESTED_STRUCT;
+import static me.mprieto.baton.structs.model.BStructObj.TypeDef.TYPE_DEF_STRUCT;
 
 
 public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
@@ -78,7 +79,7 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
 
     private TypeDef getType(BatonParser.StructKeyValuePairContext ctx) {
         if (ctx.type() != null) {
-            var typeDef = Utils.toTypeDef(ctx.type().getStart().getType());
+            var typeDef = Helpers.toTypeDef(ctx.type().getStart().getType());
             if (typeDef != null) {
                 return typeDef;
             }

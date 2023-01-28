@@ -1,14 +1,13 @@
-package me.mprieto.baton.model;
+package me.mprieto.baton.common.model;
 
 import lombok.AllArgsConstructor;
-import lombok.Builder;
 import lombok.Getter;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
 @Getter
-abstract class BObject<T extends BObject.BProperty, C extends ParserRuleContext> {
+public abstract class BObject<T extends BObject.BProperty<?>, C extends ParserRuleContext> {
 
     @AllArgsConstructor
     @Getter

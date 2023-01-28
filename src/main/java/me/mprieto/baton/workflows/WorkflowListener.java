@@ -1,10 +1,10 @@
-package me.mprieto.baton.tree;
+package me.mprieto.baton.workflows;
 
 import lombok.RequiredArgsConstructor;
 import me.mprieto.baton.grammar.BatonBaseListener;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.model.BGenericObj;
-import me.mprieto.baton.model.BStructObj;
+import me.mprieto.baton.common.model.BGenericObj;
+import me.mprieto.baton.structs.model.BStructObj;
 
 import java.util.Map;
 

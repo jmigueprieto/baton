@@ -1,10 +1,10 @@
-package mprieto.baton.tree;
+package mprieto.baton.structs;
 
-import me.mprieto.baton.model.BStructObj;
-import me.mprieto.baton.model.BStructObj.TypeDef;
-import me.mprieto.baton.model.exceptions.DuplicateException;
-import me.mprieto.baton.model.exceptions.UnknownTypeException;
-import me.mprieto.baton.tree.StructVisitor;
+import me.mprieto.baton.structs.model.BStructObj;
+import me.mprieto.baton.structs.model.BStructObj.TypeDef;
+import me.mprieto.baton.common.exceptions.DuplicateException;
+import me.mprieto.baton.common.exceptions.UnknownTypeException;
+import me.mprieto.baton.structs.StructVisitor;
 import mprieto.baton.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

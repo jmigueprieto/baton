@@ -1,8 +1,8 @@
-package mprieto.baton.tree;
+package mprieto.baton.tasks;
 
-import me.mprieto.baton.model.exceptions.DuplicateException;
-import me.mprieto.baton.tree.StructVisitor;
-import me.mprieto.baton.tree.TaskVisitor;
+import me.mprieto.baton.common.exceptions.DuplicateException;
+import me.mprieto.baton.structs.StructVisitor;
+import me.mprieto.baton.tasks.TaskVisitor;
 import mprieto.baton.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

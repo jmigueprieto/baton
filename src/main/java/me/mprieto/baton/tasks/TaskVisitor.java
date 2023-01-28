@@ -1,14 +1,15 @@
-package me.mprieto.baton.tree;
+package me.mprieto.baton.tasks;
 
 import lombok.RequiredArgsConstructor;
 import me.mprieto.baton.grammar.BatonBaseVisitor;
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.BatonParser;
-import me.mprieto.baton.model.exceptions.DuplicateException;
-import me.mprieto.baton.model.exceptions.InvalidTypeException;
-import me.mprieto.baton.model.BStructObj;
-import me.mprieto.baton.model.BGenericObj;
-import me.mprieto.baton.model.exceptions.UnknownTypeException;
+import me.mprieto.baton.common.exceptions.DuplicateException;
+import me.mprieto.baton.common.exceptions.InvalidTypeException;
+import me.mprieto.baton.structs.model.BStructObj;
+import me.mprieto.baton.common.model.BGenericObj;
+import me.mprieto.baton.common.exceptions.UnknownTypeException;
+import me.mprieto.baton.common.Helpers;
 
 import java.util.HashMap;
 import java.util.List;
@@ -64,7 +65,7 @@ public class TaskVisitor extends BatonBaseVisitor<Map<String, BGenericObj>> {
 
     private Object getValue(BatonParser.ValueContext ctx) {
         if (ctx.type() != null) {
-            return Utils.toTypeDef(ctx.type().getStart().getType());
+            return Helpers.toTypeDef(ctx.type().getStart().getType());
         } else if (ctx.IDENTIFIER() != null) {
             var identifier = ctx.IDENTIFIER().getText();
             if (!structs.containsKey(identifier)) {

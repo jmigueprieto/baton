@@ -1,4 +1,4 @@
-package me.mprieto.baton.model.workflow;
+package me.mprieto.baton.workflows.model;
 
 
 import lombok.Builder;

@@ -1,4 +1,4 @@
-package me.mprieto.baton.model;
+package me.mprieto.baton.common.model;
 
 import lombok.Builder;
 import me.mprieto.baton.grammar.BatonParser;

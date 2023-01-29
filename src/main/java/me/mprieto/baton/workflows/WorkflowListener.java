@@ -1,38 +1,38 @@
 package me.mprieto.baton.workflows;
 
-import com.netflix.conductor.common.metadata.tasks.TaskDef;
 import com.netflix.conductor.common.metadata.tasks.TaskType;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import me.mprieto.baton.common.BGenericObjectParser;
 import me.mprieto.baton.common.exceptions.InvalidTypeException;
+import me.mprieto.baton.common.exceptions.UnknownSymbolException;
 import me.mprieto.baton.common.model.BObj;
 import me.mprieto.baton.common.model.BObj.ValueType;
+import me.mprieto.baton.common.model.BatonObject;
 import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.grammar.BatonBaseListener;
 import me.mprieto.baton.structs.model.BStructObj;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
-import java.util.Stack;
+import java.util.stream.Collectors;
 
 public class WorkflowListener extends BatonBaseListener {
 
-    private final Map<String, BObj> tasks;
-
-    private final Map<String, BStructObj> structs;
     private final BGenericObjectParser objectParser = new BGenericObjectParser();
 
     private final WorkflowDef workflowDef = new WorkflowDef();
 
-    //TODO Stack for WorkflowTask of type Switch
-    private final Stack<TaskDef> switchTasksStack = new Stack<>();
-    private final Stack<String> varDeclStack = new Stack<>();
+    private final Map<String, Object> symbols = new HashMap<>();
 
-    //TODO symbol table for variables
-    public WorkflowListener(Map<String, BStructObj> structs, Map<String, BObj> tasks) {
-        this.structs = structs;
-        this.tasks = tasks;
+    private final Map<String, BObj> taskDefinitions;
+    private final Map<String, BStructObj> structDefinitions;
+
+    public WorkflowListener(Map<String, BStructObj> structDefinitions,
+                            Map<String, BObj> taskDefinitions) {
+        this.structDefinitions = structDefinitions;
+        this.taskDefinitions = taskDefinitions;
     }
 
     @Override
@@ -45,50 +45,23 @@ public class WorkflowListener extends BatonBaseListener {
                 workflowDef.setDescription((String) desc.getValue());
             }
         }
-        super.enterWorkflowDeclaration(ctx);
-    }
-
-    @Override
-    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
-        super.enterWorkflowOutput(ctx);
-    }
-
-    @Override
-    public void enterIfStmt(Baton.IfStmtContext ctx) {
-        var switchTask = new WorkflowTask();
-
-        switchTask.setName("switch_" + ctx.getStart().getLine() + "_" + ctx.getStart().getCharPositionInLine());
-        switchTask.setType(TaskType.TASK_TYPE_SWITCH);
-        switchTask.setEvaluatorType("javascript");
-        switchTask.setExpression(toJavaScriptExpression(ctx.parExpression()));
-        switchTask.setInputParameters(inputParametersFromExpression(ctx.parExpression()));
-    }
-
-    @Override
-    public void exitIfStmt(Baton.IfStmtContext ctx) {
-
     }
 
     @Override
     public void enterVarDeclStmt(Baton.VarDeclStmtContext ctx) {
-        varDeclStack.push(ctx.IDENTIFIER().getText());
-    }
-
-    @Override
-    public void exitVarDeclStmt(Baton.VarDeclStmtContext ctx) {
-        varDeclStack.pop();
+        symbols.put(ctx.IDENTIFIER().getText(), ctx);
     }
 
     @Override
     public void enterExecuteExpr(Baton.ExecuteExprContext ctx) {
-        var varName = getVarName();
+        var varName = getVarName(ctx);
         var taskType = getTaskType(ctx);
         if (varName == null) {
             varName = taskType + "_" + ctx.getStart().getLine();
         }
 
         var task = new WorkflowTask();
-        if (taskType.equalsIgnoreCase("http")) {
+        if (taskType.equalsIgnoreCase(TaskType.HTTP.name())) {
             task.setType(TaskType.HTTP.name());
             task.setName(varName);
         } else {
@@ -111,37 +84,54 @@ public class WorkflowListener extends BatonBaseListener {
                             "Line: " + input.getCtx().getStart().getLine());
                 }
                 var inputObj = (BObj) input.getValue();
-                task.setInputParameters(convertTaskInputObjectToMap(inputObj));
+                task.setInputParameters(convertToMap(inputObj));
             }
-
         }
     }
 
-    private Map<String, Object> convertTaskInputObjectToMap(BObj inputObj) {
-        var map = new HashMap<String, Object>();
-        var props = inputObj.list();
-        for (var prop : props) {
-            var type = prop.getValueType();
-            if (type == ValueType.IDENTIFIER) {
-                var identifier = (String) prop.getValue();
-                var split = identifier.split("\\.");
-                var root = split[0];
-                if (!root.equals("input")) {
-                    //TODO if not in symbol table throw an Exception
-                    map.put(prop.getName(), String.format("${%s}", identifier));
-                } else {
-                    map.put(prop.getName(), String.format("${workflow.%s}", identifier));
-                }
-            } else if (type == ValueType.LITERAL_STRING || type == ValueType.LITERAL_INTEGER) {
-                map.put(prop.getName(), prop.getValue());
-            }
-        }
-        return map;
+    private List<Object> convertToList(List<BObj> list) {
+        return list.stream()
+                .map(this::convertToMap)
+                .collect(Collectors.toList());
     }
 
-    private String getVarName() {
-        if (!varDeclStack.isEmpty()) {
-            return varDeclStack.peek();
+    private Map<String, Object> convertToMap(BObj obj) {
+        return obj.list()
+                .stream()
+                .collect(Collectors.toMap(BatonObject.BProperty::getName, prop -> {
+                    var type = prop.getValueType();
+                    if (type == ValueType.IDENTIFIER) {
+                        return convertIdentifierToRef(prop);
+                    } else if (type == ValueType.OBJECT) {
+                        return convertToMap(obj);
+                    } else if (type == ValueType.ARRAY) {
+                        //noinspection unchecked
+                        return convertToList((List<BObj>) prop.getValue());
+                    }
+
+                    return prop.getValue();
+                }));
+
+    }
+
+    private String convertIdentifierToRef(BObj.Property prop) {
+        var identifier = (String) prop.getValue();
+        var split = identifier.split("\\.");
+        var rootObj = split[0];
+        if (!rootObj.equalsIgnoreCase("input")) {
+            if (!symbols.containsKey(rootObj)) {
+                throw new UnknownSymbolException("Unknown symbol " + rootObj +
+                        " line " + prop.getCtx().getStart().getLine());
+            }
+            return String.format("${%s}", identifier);
+        } else {
+            return String.format("${workflow.%s}", identifier);
+        }
+    }
+
+    private String getVarName(Baton.ExecuteExprContext ctx) {
+        if (ctx.getParent() instanceof Baton.VarDeclStmtContext) {
+            return ((Baton.VarDeclStmtContext) ctx.getParent()).IDENTIFIER().getText();
         }
 
         return null;
@@ -164,12 +154,28 @@ public class WorkflowListener extends BatonBaseListener {
         return this.workflowDef;
     }
 
-
-    private Map<String, Object> inputParametersFromExpression(Baton.ParExpressionContext parExpression) {
-        return null;
-    }
-
-    private String toJavaScriptExpression(Baton.ParExpressionContext parExpression) {
-        return null;
-    }
+// TODO workflow output and if statement
+//
+//    @Override
+//    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
+//    }
+//
+//    @Override
+//    public void enterIfStmt(Baton.IfStmtContext ctx) {
+//        var switchTask = new WorkflowTask();
+//
+//        switchTask.setName("switch_" + ctx.getStart().getLine() + "_" + ctx.getStart().getCharPositionInLine());
+//        switchTask.setType(TaskType.TASK_TYPE_SWITCH);
+//        switchTask.setEvaluatorType("javascript");
+//        switchTask.setExpression(toJavaScriptExpression(ctx.parExpression()));
+//        switchTask.setInputParameters(inputParametersFromExpression(ctx.parExpression()));
+//    }
+//
+//    private Map<String, Object> inputParametersFromExpression(Baton.ParExpressionContext parExpression) {
+//        return null;
+//    }
+//
+//    private String toJavaScriptExpression(Baton.ParExpressionContext parExpression) {
+//        return null;
+//    }
 }

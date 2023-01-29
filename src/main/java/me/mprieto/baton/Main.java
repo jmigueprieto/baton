@@ -45,7 +45,7 @@ public class Main {
             var sourceFile = cmd.getOptionValue("f");
             var outputDir = cmd.getOptionValue("d");
 
-            transformToJson(sourceFile, outputDir);
+            translateToConductorDSL(sourceFile, outputDir);
 
         } catch (ParseException e) {
             System.out.println(e.getMessage());
@@ -55,7 +55,7 @@ public class Main {
         }
     }
 
-    private static void transformToJson(String sourceFile, String outputFile) throws IOException {
+    private static void translateToConductorDSL(String sourceFile, String outputFile) throws IOException {
         try (PrintStream outputStream = output(outputFile)) {
             var charStream = CharStreams.fromFileName(sourceFile);
             var tokens = new CommonTokenStream(new BatonLexer(charStream));
@@ -65,14 +65,13 @@ public class Main {
             var tree = parser.batonUnit();
 
             var structVisitor = new StructVisitor();
-            var structs = structVisitor.visit(tree);
+            var structDefinitions = structVisitor.visit(tree);
 
-            var taskVisitor = new TaskVisitor(structs);
-            var tasks = taskVisitor.visit(tree);
+            var taskVisitor = new TaskVisitor(structDefinitions);
+            var taskDefinitions = taskVisitor.visit(tree);
 
-            var listener = new WorkflowListener(structs, tasks);
+            var listener = new WorkflowListener(structDefinitions, taskDefinitions);
             var walker = new ParseTreeWalker();
-
             walker.walk(listener, tree);
 
             objectMapper

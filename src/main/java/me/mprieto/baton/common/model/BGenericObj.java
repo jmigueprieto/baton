@@ -3,6 +3,9 @@ package me.mprieto.baton.common.model;
 import lombok.Builder;
 import org.antlr.v4.runtime.ParserRuleContext;
 
+import java.util.Map;
+import java.util.stream.Collectors;
+
 public class BGenericObj extends BObject<BGenericObj.Property, ParserRuleContext> {
 
     public enum ValueType {
@@ -30,4 +33,14 @@ public class BGenericObj extends BObject<BGenericObj.Property, ParserRuleContext
         super(ctx, name);
     }
 
+    public Map<String, Object> toMap() {
+        var properties = getProperties();
+        return properties.values()
+                .stream()
+                .collect(Collectors.toMap(BProperty::getName, v -> {
+                    //TODO
+                    return v.getValue();
+                }));
+
+    }
 }

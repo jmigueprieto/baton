@@ -1,22 +1,36 @@
 # Baton
 
-Baton is a workflow language. **It's a Work in Progress**.
+Baton is a workflow language designed to simplify the process of creating and maintaining workflows 
+for developers using Netflix Conductor. 
 
- The initial goal of the project is to translate Baton Workflows to Conductor JSON DSL, e.g.:
+Baton offers intuitive language constructs, like `IF statements` (WIP) and `WHILE loops` (WIP), which will result familiar 
+to any developer. While Netflix Conductor does have built-in tasks for these operations, 
+its use of JSON can make it somewhat challenging to read and understand; 
+after all JSON is a data language and was not not intended to support things like control structures 
+or type checking.
+
+## Hello World!
 
 This Baton Workflow
 ```
+// This task declaration provides type safety when using it in the workflow
+task GreetingTask {
+    input: { name: String },
+    output: { message: String },
+    description: "Give me name and I'll say hi"
+}
+
 workflow HelloWorld (
     input : { name: String },
     description: "Hello Baton!",
     version : 1
-) : { data : String, "fact Length" : Integer } {
-    def greetingTask = execute GreetingTask(input : { name: this.name })
-    return greetingTask.output.message
+) : { message : String } {
+    def greetingTask = execute GreetingTask(input : { name: input.name })
+    return { message: greetingTask.output.message }
 }
 ```
 
-will output this Conductor Workflow:
+translates to this Conductor Workflow:
 
 ```json
 {
@@ -47,19 +61,19 @@ will output this Conductor Workflow:
   "timeoutSeconds": 0
 }
 ```
+## Type safety
 
-## Why Baton?
+Baton includes built-in (optional) type checking to ensure that your workflows are correct.
+For example, if you try to pass a String to a task that expects an Integer,
+Baton will raise an error. This helps to catch errors early,
+before they cause problems in your running workflow.
 
-The idea behind Baton is to provide a language with constructs
-which feel more familiar to developers like IF statements and WHILE loops. 
+However, keep in mind that when executing in Conductor these types won't be enforced. Think of it as type-erasure.
 
-JSON is a data language, defining and using control structures may be a bit tricky (SEE: https://www.instaclustr.com/blog/workflow-comparison-uber-cadence-vs-netflix-conductor/) Baton aims at improving
-the readability of the flow for devs.
+## Code generations
 
-Another goal is to provide type safety when defining the workflow. But, keep in mind that
-when executing in Conductor these types won't be enforced. Think of it as type-erasure.
-
-Last but not least when defining workflows and tasks in Baton these definitions could be used to generate 
-project templates in other languages like Java, Python, C#, etc. (WIP). These project templates will contain workers with the expected input and output.
+Last but not least when defining metadata (workflows and tasks) in Baton these definitions could be used to generate 
+project templates in other languages like Java, Python, C#, etc. (WIP). 
+These project templates will contain workers with the expected input and output.
 
 

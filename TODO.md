@@ -1,6 +1,9 @@
 # TODO
 * Struct/Type declarations [x]
 * Task declarations [x]
-* Type checking [ ]
-* Listener to translate to JSON [ ]
+* Listener to translate to JSON [x]
+* Implement simple workflow with sequential tasks [ ]
 * Implement sample Orkes playground workflow [ ]
+* Implement IF [ ]
+* Implement WHILE [ ]
+* Type checking [ ]

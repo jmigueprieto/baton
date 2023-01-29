@@ -5,8 +5,8 @@ for developers using Netflix Conductor.
 
 Baton offers intuitive language constructs, like `IF statements` (WIP) and `WHILE loops` (WIP), which will result familiar 
 to any developer. While Netflix Conductor does have built-in tasks for these operations, 
-its use of JSON can make it somewhat challenging to read and understand; 
-after all JSON is a data language and was not not intended to support things like control structures 
+its JSON DSL can make it somewhat challenging to read and understand; 
+after all JSON is a data language and was not intended to support things like control structures 
 or type checking.
 
 ## Hello World!

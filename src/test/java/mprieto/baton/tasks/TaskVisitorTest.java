@@ -2,7 +2,7 @@ package mprieto.baton.tasks;
 
 import me.mprieto.baton.common.exceptions.DuplicateException;
 import me.mprieto.baton.common.exceptions.UnknownTypeException;
-import me.mprieto.baton.common.model.BGenericObj;
+import me.mprieto.baton.common.model.BObj;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
 import mprieto.baton.TestUtils;
@@ -47,20 +47,20 @@ public class TaskVisitorTest {
         var helloWorldTask = tasks.get("HelloWorldTask");
 
         var input = helloWorldTask.get("input");
-        assertEquals(BGenericObj.ValueType.IDENTIFIER, input.getValueType());
+        assertEquals(BObj.ValueType.IDENTIFIER, input.getValueType());
         assertEquals("Input", input.getValue());
 
         var output = helloWorldTask.get("output");
-        assertEquals(BGenericObj.ValueType.IDENTIFIER, output.getValueType());
+        assertEquals(BObj.ValueType.IDENTIFIER, output.getValueType());
         assertEquals("Output", output.getValue());
 
         var description = helloWorldTask.get("description");
-        assertEquals(BGenericObj.ValueType.LITERAL_STRING, description.getValueType());
+        assertEquals(BObj.ValueType.LITERAL_STRING, description.getValueType());
         assertEquals("Simple hello world workflow", description.getValue());
 
 
         var retryDelaySeconds = helloWorldTask.get("retryDelaySeconds");
-        assertEquals(BGenericObj.ValueType.LITERAL_INTEGER, retryDelaySeconds.getValueType());
+        assertEquals(BObj.ValueType.LITERAL_INTEGER, retryDelaySeconds.getValueType());
         assertEquals(600, retryDelaySeconds.getValue());
     }
 }

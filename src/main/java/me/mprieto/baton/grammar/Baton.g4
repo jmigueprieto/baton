@@ -48,12 +48,16 @@ key
     ;
 
 value
-   : IDENTIFIER
+   : identifier
    | type
    | literal
    | array
    | object
    ;
+
+identifier
+    : IDENTIFIER (DOT IDENTIFIER)*
+    ;
 
 literal
    : LITERAL_STRING
@@ -94,12 +98,12 @@ statement
     ;
 
 expression
-    : (IDENTIFIER | literal | parExpression)                # primary
-    | EXECUTE (IDENTIFIER | LITERAL_STRING) taskParameters  # execute
-    | expression DOT IDENTIFIER expression?                 # dotOp
-    | (NOT | MINUS) expression                              # prefixOp
-    | expression (EQ | NEQ) expression                      # eqOp
-    | expression (AND | OR) expression                      # logicOp
+    : (IDENTIFIER | literal | parExpression)                # primaryExpr
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) taskParameters  # executeExpr
+    | expression DOT IDENTIFIER expression?                 # dotExpr
+    | (NOT | MINUS) expression                              # prefixExpr
+    | expression (EQ | NEQ) expression                      # eqExpr
+    | expression (AND | OR) expression                      # logicExpr
     ;
 
 taskParameters : parameters;

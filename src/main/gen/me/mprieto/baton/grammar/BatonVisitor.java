@@ -71,6 +71,12 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValue(Baton.ValueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link Baton#identifier}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitIdentifier(Baton.IdentifierContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link Baton#literal}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -155,47 +161,47 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprStmt(Baton.ExprStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code prefixOp}
+	 * Visit a parse tree produced by the {@code prefixExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrefixOp(Baton.PrefixOpContext ctx);
+	T visitPrefixExpr(Baton.PrefixExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code eqOp}
+	 * Visit a parse tree produced by the {@code eqExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitEqOp(Baton.EqOpContext ctx);
+	T visitEqExpr(Baton.EqExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code logicOp}
+	 * Visit a parse tree produced by the {@code dotExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitLogicOp(Baton.LogicOpContext ctx);
+	T visitDotExpr(Baton.DotExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code execute}
+	 * Visit a parse tree produced by the {@code primaryExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitExecute(Baton.ExecuteContext ctx);
+	T visitPrimaryExpr(Baton.PrimaryExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code primary}
+	 * Visit a parse tree produced by the {@code logicExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrimary(Baton.PrimaryContext ctx);
+	T visitLogicExpr(Baton.LogicExprContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code dotOp}
+	 * Visit a parse tree produced by the {@code executeExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitDotOp(Baton.DotOpContext ctx);
+	T visitExecuteExpr(Baton.ExecuteExprContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Baton#taskParameters}.
 	 * @param ctx the parse tree

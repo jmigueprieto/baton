@@ -3,8 +3,6 @@ workflow HelloWorld (
     description: "Hello Baton!",
     version : 1
 ) : { data : String, "fact Length" : Integer } {
-    //TODO change the grammar to allow workflow.input.name
-    //def greetingTask = execute GreetingTask(input : { name: workflow.input.name })
-    def greetingTask = execute GreetingTask(input : { name: name })
+    def greetingTask = execute GreetingTask(input : { name: input.name })
     return greetingTask.output.message
 }

@@ -44,9 +44,7 @@ will output this Conductor Workflow:
   "restartable": true,
   "workflowStatusListenerEnabled": false,
   "timeoutPolicy": "ALERT_ONLY",
-  "timeoutSeconds": 0,
-  "variables": {},
-  "inputTemplate": {}
+  "timeoutSeconds": 0
 }
 ```
 

@@ -72,12 +72,11 @@ For example, if you try to pass a String to a task that expects an Integer,
 Baton will raise an error. This helps to catch errors early,
 before they cause problems in your running workflow.
 
-However, keep in mind that when executing in Conductor these types won't be enforced. Think of it as type-erasure.
+However, keep in mind that when executing in Conductor these types won't be enforced. Think of this as type-erasure.
 
-## Code generations
+## Code generators
 
-Last but not least when defining metadata (workflows and tasks) in Baton these definitions could be used to generate 
-project templates in other languages like Java, Python, C#, etc. (WIP). 
-These project templates will contain workers with the expected input and output.
+Last but not least when defining Tasks in Baton these definitions could be used to generate 
+project templates containing workers with their respective inputs and outputs in languages like Java, Python, C#, etc. (WIP).
 
 

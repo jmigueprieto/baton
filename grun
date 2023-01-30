@@ -1,3 +1,0 @@
-#!/bin/bash
-cd build/classes/java/main
-java -classpath /usr/local/Cellar/antlr/4.11.1/antlr-4.11.1-complete.jar:. org.antlr.v4.gui.TestRig me.mprieto.baton.grammar.Baton batonUnit ../../../../samples/sample1.baton -gui

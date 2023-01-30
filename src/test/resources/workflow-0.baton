@@ -4,22 +4,19 @@ struct GreetingTaskInput {
 
 task GreetingTask {
     input: GreetingTaskInput,
-    output:  { message: String }
+    output:  { message: String },
     description: "A Longer description"
 }
 
 struct WorkflowOutput {
-    greeting : String
+    message : String
 }
 
 workflow HelloWorld (
     input : { name: String },
     description: "This is a sample workflow",
-    version : 1,
-    timeoutPolicy: "ALERT_ONLY",
-    timeoutSeconds": 0,
+    version : 3
 ) : WorkflowOutput {
-    def result = execute GreetingTask(name : vars.name)
-    return { greeting: result.output.message }
+    def result = execute GreetingTask(input : {name : input.name})
+    return { message: result.output.message }
 }
-

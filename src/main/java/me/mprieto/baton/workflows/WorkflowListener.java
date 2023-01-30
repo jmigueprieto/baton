@@ -42,13 +42,30 @@ public class WorkflowListener extends BatonBaseListener {
     @Override
     public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) {
         workflowDef.setName(ctx.IDENTIFIER().getText());
-        if (ctx.workflowParameters() != null) {
-            var parameters = objectParser.parse(ctx.workflowParameters().parameters());
-            if (parameters.get("description") != null) {
-                var desc = parameters.get("description");
-                workflowDef.setDescription((String) desc.getValue());
-            }
+    }
+
+    @Override
+    public void enterWorkflowParameters(Baton.WorkflowParametersContext ctx) {
+        var parameters = objectParser.parse(ctx.parameters());
+        if (parameters.get("description") != null) {
+            var desc = parameters.get("description");
+            workflowDef.setDescription((String) desc.getValue());
         }
+
+        if (parameters.get("version") != null) {
+            var version = parameters.get("version");
+            workflowDef.setVersion((Integer) version.getValue());
+        }
+    }
+
+    @Override
+    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
+        // TODO store workflow output type info
+    }
+
+    @Override
+    public void enterReturnStmt(Baton.ReturnStmtContext ctx) {
+        // TODO check that return statement if compatible with the workflow output definition
     }
 
     @Override
@@ -154,7 +171,7 @@ public class WorkflowListener extends BatonBaseListener {
         throw new RuntimeException("Cannot get task type");
     }
 
-// TODO workflow output and if statement
+    // TODO workflow output and if statement
 //
 //    @Override
 //    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {

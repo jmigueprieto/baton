@@ -1,19 +1,22 @@
 # Baton
 
-Baton is a workflow language designed to simplify the process of creating and maintaining workflows 
+> _This is still a Work In Progress so even though an initial grammar has been defined, the translator
+is not functional yet but early feedback will be much appreciated._
+
+
+Baton is a language designed to simplify the process of creating and maintaining workflows 
 for developers using Netflix Conductor. 
 
-Baton offers intuitive language constructs, like `IF statements` (WIP) and `WHILE loops` (WIP), which will result familiar 
-to any developer. While Netflix Conductor does have built-in tasks for these operations, 
-its JSON DSL can make it somewhat challenging to read and understand; 
-after all JSON is a data language and was not intended to support things like control structures 
-or type checking.
+Baton intends to offer intuitive language constructs, like `IF statements` (WIP) and `WHILE loops` (WIP), which 
+will result familiar to any developer. While Netflix Conductor does have built-in tasks for these operations, 
+its JSON DSL can be somewhat challenging to read and understand; after all JSON is a data language and was 
+not intended to support things like control structures or type checking.
 
 ## Hello World!
 
 This Baton Workflow
 ```
-// This task declaration provides type safety when using it in the workflow
+// Task declarations provide type safety when using it in the workflow
 task GreetingTask {
     input: { name: String },
     output: { message: String },
@@ -30,7 +33,7 @@ workflow HelloWorld (
 }
 ```
 
-translates to this Conductor Workflow:
+should translate to this Conductor Workflow:
 
 ```json
 {
@@ -61,6 +64,7 @@ translates to this Conductor Workflow:
   "timeoutSeconds": 0
 }
 ```
+
 ## Type safety
 
 Baton includes built-in (optional) type checking to ensure that your workflows are correct.

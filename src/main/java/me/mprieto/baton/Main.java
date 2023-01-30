@@ -15,8 +15,8 @@ package me.mprieto.baton;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.grammar.Baton;
+import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
 import me.mprieto.baton.workflows.WorkflowListener;
@@ -45,6 +45,9 @@ public class Main {
             var sourceFile = cmd.getOptionValue("f");
             var outputDir = cmd.getOptionValue("d");
 
+            //TODO use an interface for this.
+            // Make it pluggable. That way we could also add translation from Baton to other workflow languages/engines
+            // or another implementation of Conductor DSL translator.
             translateToConductorDSL(sourceFile, outputDir);
 
         } catch (ParseException e) {
@@ -55,61 +58,86 @@ public class Main {
         }
     }
 
-    private static void translateToConductorDSL(String sourceFile, String outputFile) throws IOException {
-        try (PrintStream outputStream = output(outputFile)) {
-            var charStream = CharStreams.fromFileName(sourceFile);
-            var tokens = new CommonTokenStream(new BatonLexer(charStream));
-            var parser = new Baton(tokens);
+    private static void translateToConductorDSL(String sourceFile, String outputDir) throws IOException {
+        var dir = getDir(outputDir);
+        var charStream = CharStreams.fromFileName(sourceFile);
+        var tokens = new CommonTokenStream(new BatonLexer(charStream));
+        var parser = new Baton(tokens);
 
-            parser.setErrorHandler(new BailErrorStrategy());
-            var tree = parser.batonUnit();
+        //TODO change BailErrorStrategy for a custom, better error handler.
+        // Should report all syntactic errors clearly
+        parser.setErrorHandler(new BailErrorStrategy());
+        var tree = parser.batonUnit();
 
-            var structVisitor = new StructVisitor();
-            var structDefinitions = structVisitor.visit(tree);
+        var structVisitor = new StructVisitor();
+        var structDefinitions = structVisitor.visit(tree);
 
-            var taskVisitor = new TaskVisitor(structDefinitions);
-            var taskDefinitions = taskVisitor.visit(tree);
+        var taskVisitor = new TaskVisitor(structDefinitions);
+        var taskDefinitions = taskVisitor.visit(tree);
 
-            var listener = new WorkflowListener(structDefinitions, taskDefinitions);
-            var walker = new ParseTreeWalker();
-            walker.walk(listener, tree);
+        var listener = new WorkflowListener(structDefinitions, taskDefinitions);
+        var walker = new ParseTreeWalker();
+        walker.walk(listener, tree);
 
+        //TODO include tasks in output directory
+        var workflow = listener.getWorkflowDef();
+        var jsonFilePath = getOutputJsonFilePath(dir, workflow.getName());
+        try (var outputStream = output(jsonFilePath)) {
             objectMapper
                     .writerWithDefaultPrettyPrinter()
-                    .writeValue(outputStream, listener.getWorkflowDef());
+                    .writeValue(outputStream, workflow);
         }
+    }
+
+    private static String getOutputJsonFilePath(File dir, String name) {
+        if (dir == null) {
+            return null;
+        }
+
+        return new File(dir, name + ".json").getPath();
+    }
+
+    private static File getDir(String outputDir) {
+        if (outputDir == null) {
+            return null;
+        }
+
+        File dir = new File(outputDir);
+        if (!dir.isDirectory()) {
+            System.out.printf("%s is not a directory %n", outputDir);
+            System.exit(-1);
+        }
+
+        return dir;
     }
 
     private static PrintStream output(String output) throws IOException {
-        PrintStream out;
         if (output == null) {
-            out = System.out;
-        } else {
-            File file = new File(output);
-            if (!file.exists() && !file.createNewFile()) {
-                System.out.println("Error, couldn't create file " + output);
-                System.exit(-1);
-            }
-
-            out = new PrintStream(file);
+            return System.out;
         }
 
-        return out;
+        var file = new File(output);
+        if (!file.exists() && !file.createNewFile()) {
+            System.out.println("Error, couldn't create file " + output);
+            System.exit(-1);
+        }
+
+        return new PrintStream(file);
     }
 
     private static Options cmdOptions() {
-        Options options = new Options();
+        var options = new Options();
         options.addOption(
                 Option.builder("f")
                         .longOpt("file")
                         .hasArg(true)
-                        .desc("Source file in Baton format")
+                        .desc("Source Baton file")
                         .type(File.class)
                         .required()
                         .build());
         options.addOption(
                 Option.builder("d")
-                        .longOpt("output")
+                        .longOpt("out-dir")
                         .hasArg(true)
                         .type(File.class)
                         .desc("Output directory")

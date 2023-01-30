@@ -1,8 +1,15 @@
+// Task declarations provide type safety when using it in the workflow
+task GreetingTask {
+    input: { name: String },
+    output: { message: String },
+    description: "Give me name and I'll say hi"
+}
+
 workflow HelloWorld (
     input : { name: String },
     description: "Hello Baton!",
     version : 1
-) : { data : String, "fact Length" : Integer } {
+) : { message : String } {
     def greetingTask = execute GreetingTask(input : { name: input.name })
-    return greetingTask.output.message
+    return { message: greetingTask.output.message }
 }

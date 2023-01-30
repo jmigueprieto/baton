@@ -47,14 +47,31 @@ public class WorkflowListener extends BatonBaseListener {
     @Override
     public void enterWorkflowParameters(Baton.WorkflowParametersContext ctx) {
         var parameters = objectParser.parse(ctx.parameters());
-        if (parameters.get("description") != null) {
-            var desc = parameters.get("description");
-            workflowDef.setDescription((String) desc.getValue());
+
+        var input = parameters.get("input");
+        if (input != null && input.getValueType() == ValueType.OBJECT) {
+            var obj = (BObj) input.getValue();
+            var inputParameters = obj.list()
+                    .stream()
+                    .map(BatonObject.BProperty::getName)
+                    .collect(Collectors.toList());
+            workflowDef.setInputParameters(inputParameters);
+        } else if (input != null) {
+            throw new InvalidTypeException("workflow input must be an Object");
         }
 
-        if (parameters.get("version") != null) {
-            var version = parameters.get("version");
+        var desc = parameters.get("description");
+        if (desc != null && desc.getValueType() == ValueType.LITERAL_STRING) {
+            workflowDef.setDescription((String) desc.getValue());
+        } else if (desc != null) {
+            throw new InvalidTypeException("workflow description must be a String");
+        }
+
+        var version = parameters.get("version");
+        if (version != null && version.getValueType() == ValueType.LITERAL_INTEGER) {
             workflowDef.setVersion((Integer) version.getValue());
+        } else {
+            throw new InvalidTypeException("workflow version must be an Integer");
         }
     }
 

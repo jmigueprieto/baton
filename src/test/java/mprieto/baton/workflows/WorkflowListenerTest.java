@@ -9,6 +9,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -31,6 +32,7 @@ public class WorkflowListenerTest {
         assertEquals("HelloWorld", workflowDef.getName());
         assertEquals(3, workflowDef.getVersion());
         assertEquals(Map.of("message", "${result.output.message}"), workflowDef.getOutputParameters());
+        assertEquals(List.of("name"), workflowDef.getInputParameters());
 
         var tasks = workflowDef.getTasks();
         assertEquals(1, tasks.size());

@@ -21,8 +21,9 @@ ext {
 }
 
 dependencies {
-    //TODO logging configuration
-    implementation "org.antlr:antlr4-runtime:${versions.antlr4}"
+    //TODO logging dependencies + configuration
+    //FIXME we only need the antrl4-runtime but while developing the BatonTestRig class is very useful.
+    implementation "org.antlr:antlr4:${versions.antlr4}"
     implementation "commons-cli:commons-cli:${versions.commonsCli}"
     compileOnly "org.projectlombok:lombok:${versions.lombok}"
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
@@ -59,5 +60,5 @@ jar {
     from {
         configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    baseName 'baton-to-json'
+    baseName 'baton'
 }

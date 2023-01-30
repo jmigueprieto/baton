@@ -65,7 +65,15 @@ public class WorkflowListener extends BatonBaseListener {
 
     @Override
     public void enterReturnStmt(Baton.ReturnStmtContext ctx) {
-        // TODO check that return statement if compatible with the workflow output definition
+        if (ctx.object() == null) {
+            return;
+        }
+
+        //TODO type check
+        var objectCtx = ctx.object();
+        var retObj = objectParser.parse(objectCtx);
+        var map = convertToMap(retObj);
+        workflowDef.setOutputParameters(map);
     }
 
     @Override
@@ -92,12 +100,7 @@ public class WorkflowListener extends BatonBaseListener {
         workflowDef.getTasks().add(task);
 
         if (ctx.taskParameters() != null) {
-            var parametersCtx = ctx.taskParameters().parameters();
-            var keyValuePairs = parametersCtx.keyValuePair();
-
-            var paramsObj = new BObj(ctx);
-            objectParser.loadProperties(paramsObj, keyValuePairs);
-
+            var paramsObj = objectParser.parse(ctx.taskParameters().parameters());
             var input = paramsObj.get("input");
             if (input != null) {
                 if (input.getValueType() != ValueType.OBJECT) {

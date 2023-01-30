@@ -2,7 +2,6 @@ parser grammar Baton;
 
 options { tokenVocab = BatonLexer; }
 
-
 batonUnit
     : (structDeclaration | taskDeclaration)* workflowDeclaration EOF
     ;
@@ -15,11 +14,9 @@ structDef
     : LBRACE structKeyValuePair? (COMMA structKeyValuePair)* RBRACE;
 
 structKeyValuePair
-    : key COLON (
-        type            // Basic types e.g.: String, Boolean
-        | IDENTIFIER    // named type
-        | structDef     // nested struct
-    )
+    : key COLON (type            // Basic types e.g.: String, Boolean
+                | IDENTIFIER    // named type
+                | structDef)    // nested struct
     ;
 
 type
@@ -93,7 +90,7 @@ statement
     | WHILE parExpression block                         # whileStmt
     | DEF IDENTIFIER (ASSIGNMENT expression)?           # varDeclStmt
     | IDENTIFIER ASSIGNMENT expression                  # assignmentStmt
-    | RETURN expression                                 # returnStmt
+    | RETURN object?                                    # returnStmt
     | expression                                        # exprStmt
     ;
 

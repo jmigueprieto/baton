@@ -3,7 +3,7 @@ package me.mprieto.baton.workflows;
 import com.netflix.conductor.common.metadata.tasks.TaskType;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
-import me.mprieto.baton.common.BGenericObjectParser;
+import me.mprieto.baton.common.BObjParser;
 import me.mprieto.baton.common.exceptions.InvalidTypeException;
 import me.mprieto.baton.common.exceptions.UnknownSymbolException;
 import me.mprieto.baton.common.model.BObj;
@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 public class WorkflowListener extends BatonBaseListener {
 
-    private final BGenericObjectParser objectParser = new BGenericObjectParser();
+    private final BObjParser objectParser = new BObjParser();
 
     private final WorkflowDef workflowDef = new WorkflowDef();
 
@@ -35,11 +35,15 @@ public class WorkflowListener extends BatonBaseListener {
         this.taskDefinitions = taskDefinitions;
     }
 
+    public WorkflowDef getWorkflowDef() {
+        return this.workflowDef;
+    }
+
     @Override
     public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) {
         workflowDef.setName(ctx.IDENTIFIER().getText());
         if (ctx.workflowParameters() != null) {
-            var parameters = objectParser.parse("_", ctx.workflowParameters().parameters());
+            var parameters = objectParser.parse(ctx.workflowParameters().parameters());
             if (parameters.get("description") != null) {
                 var desc = parameters.get("description");
                 workflowDef.setDescription((String) desc.getValue());
@@ -74,7 +78,7 @@ public class WorkflowListener extends BatonBaseListener {
             var parametersCtx = ctx.taskParameters().parameters();
             var keyValuePairs = parametersCtx.keyValuePair();
 
-            var paramsObj = new BObj(ctx, "taskParams");
+            var paramsObj = new BObj(ctx);
             objectParser.loadProperties(paramsObj, keyValuePairs);
 
             var input = paramsObj.get("input");
@@ -148,10 +152,6 @@ public class WorkflowListener extends BatonBaseListener {
         }
 
         throw new RuntimeException("Cannot get task type");
-    }
-
-    public WorkflowDef getWorkflowDef() {
-        return this.workflowDef;
     }
 
 // TODO workflow output and if statement

@@ -6,7 +6,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
-@Getter
 public abstract class BatonObject<T extends BatonObject.BProperty<?>> {
 
     @AllArgsConstructor
@@ -18,15 +17,16 @@ public abstract class BatonObject<T extends BatonObject.BProperty<?>> {
         private final ParserRuleContext ctx;
     }
 
-    private final String name;
-
-    private final ParserRuleContext ctx;
 
     private final Map<String, T> properties = new LinkedHashMap<>();
+    private final ParserRuleContext ctx;
 
-    public BatonObject(ParserRuleContext ctx, String name) {
-        this.name = name;
+    public BatonObject(ParserRuleContext ctx) {
         this.ctx = ctx;
+    }
+
+    public ParserRuleContext getCtx() {
+        return ctx;
     }
 
     public void add(T property) {

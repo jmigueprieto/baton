@@ -15,8 +15,8 @@ public class BStructObj extends BatonObject<BStructObj.Property> {
         }
     }
 
-    public BStructObj(Baton.StructDefContext ctx, String name) {
-        super(ctx, name);
+    public BStructObj(Baton.StructDefContext ctx) {
+        super(ctx);
     }
 
 }

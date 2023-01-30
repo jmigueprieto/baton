@@ -1,6 +1,6 @@
 package me.mprieto.baton.tasks;
 
-import me.mprieto.baton.common.BGenericObjectParser;
+import me.mprieto.baton.common.BObjParser;
 import me.mprieto.baton.common.exceptions.DuplicateException;
 import me.mprieto.baton.common.exceptions.UnknownTypeException;
 import me.mprieto.baton.common.model.BObj;
@@ -15,7 +15,7 @@ public class TaskVisitor extends BatonBaseVisitor<Map<String, BObj>> {
 
     private final Map<String, BObj> tasks = new HashMap<>();
 
-    private final BGenericObjectParser objectParser = new BGenericObjectParser();
+    private final BObjParser objectParser = new BObjParser();
 
     private final Map<String, BStructObj> structs;
 
@@ -31,7 +31,7 @@ public class TaskVisitor extends BatonBaseVisitor<Map<String, BObj>> {
                 int line = decl.getStart().getLine();
                 throw new DuplicateException("task " + name + " already exists. Line: " + line);
             }
-            var obj = objectParser.parse(name, decl.object());
+            var obj = objectParser.parse(decl.object());
             typeCheck(obj);
             tasks.put(name, obj);
         }

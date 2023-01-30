@@ -29,7 +29,7 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
                 throw new DuplicateException("struct " + name + " already exists. Line: " + line);
             }
 
-            structs.put(name, parseStructDef(name, decl.structDef()));
+            structs.put(name, parseStructDef(decl.structDef()));
         }
 
         structs.values().forEach(this::typeCheck);
@@ -49,8 +49,8 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         }
     }
 
-    private BStructObj parseStructDef(String name, Baton.StructDefContext structCtx) {
-        var struct = new BStructObj(structCtx, name);
+    private BStructObj parseStructDef(Baton.StructDefContext structCtx) {
+        var struct = new BStructObj(structCtx);
         var keyValuePairs = structCtx.structKeyValuePair();
 
         for (Baton.StructKeyValuePairContext ctx : keyValuePairs) {
@@ -71,7 +71,7 @@ public class StructVisitor extends BatonBaseVisitor<Map<String, BStructObj>> {
         if (ctx.IDENTIFIER() != null) {
             return ctx.IDENTIFIER().getText();
         } else if (ctx.structDef() != null) {
-            return parseStructDef("_", ctx.structDef());
+            return parseStructDef(ctx.structDef());
         }
 
         return null;

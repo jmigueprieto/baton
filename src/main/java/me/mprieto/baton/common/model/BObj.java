@@ -26,7 +26,7 @@ public class BObj extends BatonObject<BObj.Property> {
         }
     }
 
-    public BObj(ParserRuleContext ctx, String name) {
-        super(ctx, name);
+    public BObj(ParserRuleContext ctx) {
+        super(ctx);
     }
 }

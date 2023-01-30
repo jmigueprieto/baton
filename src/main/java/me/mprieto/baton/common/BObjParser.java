@@ -10,18 +10,17 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
-public class BGenericObjectParser {
+public class BObjParser {
 
-
-    public BObj parse(String name, Baton.ObjectContext objectCtx) {
-        var obj = new BObj(objectCtx, name);
-        var keyValuePairs = objectCtx.keyValuePair();
+    public BObj parse(Baton.ObjectContext ctx) {
+        var obj = new BObj(ctx);
+        var keyValuePairs = ctx.keyValuePair();
 
         return loadProperties(obj, keyValuePairs);
     }
 
-    public BObj parse(String name, Baton.ParametersContext parametersContext) {
-        var obj = new BObj(parametersContext, name);
+    public BObj parse(Baton.ParametersContext parametersContext) {
+        var obj = new BObj(parametersContext);
         var keyValuePairs = parametersContext.keyValuePair();
 
         return loadProperties(obj, keyValuePairs);
@@ -66,7 +65,7 @@ public class BGenericObjectParser {
         } else if (ctx.array() != null) {
             return parseArray(ctx.array());
         } else if (ctx.object() != null) {
-            return parse("_", ctx.object());
+            return parse(ctx.object());
         }
 
         return null;

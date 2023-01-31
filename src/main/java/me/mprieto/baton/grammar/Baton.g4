@@ -11,14 +11,15 @@ structDeclaration
     ;
 
 structDef
-    : LBRACE structKeyValuePair? (COMMA structKeyValuePair)* RBRACE;
+    : LBRACE keyTypePair? (COMMA keyTypePair)* RBRACE;
 
-structKeyValuePair
+keyTypePair
     : key COLON (type            // Basic types e.g.: String, Boolean
                 | IDENTIFIER    // named type
                 | structDef)    // nested struct
     ;
 
+//TODO how do we define an array of X?
 type
     : TYPE_BOOLEAN
     | TYPE_STRING
@@ -27,13 +28,28 @@ type
     ;
 
 taskDeclaration
-    : TASK IDENTIFIER object
+    : TASK IDENTIFIER taskParams
     ;
 
-object
-   : LBRACE keyValuePair (COMMA keyValuePair)* RBRACE
-   | LBRACE RBRACE
-   ;
+taskParams
+    : LBRACE metadataParams RBRACE
+    ;
+    
+workflowDeclaration
+    : WORKFLOW IDENTIFIER workflowParams? (COLON workflowOutput)? block
+    ;
+
+workflowParams
+    : LPAREN metadataParams RPAREN
+    ;
+
+workflowOutput
+    : structDef | IDENTIFIER
+    ;
+
+metadataParams
+    : (keyValuePair | keyTypePair)? (COMMA metadataParams)*
+    ;
 
 keyValuePair
     : key COLON value
@@ -46,14 +62,18 @@ key
 
 value
    : identifier
-   | type
    | literal
    | array
    | object
    ;
 
+object
+   : LBRACE keyValuePair (COMMA keyValuePair)* RBRACE
+   | LBRACE RBRACE
+   ;
+
 identifier
-    : IDENTIFIER (DOT IDENTIFIER)*
+    : IDENTIFIER (DOT identifier)*
     ;
 
 literal
@@ -69,18 +89,6 @@ array
    | LBRACK RBRACK
    ;
 
-workflowDeclaration
-    : WORKFLOW IDENTIFIER workflowParameters? (COLON workflowOutput)? block
-    ;
-
-workflowParameters : parameters;
-
-parameters
-    : LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
-    ;
-
-workflowOutput: structDef | IDENTIFIER;
-
 block
     : LBRACE statement* RBRACE
     ;
@@ -95,15 +103,17 @@ statement
     ;
 
 expression
-    : (IDENTIFIER | literal | parExpression)                # primaryExpr
-    | EXECUTE (IDENTIFIER | LITERAL_STRING) taskParameters  # executeExpr
-    | expression DOT IDENTIFIER expression?                 # dotExpr
-    | (NOT | MINUS) expression                              # prefixExpr
-    | expression (EQ | NEQ) expression                      # eqExpr
-    | expression (AND | OR) expression                      # logicExpr
+    : (IDENTIFIER | literal | parExpression)                           # primaryExpr
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) execParams?                # executeExpr
+    | expression DOT IDENTIFIER expression?                            # dotExpr
+    | (NOT | MINUS) expression                                         # prefixExpr
+    | expression (EQ | NEQ) expression                                 # eqExpr
+    | expression (AND | OR) expression                                 # logicExpr
     ;
 
-taskParameters : parameters;
+execParams
+    :  LPAREN keyValuePair? (COMMA keyValuePair)* RPAREN
+    ;
 
 parExpression
     : LPAREN expression RPAREN

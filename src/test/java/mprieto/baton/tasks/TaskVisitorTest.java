@@ -1,8 +1,9 @@
 package mprieto.baton.tasks;
 
-import me.mprieto.baton.common.exceptions.DuplicateException;
-import me.mprieto.baton.common.exceptions.UnknownTypeException;
-import me.mprieto.baton.common.model.BObj;
+import me.mprieto.baton.exceptions.DuplicateException;
+import me.mprieto.baton.exceptions.UnknownTypeException;
+import me.mprieto.baton.model.BType;
+import me.mprieto.baton.model.BType;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
 import mprieto.baton.TestUtils;
@@ -40,27 +41,29 @@ public class TaskVisitorTest {
     void tasksParsedSuccessfully() {
         var parseTree = TestUtils.fromResource("/tasks-ok.baton");
         var structs = (new StructVisitor()).visit(parseTree);
+
         var visitor = new TaskVisitor(structs);
-        var tasks = visitor.visit(parseTree);
-        assertNotNull(tasks);
+        var taskDefinitions = visitor.visit(parseTree);
+        assertNotNull(taskDefinitions);
 
-        var helloWorldTask = tasks.get("HelloWorldTask");
+        var helloWorldTask = taskDefinitions.get("HelloWorldTask");
+        assertNull(helloWorldTask.get("input"));
+        assertNull(helloWorldTask.get("output"));
 
-        var input = helloWorldTask.get("input");
-        assertEquals(BObj.ValueType.IDENTIFIER, input.getValueType());
-        assertEquals("Input", input.getValue());
+        var input = helloWorldTask.getInput();
+        assertEquals(BType.IDENTIFIER, input.getType());
+        assertEquals("Input", input.getIdentifier());
 
-        var output = helloWorldTask.get("output");
-        assertEquals(BObj.ValueType.IDENTIFIER, output.getValueType());
-        assertEquals("Output", output.getValue());
+        var output = helloWorldTask.getOutput();
+        assertEquals(BType.IDENTIFIER, output.getType());
+        assertEquals("Output", output.getIdentifier());
 
         var description = helloWorldTask.get("description");
-        assertEquals(BObj.ValueType.LITERAL_STRING, description.getValueType());
+        assertEquals(BType.STRING, description.getType());
         assertEquals("Simple hello world workflow", description.getValue());
 
-
         var retryDelaySeconds = helloWorldTask.get("retryDelaySeconds");
-        assertEquals(BObj.ValueType.LITERAL_INTEGER, retryDelaySeconds.getValueType());
+        assertEquals(BType.INTEGER, retryDelaySeconds.getType());
         assertEquals(600, retryDelaySeconds.getValue());
     }
 }

@@ -1,10 +1,9 @@
 package mprieto.baton.structs;
 
-import me.mprieto.baton.common.exceptions.DuplicateException;
-import me.mprieto.baton.common.exceptions.UnknownTypeException;
-import me.mprieto.baton.common.model.TypeDef;
+import me.mprieto.baton.exceptions.DuplicateException;
+import me.mprieto.baton.exceptions.UnknownTypeException;
+import me.mprieto.baton.model.BType;
 import me.mprieto.baton.structs.StructVisitor;
-import me.mprieto.baton.structs.model.BStructObj;
 import mprieto.baton.TestUtils;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -45,37 +44,32 @@ public class StructVisitorTest {
         assertNotNull(sampleStruct);
 
         var name = sampleStruct.get("name");
-        assertEquals(TypeDef.TYPE_STRING, name.getValueType());
-        assertNull(name.getValue());
+        assertEquals(BType.STRING, name.getType());
 
         var coordinatesProp = sampleStruct.get("coordinates");
-        assertEquals(TypeDef.TYPE_DEF_STRUCT, coordinatesProp.getValueType());
-        assertTrue(coordinatesProp.getValue() instanceof String);
+        assertEquals(BType.IDENTIFIER, coordinatesProp.getType());
+        assertEquals("Coordinates", coordinatesProp.getIdentifier());
 
         var n = sampleStruct.get("n");
-        assertEquals(TypeDef.TYPE_INTEGER, n.getValueType());
-        assertNull(n.getValue());
+        assertEquals(BType.INTEGER, n.getType());
 
         var output = sampleStruct.get("output");
-        assertEquals(TypeDef.TYPE_DEF_NESTED_STRUCT, output.getValueType());
-        assertTrue(output.getValue() instanceof BStructObj);
+        assertEquals(BType.OBJECT, output.getType());
+        assertNotNull(output.getStruct());
 
-        var nestedStruct = (BStructObj) output.getValue();
+        var nestedStruct = output.getStruct();
         var success = nestedStruct.get("success");
-        assertEquals(TypeDef.TYPE_BOOLEAN, success.getValueType());
-        assertNull(success.getValue());
+        assertEquals(BType.BOOLEAN, success.getType());
+
         var message = nestedStruct.get("message");
-        assertEquals(TypeDef.TYPE_STRING, message.getValueType());
-        assertNull(message.getValue());
+        assertEquals(BType.STRING, message.getType());
 
         var coordinatesStruct = structs.get("Coordinates");
         var x = coordinatesStruct.get("x");
-        assertEquals(TypeDef.TYPE_DECIMAL, x.getValueType());
-        assertNull(x.getValue());
+        assertEquals(BType.DECIMAL, x.getType());
 
         var y = coordinatesStruct.get("y");
-        assertEquals(TypeDef.TYPE_DECIMAL, y.getValueType());
-        assertNull(y.getValue());
+        assertEquals(BType.DECIMAL, y.getType());
     }
 
 }

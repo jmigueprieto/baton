@@ -3,15 +3,15 @@ package me.mprieto.baton.workflows;
 import com.netflix.conductor.common.metadata.tasks.TaskType;
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
-import me.mprieto.baton.common.BObjParser;
-import me.mprieto.baton.common.exceptions.InvalidTypeException;
-import me.mprieto.baton.common.exceptions.UnknownSymbolException;
-import me.mprieto.baton.common.model.BObj;
-import me.mprieto.baton.common.model.BObj.ValueType;
-import me.mprieto.baton.common.model.BatonObject;
+import me.mprieto.baton.exceptions.InvalidTypeException;
+import me.mprieto.baton.exceptions.UnknownSymbolException;
 import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.grammar.BatonBaseListener;
-import me.mprieto.baton.structs.model.BStructObj;
+import me.mprieto.baton.model.*;
+import me.mprieto.baton.model.parsers.BMetadataParamsParser;
+import me.mprieto.baton.model.parsers.BObjParser;
+import me.mprieto.baton.model.parsers.BStructParser;
+import org.antlr.v4.runtime.Token;
 
 import java.util.HashMap;
 import java.util.List;
@@ -21,16 +21,19 @@ import java.util.stream.Collectors;
 public class WorkflowListener extends BatonBaseListener {
 
     private final BObjParser objectParser = new BObjParser();
+    private final BMetadataParamsParser metadataParamsParser = new BMetadataParamsParser();
+
+    private final BStructParser structParser = new BStructParser();
 
     private final WorkflowDef workflowDef = new WorkflowDef();
 
-    private final Map<String, Object> symbols = new HashMap<>();
+    private final Map<String, BVar> variables = new HashMap<>();
 
-    private final Map<String, BObj> taskDefinitions;
-    private final Map<String, BStructObj> structDefinitions;
+    private final Map<String, BMetadataParams> taskDefinitions;
+    private final Map<String, BStruct> structDefinitions;
 
-    public WorkflowListener(Map<String, BStructObj> structDefinitions,
-                            Map<String, BObj> taskDefinitions) {
+    public WorkflowListener(Map<String, BStruct> structDefinitions,
+                            Map<String, BMetadataParams> taskDefinitions) {
         this.structDefinitions = structDefinitions;
         this.taskDefinitions = taskDefinitions;
     }
@@ -45,31 +48,31 @@ public class WorkflowListener extends BatonBaseListener {
     }
 
     @Override
-    public void enterWorkflowParameters(Baton.WorkflowParametersContext ctx) {
-        var parameters = objectParser.parse(ctx.parameters());
+    public void enterWorkflowParams(Baton.WorkflowParamsContext ctx) {
+        var parameters = metadataParamsParser.parse(ctx.metadataParams());
+        var inputParam = parameters.getInput();
 
-        var input = parameters.get("input");
-        if (input != null && input.getValueType() == ValueType.OBJECT) {
-            var obj = (BObj) input.getValue();
-            var inputParameters = obj.list()
+        if (inputParam != null) {
+            var struct = getMetadataIOStruct(inputParam);
+            variables.put("input", new BVar(ctx, BType.OBJECT, struct));
+
+            var inputParameters = struct.list()
                     .stream()
-                    .map(BatonObject.BProperty::getName)
+                    .map(BatonObject.BaseProperty::getName)
                     .collect(Collectors.toList());
             workflowDef.setInputParameters(inputParameters);
-        } else if (input != null) {
-            throw new InvalidTypeException("workflow input must be an Object");
         }
 
         var desc = parameters.get("description");
-        if (desc != null && desc.getValueType() == ValueType.LITERAL_STRING) {
-            workflowDef.setDescription((String) desc.getValue());
+        if (desc != null && desc.getType() == BType.STRING) {
+            workflowDef.setDescription(desc.asString());
         } else if (desc != null) {
             throw new InvalidTypeException("workflow description must be a String");
         }
 
         var version = parameters.get("version");
-        if (version != null && version.getValueType() == ValueType.LITERAL_INTEGER) {
-            workflowDef.setVersion((Integer) version.getValue());
+        if (version != null && version.getType() == BType.INTEGER) {
+            workflowDef.setVersion(version.asInteger());
         } else {
             throw new InvalidTypeException("workflow version must be an Integer");
         }
@@ -77,7 +80,16 @@ public class WorkflowListener extends BatonBaseListener {
 
     @Override
     public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
-        // TODO store workflow output type info
+        if (ctx.IDENTIFIER() != null) {
+            var identifier = ctx.IDENTIFIER().getText();
+            if (!structDefinitions.containsKey(identifier)) {
+                throw new InvalidTypeException("Invalid type " + identifier);
+            }
+            structDefinitions.put("workflow.output", structDefinitions.get(identifier));
+        } else if (ctx.structDef() != null) {
+            var struct = structParser.parse(ctx.structDef());
+            structDefinitions.put("workflow.output", struct);
+        }
     }
 
     @Override
@@ -86,7 +98,7 @@ public class WorkflowListener extends BatonBaseListener {
             return;
         }
 
-        //TODO type check
+        //TODO type check with structDefinitions "workflow.output"
         var objectCtx = ctx.object();
         var retObj = objectParser.parse(objectCtx);
         var map = convertToMap(retObj);
@@ -95,15 +107,30 @@ public class WorkflowListener extends BatonBaseListener {
 
     @Override
     public void enterVarDeclStmt(Baton.VarDeclStmtContext ctx) {
-        symbols.put(ctx.IDENTIFIER().getText(), ctx);
+        var identifier = ctx.IDENTIFIER().getText();
+        if ("input".equals(identifier)) {
+            throw new RuntimeException("input is an implicit variable for the workflow input");
+        }
+        variables.put(identifier, new BVar(ctx, null, null));
     }
 
     @Override
     public void enterExecuteExpr(Baton.ExecuteExprContext ctx) {
         var varName = getVarName(ctx);
         var taskType = getTaskType(ctx);
+        var taskDefinition = taskDefinitions.get(taskType);
+
+        if (varName != null && taskDefinition != null) {
+            var output = taskDefinition.getOutput();
+            if (output != null) {
+                var variable = variables.get(varName);
+                variable.setType(BType.OBJECT);
+                variable.setStruct(getMetadataIOStruct(output));
+            }
+        }
+
         if (varName == null) {
-            varName = taskType + "_" + ctx.getStart().getLine();
+            varName = implicitVarName(taskType, ctx.getStart());
         }
 
         var task = new WorkflowTask();
@@ -116,18 +143,95 @@ public class WorkflowListener extends BatonBaseListener {
         task.setTaskReferenceName(varName);
         workflowDef.getTasks().add(task);
 
-        if (ctx.taskParameters() != null) {
-            var paramsObj = objectParser.parse(ctx.taskParameters().parameters());
-            var input = paramsObj.get("input");
-            if (input != null) {
-                if (input.getValueType() != ValueType.OBJECT) {
+        if (ctx.execParams() != null) {
+            var paramsObj = objectParser.parse(ctx.execParams());
+            var inputProperty = paramsObj.get("input");
+            if (inputProperty != null) {
+                if (inputProperty.getType() != BType.OBJECT) {
                     throw new InvalidTypeException("Task input must be an Object. " +
-                            "Line: " + input.getCtx().getStart().getLine());
+                            "Line: " + inputProperty.getCtx().getStart().getLine());
                 }
-                var inputObj = (BObj) input.getValue();
+
+                var inputObj = inputProperty.asBObj();
+                typeCheck(taskType, inputObj);
                 task.setInputParameters(convertToMap(inputObj));
             }
         }
+    }
+
+    private void typeCheck(String taskType, BObj input) {
+        if (!taskDefinitions.containsKey(taskType)) {
+            return;
+        }
+
+        var taskDefinition = taskDefinitions.get(taskType);
+        var taskDefinitionInputProperty = taskDefinition.getInput();
+        if (taskDefinitionInputProperty == null) {
+            return;
+        }
+
+        final var struct = getMetadataIOStruct(taskDefinitionInputProperty);
+        for (var prop : input.list()) {
+            var s = struct;
+            var structProperty = s.get(prop.getName());
+            var expectedType = structProperty.getType();
+            while (expectedType == BType.IDENTIFIER) {
+                s = structDefinitions.get(structProperty.getIdentifier());
+                structProperty = s.get(prop.getName());
+                expectedType = structProperty.getType();
+            }
+
+            var actualType = getType(prop);
+            if (expectedType != actualType) {
+                throw new InvalidTypeException(String.format("Expected %s to be %s but got %s. Line: %d",
+                        prop.getName(),
+                        expectedType,
+                        actualType,
+                        prop.getCtx().getStart().getLine()));
+            }
+        }
+
+    }
+
+    private BType getType(BObj.Property prop) {
+        if (prop.getType() == BType.IDENTIFIER) {
+            // lookup the type
+            return getVariableType(prop.asString());
+        }
+
+        return prop.getType();
+    }
+
+    private BType getVariableType(String identifier) {
+        var split = identifier.split("\\.");
+        var variable = variables.get(split[0]);
+        var type = variable.getType();
+
+        if (split.length > 1 && type != BType.OBJECT) {
+            throw new RuntimeException(String.format("%s is not an Object, cannot access %s", split[0], identifier));
+        }
+
+        var struct = variable.getStruct();
+        for (int i = 1; i < split.length; i++) {
+            var id = split[i];
+            if (type != BType.OBJECT) {
+                throw new RuntimeException(String.format("%s is not an Object, cannot access %s", id, identifier));
+            }
+
+            type = struct.get(id).getType();
+            while (type == BType.IDENTIFIER) {
+                struct = structDefinitions.get(id);
+                type = struct.get(id).getType();
+            }
+
+        }
+
+        return type;
+
+    }
+
+    private static String implicitVarName(String taskType, Token ctx) {
+        return taskType + "_" + ctx.getLine();
     }
 
     private List<Object> convertToList(List<BObj> list) {
@@ -139,13 +243,13 @@ public class WorkflowListener extends BatonBaseListener {
     private Map<String, Object> convertToMap(BObj obj) {
         return obj.list()
                 .stream()
-                .collect(Collectors.toMap(BatonObject.BProperty::getName, prop -> {
-                    var type = prop.getValueType();
-                    if (type == ValueType.IDENTIFIER) {
+                .collect(Collectors.toMap(BatonObject.BaseProperty::getName, prop -> {
+                    var type = prop.getType();
+                    if (type == BType.IDENTIFIER) {
                         return convertIdentifierToRef(prop);
-                    } else if (type == ValueType.OBJECT) {
+                    } else if (type == BType.OBJECT) {
                         return convertToMap(obj);
-                    } else if (type == ValueType.ARRAY) {
+                    } else if (type == BType.ARRAY) {
                         //noinspection unchecked
                         return convertToList((List<BObj>) prop.getValue());
                     }
@@ -160,7 +264,7 @@ public class WorkflowListener extends BatonBaseListener {
         var split = identifier.split("\\.");
         var rootObj = split[0];
         if (!rootObj.equalsIgnoreCase("input")) {
-            if (!symbols.containsKey(rootObj)) {
+            if (!variables.containsKey(rootObj)) {
                 throw new UnknownSymbolException("Unknown symbol " + rootObj +
                         " line " + prop.getCtx().getStart().getLine());
             }
@@ -191,11 +295,22 @@ public class WorkflowListener extends BatonBaseListener {
         throw new RuntimeException("Cannot get task type");
     }
 
-    // TODO workflow output and if statement
-//
-//    @Override
-//    public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) {
-//    }
+    private BStruct getMetadataIOStruct(BStruct.Property inputOrOutput) {
+        if (inputOrOutput.getType() == BType.IDENTIFIER) {
+            var identifier = inputOrOutput.getIdentifier();
+            if (!structDefinitions.containsKey(identifier)) {
+                throw new InvalidTypeException("Invalid type " + identifier);
+            }
+            return structDefinitions.get(identifier);
+        } else if (inputOrOutput.getType() == BType.OBJECT) {
+            return inputOrOutput.getStruct();
+        }
+
+        throw new InvalidTypeException("Invalid Type. Workflow and Task input/output must be a struct. " +
+                "Line " + inputOrOutput.getCtx().getStart().getLine());
+    }
+
+// TODO if statement
 //
 //    @Override
 //    public void enterIfStmt(Baton.IfStmtContext ctx) {

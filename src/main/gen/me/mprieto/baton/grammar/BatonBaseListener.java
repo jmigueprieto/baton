@@ -53,13 +53,13 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterStructKeyValuePair(Baton.StructKeyValuePairContext ctx) { }
+	@Override public void enterKeyTypePair(Baton.KeyTypePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitStructKeyValuePair(Baton.StructKeyValuePairContext ctx) { }
+	@Override public void exitKeyTypePair(Baton.KeyTypePairContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -89,13 +89,61 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterObject(Baton.ObjectContext ctx) { }
+	@Override public void enterTaskParams(Baton.TaskParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitObject(Baton.ObjectContext ctx) { }
+	@Override public void exitTaskParams(Baton.TaskParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWorkflowParams(Baton.WorkflowParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWorkflowParams(Baton.WorkflowParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMetadataParams(Baton.MetadataParamsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMetadataParams(Baton.MetadataParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -137,6 +185,18 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterObject(Baton.ObjectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitObject(Baton.ObjectContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterIdentifier(Baton.IdentifierContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -168,54 +228,6 @@ public class BatonBaseListener implements BatonListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitArray(Baton.ArrayContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWorkflowParameters(Baton.WorkflowParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWorkflowParameters(Baton.WorkflowParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterParameters(Baton.ParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitParameters(Baton.ParametersContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitWorkflowOutput(Baton.WorkflowOutputContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -377,13 +389,13 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterTaskParameters(Baton.TaskParametersContext ctx) { }
+	@Override public void enterExecParams(Baton.ExecParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitTaskParameters(Baton.TaskParametersContext ctx) { }
+	@Override public void exitExecParams(Baton.ExecParamsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

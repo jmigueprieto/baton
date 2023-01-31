@@ -1,25 +1,18 @@
-package me.mprieto.baton.common.model;
+package me.mprieto.baton.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Getter;
 import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
-public abstract class BatonObject<T extends BatonObject.BProperty<?>> {
+public abstract class BatonObject<T extends BatonObject.BaseProperty> {
 
-    @AllArgsConstructor
-    @Getter
-    public static abstract class BProperty<T> {
-        private final String name;
-        private final T valueType;
-        private final Object value;
-        private final ParserRuleContext ctx;
+    public interface BaseProperty {
+        String getName();
     }
 
 
-    private final Map<String, T> properties = new LinkedHashMap<>();
-    private final ParserRuleContext ctx;
+    protected final Map<String, T> properties = new LinkedHashMap<>();
+    protected final ParserRuleContext ctx;
 
     public BatonObject(ParserRuleContext ctx) {
         this.ctx = ctx;

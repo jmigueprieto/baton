@@ -29,11 +29,11 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitStructDef(Baton.StructDefContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Baton#structKeyValuePair}.
+	 * Visit a parse tree produced by {@link Baton#keyTypePair}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitStructKeyValuePair(Baton.StructKeyValuePairContext ctx);
+	T visitKeyTypePair(Baton.KeyTypePairContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Baton#type}.
 	 * @param ctx the parse tree
@@ -47,11 +47,35 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitTaskDeclaration(Baton.TaskDeclarationContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Baton#object}.
+	 * Visit a parse tree produced by {@link Baton#taskParams}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitObject(Baton.ObjectContext ctx);
+	T visitTaskParams(Baton.TaskParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Baton#workflowDeclaration}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Baton#workflowParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWorkflowParams(Baton.WorkflowParamsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Baton#workflowOutput}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitWorkflowOutput(Baton.WorkflowOutputContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link Baton#metadataParams}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMetadataParams(Baton.MetadataParamsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Baton#keyValuePair}.
 	 * @param ctx the parse tree
@@ -71,6 +95,12 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitValue(Baton.ValueContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link Baton#object}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitObject(Baton.ObjectContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link Baton#identifier}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
@@ -88,30 +118,6 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitArray(Baton.ArrayContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Baton#workflowDeclaration}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWorkflowDeclaration(Baton.WorkflowDeclarationContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Baton#workflowParameters}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWorkflowParameters(Baton.WorkflowParametersContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Baton#parameters}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitParameters(Baton.ParametersContext ctx);
-	/**
-	 * Visit a parse tree produced by {@link Baton#workflowOutput}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitWorkflowOutput(Baton.WorkflowOutputContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Baton#block}.
 	 * @param ctx the parse tree
@@ -203,11 +209,11 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExecuteExpr(Baton.ExecuteExprContext ctx);
 	/**
-	 * Visit a parse tree produced by {@link Baton#taskParameters}.
+	 * Visit a parse tree produced by {@link Baton#execParams}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitTaskParameters(Baton.TaskParametersContext ctx);
+	T visitExecParams(Baton.ExecParamsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link Baton#parExpression}.
 	 * @param ctx the parse tree

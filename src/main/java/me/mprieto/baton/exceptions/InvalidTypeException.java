@@ -1,4 +1,4 @@
-package me.mprieto.baton.common.exceptions;
+package me.mprieto.baton.exceptions;
 
 public class InvalidTypeException extends BatonException {
     public InvalidTypeException() {

@@ -11,6 +11,6 @@ import org.antlr.v4.runtime.ParserRuleContext;
 public class BVar {
     private ParserRuleContext ctx;
     private BType type;
-    // set to the Struct definition of the Object if type == BType.Object
+    // set to the definition of the Object if (type == BType.Object)
     private BStruct struct;
 }

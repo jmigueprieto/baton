@@ -6,7 +6,7 @@ import lombok.RequiredArgsConstructor;
 import me.mprieto.baton.grammar.Baton;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class BStruct extends BatonObject<BStruct.Property> {
+public class BStruct extends BaseObject<BStruct.Property> {
 
     @RequiredArgsConstructor
     @Getter

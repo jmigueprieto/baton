@@ -58,7 +58,7 @@ public class WorkflowListener extends BatonBaseListener {
 
             var inputParameters = struct.list()
                     .stream()
-                    .map(BatonObject.BaseProperty::getName)
+                    .map(BaseObject.BaseProperty::getName)
                     .collect(Collectors.toList());
             workflowDef.setInputParameters(inputParameters);
         }
@@ -76,6 +76,8 @@ public class WorkflowListener extends BatonBaseListener {
         } else {
             throw new InvalidTypeException("workflow version must be an Integer");
         }
+
+        //TODO add all other properties as they are and check the ones that need to be checked
     }
 
     @Override
@@ -243,7 +245,7 @@ public class WorkflowListener extends BatonBaseListener {
     private Map<String, Object> convertToMap(BObj obj) {
         return obj.list()
                 .stream()
-                .collect(Collectors.toMap(BatonObject.BaseProperty::getName, prop -> {
+                .collect(Collectors.toMap(BaseObject.BaseProperty::getName, prop -> {
                     var type = prop.getType();
                     if (type == BType.IDENTIFIER) {
                         return convertIdentifierToRef(prop);
@@ -310,24 +312,4 @@ public class WorkflowListener extends BatonBaseListener {
                 "Line " + inputOrOutput.getCtx().getStart().getLine());
     }
 
-// TODO if statement
-//
-//    @Override
-//    public void enterIfStmt(Baton.IfStmtContext ctx) {
-//        var switchTask = new WorkflowTask();
-//
-//        switchTask.setName("switch_" + ctx.getStart().getLine() + "_" + ctx.getStart().getCharPositionInLine());
-//        switchTask.setType(TaskType.TASK_TYPE_SWITCH);
-//        switchTask.setEvaluatorType("javascript");
-//        switchTask.setExpression(toJavaScriptExpression(ctx.parExpression()));
-//        switchTask.setInputParameters(inputParametersFromExpression(ctx.parExpression()));
-//    }
-//
-//    private Map<String, Object> inputParametersFromExpression(Baton.ParExpressionContext parExpression) {
-//        return null;
-//    }
-//
-//    private String toJavaScriptExpression(Baton.ParExpressionContext parExpression) {
-//        return null;
-//    }
 }

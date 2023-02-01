@@ -4,7 +4,7 @@ import org.antlr.v4.runtime.ParserRuleContext;
 
 import java.util.*;
 
-public abstract class BatonObject<T extends BatonObject.BaseProperty> {
+public abstract class BaseObject<T extends BaseObject.BaseProperty> {
 
     public interface BaseProperty {
         String getName();
@@ -14,7 +14,7 @@ public abstract class BatonObject<T extends BatonObject.BaseProperty> {
     protected final Map<String, T> properties = new LinkedHashMap<>();
     protected final ParserRuleContext ctx;
 
-    public BatonObject(ParserRuleContext ctx) {
+    public BaseObject(ParserRuleContext ctx) {
         this.ctx = ctx;
     }
 

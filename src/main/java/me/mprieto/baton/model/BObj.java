@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import org.antlr.v4.runtime.ParserRuleContext;
 
-public class BObj extends BatonObject<BObj.Property> {
+public class BObj extends BaseObject<BObj.Property> {
 
     @RequiredArgsConstructor
     @Getter

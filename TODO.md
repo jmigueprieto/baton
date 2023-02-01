@@ -1,13 +1,15 @@
 # TODO
-* Struct/Type declarations [x]
-* Task declarations [x]
-* Listener to translate to JSON [x]
-* Finish up the WorkflowListener.convertToMap(..) [x]
-* Include workflow output [x]
-* Test for WorkflowListener [x]
-* Keep Var or Symbol table and use it for type checking [ ]
-* Implement simple workflow with sequential tasks [ ]
-* Implement sample Orkes playground workflow [ ]
-* Implement IF (using Switch Task) [ ]
-* Implement Switch (need to add it to the grammar) [ ]
-* Implement WHILE loops (using While Task) [ ]
+- [x] Struct/Type declarations.
+- [x] Task declarations .
+- [x] Listener to translate to JSON.
+- [x] Finish up the WorkflowListener.convertToMap(..).
+- [x] Include workflow output.
+- [x] Test for WorkflowListener.
+- [x] Keep Var or Symbol table and use it for type checking.
+- [x] Simple workflow translation. Just sequential tasks.
+- [ ] More TESTING!!!
+- [ ] Implement sample Orkes playground workflow.
+- [ ] Implement IF (using Switch Task)
+- [ ] Implement WHILE loops (using While Task)
+- [ ] Implement SWITCH (need to add it to the grammar)
+- [ ] Improve error messaging and handling

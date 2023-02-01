@@ -25,7 +25,9 @@ workflow HelloWorld (
     description: "Hello Baton!",
     version : 2
 ) : { message : String } {
-    def greetingTask = execute GreetingTask(input : { name: input.name })
+    def greetingTask = execute GreetingTask(input : {name: input.name},
+        description: "Use GreetingTask to say hi!",
+        retryCount: 10)
     return { message: greetingTask.output.message }
 }
 ```
@@ -34,29 +36,35 @@ translates to this Conductor Workflow
 
 ```json
 {
-  "name" : "HelloWorld",
-  "description" : "Give me a name and I'll say hi!",
-  "version" : 2,
-  "tasks" : [ {
-    "name" : "greetingTask",
-    "taskReferenceName" : "greetingTask",
-    "inputParameters" : {
-      "name" : "${workflow.input.name}"
-    },
-    "type" : "SIMPLE",
-    "startDelay" : 0,
-    "optional" : false,
-    "asyncComplete" : false
-  } ],
-  "inputParameters" : [ "name" ],
-  "outputParameters" : {
-    "message" : "${greetingTask.output.message}"
+  "name": "HelloWorld",
+  "description": "Hello Baton!",
+  "version": 2,
+  "tasks": [
+    {
+      "name": "greetingTask",
+      "taskReferenceName": "greetingTask",
+      "description": "Use GreetingTask to say hi!",
+      "inputParameters": {
+        "name": "${workflow.input.name}"
+      },
+      "type": "SIMPLE",
+      "startDelay": 0,
+      "optional": false,
+      "asyncComplete": false,
+      "retryCount": 10
+    }
+  ],
+  "inputParameters": [
+    "name"
+  ],
+  "outputParameters": {
+    "message": "${greetingTask.output.message}"
   },
-  "schemaVersion" : 2,
-  "restartable" : true,
-  "workflowStatusListenerEnabled" : false,
-  "timeoutPolicy" : "ALERT_ONLY",
-  "timeoutSeconds" : 0
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0
 }
 ```
 
@@ -94,10 +102,12 @@ not intended to support things like control structures or type checking.
 Baton includes built-in (optional) type checking to ensure that your workflows are correct.
 For example, if you try to pass a String to a task that expects an Integer,
 Baton will raise an error. This helps to catch errors early,
-before they cause problems in your running workflows (_Check out [this workflow](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/resources/invalid-task-input.baton#L18) and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/java/mprieto/baton/workflows/WorkflowListenerTest.java#L65)_).
+before they cause problems in your running workflows (_Check
+out [this workflow](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/resources/invalid-task-input.baton#L18)
+and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/java/mprieto/baton/workflows/WorkflowListenerTest.java#L65)_)
+.
 
 However, keep in mind that when executing in Conductor these types won't be enforced. Think of this as type-erasure.
-
 
 ## Code generators (WIP)
 

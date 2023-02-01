@@ -104,8 +104,7 @@ For example, if you try to pass a String to a task that expects an Integer,
 Baton will raise an error. This helps to catch errors early,
 before they cause problems in your running workflows (_Check
 out [this workflow](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/resources/invalid-task-input.baton#L18)
-and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/java/mprieto/baton/workflows/WorkflowListenerTest.java#L65)_)
-.
+and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/java/mprieto/baton/workflows/WorkflowListenerTest.java#L65)_).
 
 However, keep in mind that when executing in Conductor these types won't be enforced. Think of this as type-erasure.
 

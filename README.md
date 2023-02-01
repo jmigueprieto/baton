@@ -17,13 +17,13 @@ This Baton Workflow
 task GreetingTask {
     input: { name: String },
     output: { message: String },
-    description: "Give me name and I'll say hi"
+    description: "Give me a name and I'll say hi!"
 }
 
 workflow HelloWorld (
     input : { name: String },
     description: "Hello Baton!",
-    version : 1
+    version : 2
 ) : { message : String } {
     def greetingTask = execute GreetingTask(input : { name: input.name })
     return { message: greetingTask.output.message }
@@ -35,8 +35,8 @@ translates to this Conductor Workflow
 ```json
 {
   "name" : "HelloWorld",
-  "description" : "Hello Baton!",
-  "version" : 1,
+  "description" : "Give me a name and I'll say hi!",
+  "version" : 2,
   "tasks" : [ {
     "name" : "greetingTask",
     "taskReferenceName" : "greetingTask",
@@ -84,7 +84,7 @@ java -jar build/libs/baton-1.0-SNAPSHOT.jar -f samples/sample0.baton
 
 ## Language constructs (WIP)
 
-Baton intends to offer intuitive language constructs, like `IF statements` (WIP) and `WHILE loops` (WIP), which
+Baton intends to offer intuitive language constructs, like **IF statements** (WIP) and **WHILE loops** (WIP), which
 will result familiar to any developer. While Netflix Conductor does have built-in tasks for these operations,
 its JSON DSL can be somewhat challenging to read and understand; after all JSON is a data language and was
 not intended to support things like control structures or type checking.
@@ -94,14 +94,14 @@ not intended to support things like control structures or type checking.
 Baton includes built-in (optional) type checking to ensure that your workflows are correct.
 For example, if you try to pass a String to a task that expects an Integer,
 Baton will raise an error. This helps to catch errors early,
-before they cause problems in your running workflows.
+before they cause problems in your running workflows (_Check out [this workflow](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/resources/invalid-task-input.baton#L18) and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d76a3686f69bfee4139c/src/test/java/mprieto/baton/workflows/WorkflowListenerTest.java#L65)_).
 
 However, keep in mind that when executing in Conductor these types won't be enforced. Think of this as type-erasure.
+
 
 ## Code generators (WIP)
 
 Last but not least when defining Tasks in Baton these definitions could be used to generate
-project templates containing workers with their respective inputs and outputs in languages like Java, Python, C#, etc. (
-WIP).
+project templates containing workers with their respective inputs and outputs in languages like Java, Python, C#, etc.
 
 

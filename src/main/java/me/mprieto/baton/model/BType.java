@@ -8,5 +8,10 @@ public enum BType {
     DECIMAL,
     NULL,
     ARRAY,
-    OBJECT
+    OBJECT,
+    // Typing in Baton is optional by design.
+    // If we don't know a task's return type,
+    // then a variable containing the result
+    // of the execution is of type UNKNOWN.
+    UNKNOWN
 }

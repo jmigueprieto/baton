@@ -110,6 +110,8 @@ public class WorkflowListener extends BatonBaseListener {
         if (ownerEmail != null) {
             workflowDef.setOwnerEmail(ownerEmail.asString());
         }
+
+        //TODO if there's any unsupported param throw an Exception
     }
 
     @Override
@@ -161,36 +163,73 @@ public class WorkflowListener extends BatonBaseListener {
                 variable.setType(BType.OBJECT);
                 variable.setStruct(getMetadataIOStruct(output));
             }
-        }
-
-        if (varName == null) {
+        } else if (taskDefinition == null) {
+            var variable = variables.get(varName);
+            variable.setType(BType.UNKNOWN);
+        } else {
             varName = implicitVarName(taskType, ctx.getStart());
+            var variable = variables.get(varName);
+            variable.setType(BType.UNKNOWN);
         }
 
         var task = new WorkflowTask();
-        if (taskType.equalsIgnoreCase(TaskType.HTTP.name())) {
-            task.setType(TaskType.HTTP.name());
+        if (Arrays.stream(TaskType.values()).anyMatch(t -> t.name().toLowerCase().equals(taskType))) {
+            task.setType(taskType.toUpperCase());
             task.setName(varName);
         } else {
+            task.setType(TaskType.SIMPLE.name());
             task.setName(varName);
         }
+
         task.setTaskReferenceName(varName);
         workflowDef.getTasks().add(task);
 
         if (ctx.execParams() != null) {
-            var paramsObj = objectParser.parse(ctx.execParams());
-            var inputProperty = paramsObj.get("input");
-            if (inputProperty != null) {
-                if (inputProperty.getType() != BType.OBJECT) {
-                    throw new InvalidTypeException("Task input must be an Object. " +
-                            "Line: " + inputProperty.getCtx().getStart().getLine());
-                }
-
-                var inputObj = inputProperty.asBObj();
-                typeCheck(taskType, inputObj);
-                task.setInputParameters(convertToMap(inputObj));
-            }
+            loadTaskParams(ctx, taskType, task);
         }
+    }
+
+    private void loadTaskParams(Baton.ExecuteExprContext ctx, String taskType, WorkflowTask task) {
+        //TODO complete
+        var params = objectParser.parse(ctx.execParams());
+        var inputProperty = params.get("input");
+        if (inputProperty != null) {
+            if (inputProperty.getType() != BType.OBJECT) {
+                throw new InvalidTypeException("Task input must be an Object. " +
+                        "Line: " + inputProperty.getCtx().getStart().getLine());
+            }
+
+            var inputObj = inputProperty.asBObj();
+            typeCheck(taskType, inputObj);
+            task.setInputParameters(convertToMap(inputObj));
+        }
+
+        var description = params.get("description");
+        if (description != null) {
+            task.setDescription(description.asString());
+        }
+
+        var startDelay = params.get("startDelay");
+        if (startDelay != null) {
+            task.setStartDelay(startDelay.asInteger());
+        }
+
+        var optional = params.get("optional");
+        if (optional != null) {
+            task.setOptional(optional.asBoolean());
+        }
+
+        var asyncComplete = params.get("asyncComplete");
+        if (asyncComplete != null) {
+            task.setAsyncComplete(asyncComplete.asBoolean());
+        }
+
+        var retryCount = params.get("retryCount");
+        if (retryCount != null) {
+            task.setRetryCount(retryCount.asInteger());
+        }
+
+        //TODO if there's any unsupported param throw an Exception
     }
 
     private void typeCheck(String taskType, BObj input) {

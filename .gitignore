@@ -37,3 +37,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+### Ignore this directory which is used for manual testing. Contains the output JSON ###
+samples/output

@@ -13,6 +13,7 @@ import me.mprieto.baton.model.parsers.BObjParser;
 import me.mprieto.baton.model.parsers.BStructParser;
 import org.antlr.v4.runtime.Token;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,20 +65,51 @@ public class WorkflowListener extends BatonBaseListener {
         }
 
         var desc = parameters.get("description");
-        if (desc != null && desc.getType() == BType.STRING) {
+        if (desc != null) {
             workflowDef.setDescription(desc.asString());
-        } else if (desc != null) {
-            throw new InvalidTypeException("workflow description must be a String");
         }
 
         var version = parameters.get("version");
-        if (version != null && version.getType() == BType.INTEGER) {
-            workflowDef.setVersion(version.asInteger());
-        } else {
-            throw new InvalidTypeException("workflow version must be an Integer");
+        if (version != null) {
+            workflowDef.setVersion(version.asLong().intValue());
         }
 
-        //TODO add all other properties as they are and check the ones that need to be checked
+        var failureWorkflow = parameters.get("failureWorkflow");
+        if (failureWorkflow != null) {
+            workflowDef.setFailureWorkflow(failureWorkflow.asString());
+        }
+
+        var restartable = parameters.get("restartable");
+        if (restartable != null) {
+            workflowDef.setRestartable(restartable.asBoolean());
+        }
+
+        var workflowStatusListenerEnabled = parameters.get("workflowStatusListenerEnabled");
+        if (workflowStatusListenerEnabled != null) {
+            workflowDef.setWorkflowStatusListenerEnabled(workflowStatusListenerEnabled.asBoolean());
+        }
+
+        var timeoutPolicy = parameters.get("timeoutPolicy");
+        if (timeoutPolicy != null) {
+            var name = timeoutPolicy.asString();
+            var valid = Arrays.stream(WorkflowDef.TimeoutPolicy.values()).anyMatch(it -> it.name().equals(name));
+            if (valid) {
+                workflowDef.setTimeoutPolicy(WorkflowDef.TimeoutPolicy.valueOf(name));
+            } else {
+                throw new InvalidTypeException(String.format("TimeoutPolicy accepted values are: %s, but I got %s",
+                        Arrays.toString(WorkflowDef.TimeoutPolicy.values()),
+                        name));
+            }
+        }
+        var timeoutSeconds = parameters.get("timeoutSeconds");
+        if (timeoutSeconds != null) {
+            workflowDef.setTimeoutSeconds(timeoutSeconds.asLong());
+        }
+
+        var ownerEmail = parameters.get("ownerEmail");
+        if (ownerEmail != null) {
+            workflowDef.setOwnerEmail(ownerEmail.asString());
+        }
     }
 
     @Override

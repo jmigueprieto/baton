@@ -60,7 +60,7 @@ public class BObjParser {
                 case BatonLexer.LITERAL_DECIMAL:
                     return Double.parseDouble(text);
                 case BatonLexer.LITERAL_INTEGER:
-                    return Integer.parseInt(text);
+                    return Long.parseLong(text);
                 case BatonLexer.LITERAL_NULL:
                     return null;
             }

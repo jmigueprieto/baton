@@ -15,7 +15,13 @@ struct WorkflowOutput {
 workflow HelloWorld (
     input : { name: String },
     description: "This is a sample workflow",
-    version : 3
+    version : 3,
+    failureWorkflow: "GoodByeWorld",
+    restartable: true,
+    workflowStatusListenerEnabled: true,
+    ownerEmail: "hello@mprieto.me",
+    timeoutPolicy: "TIME_OUT_WF",
+    timeoutSeconds: 1800
 ) : WorkflowOutput {
     def result = execute GreetingTask(input : {name : input.name})
     return { message: result.output.message }

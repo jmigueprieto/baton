@@ -64,6 +64,6 @@ public class TaskVisitorTest {
 
         var retryDelaySeconds = helloWorldTask.get("retryDelaySeconds");
         assertEquals(BType.INTEGER, retryDelaySeconds.getType());
-        assertEquals(600, retryDelaySeconds.getValue());
+        assertEquals(600L, retryDelaySeconds.getValue());
     }
 }

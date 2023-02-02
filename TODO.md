@@ -7,9 +7,9 @@
 - [x] Test for WorkflowListener.
 - [x] Keep Var or Symbol table and use it for type checking.
 - [x] Simple workflow translation. Just sequential tasks.
-- [ ] More TESTING!!!
-- [ ] Implement sample Orkes playground workflow.
-- [ ] Implement IF (using Switch Task)
+- [X] Implement IF (using Switch Task)
+- [X] Implement sample Orkes playground workflow.
 - [ ] Implement WHILE loops (using While Task)
 - [ ] Implement SWITCH (need to add it to the grammar)
+- [ ] More TESTING!!!
 - [ ] Improve error messaging and handling

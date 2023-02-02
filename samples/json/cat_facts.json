@@ -1,0 +1,33 @@
+{
+  "accessPolicy" : { },
+  "name" : "cat_facts",
+  "description" : "Random cat facts",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "get_random_fact",
+    "taskReferenceName" : "get_random_fact",
+    "inputParameters" : {
+      "http_request" : {
+        "method" : "GET",
+        "readTimeOut" : 3000,
+        "uri" : "https://catfact.ninja/fact",
+        "connectionTimeOut" : 3000
+      }
+    },
+    "type" : "HTTP",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  } ],
+  "inputParameters" : [ ],
+  "outputParameters" : {
+    "data" : "${get_random_fact.output.response.body.fact}"
+  },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
+}

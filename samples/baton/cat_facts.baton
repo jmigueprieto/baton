@@ -1,0 +1,10 @@
+workflow cat_facts (description: "Random cat facts", version: 1) {
+    def get_random_fact = execute http(input : {
+            uri: "https://catfact.ninja/fact",
+            method: "GET",
+            connectionTimeOut: 3000,
+            readTimeOut: 3000
+        })
+
+    return { data: get_random_fact.output.response.body.fact }
+}

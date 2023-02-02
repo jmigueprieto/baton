@@ -11,6 +11,7 @@ import me.mprieto.baton.model.BVar;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class StatementVisitor extends Visitor<WorkflowTask> {
 
@@ -180,7 +181,21 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
 
             var inputObj = inputProperty.asBObj();
             typeCheck(taskType, inputObj);
-            task.setInputParameters(convertToMap(inputObj));
+            if (TaskType.HTTP.name().toLowerCase().equals(taskType)) {
+                /* Just to avoid "http_request" which was a constant source of confusion with HTTP task.
+                 *    "inputParameters": {
+                 *       "http_request": {
+                 *         "uri": "https://catfact.ninja/fact",
+                 *         "method": "GET",
+                 *         "connectionTimeOut": 3000,
+                 *         "readTimeOut": 3000
+                 *       }
+                 *    }
+                 */
+                task.setInputParameters(Map.of("http_request", convertToMap(inputObj)));
+            } else {
+                task.setInputParameters(convertToMap(inputObj));
+            }
         }
 
         var description = params.get("description");

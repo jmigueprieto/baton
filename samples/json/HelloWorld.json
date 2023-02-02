@@ -1,0 +1,30 @@
+{
+  "accessPolicy" : { },
+  "name" : "HelloWorld",
+  "description" : "Hello Baton!",
+  "version" : 2,
+  "tasks" : [ {
+    "name" : "GreetingTask",
+    "taskReferenceName" : "greetingTask",
+    "description" : "Use GreetingTask to say hi!",
+    "inputParameters" : {
+      "name" : "${workflow.input.name}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false,
+    "retryCount" : 10
+  } ],
+  "inputParameters" : [ "name" ],
+  "outputParameters" : {
+    "message" : "${greetingTask.output.message}"
+  },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
+}

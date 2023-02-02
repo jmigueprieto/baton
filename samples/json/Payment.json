@@ -1,0 +1,66 @@
+{
+  "accessPolicy" : { },
+  "name" : "Payment",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "CheckBalance",
+    "taskReferenceName" : "balance",
+    "inputParameters" : {
+      "uid" : "${workflow.input.uid}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "if_stmt_3",
+    "taskReferenceName" : "if_stmt_3",
+    "inputParameters" : {
+      "input" : "${workflow.input}",
+      "balance" : "${balance.output}"
+    },
+    "type" : "SWITCH",
+    "decisionCases" : {
+      "true" : [ {
+        "name" : "PayWithCredit",
+        "taskReferenceName" : "PayWithCredit_4",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      } ],
+      "false" : [ {
+        "name" : "ErrorEmail",
+        "taskReferenceName" : "ErrorEmail_6",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      }, {
+        "name" : "CancelOrder",
+        "taskReferenceName" : "CancelOrder_7",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      } ]
+    },
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false,
+    "evaluatorType" : "javascript",
+    "expression" : "$.balance.credit > $.input.amount"
+  } ],
+  "inputParameters" : [ "uid", "amount" ],
+  "outputParameters" : { },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
+}

@@ -19,8 +19,7 @@ import java.io.PrintStream;
 public class Main {
 
     private static final ObjectMapper objectMapper = new ObjectMapper()
-            .setSerializationInclusion(JsonInclude.Include.NON_NULL)
-            .setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
+            .setSerializationInclusion(JsonInclude.Include.NON_NULL);
 
     public static void main(String[] args) throws IOException {
         final Options options = cmdOptions();

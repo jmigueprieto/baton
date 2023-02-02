@@ -14,13 +14,11 @@ task GreetingTask {
     version: 1
 }
 
-workflow HelloWorld (
+workflow HelloWorld2 (
     input : { name: String },
     description: "This is a sample workflow",
     version : 1
 ) : { data : String, "fact Length" : Integer } {
     def task1 = execute SimpleTask1(input : {name: input.name})
     def task2 = execute SimpleTask2(input : {name: task2.output.something})
-    def task3 = execute http(input : {url: "http://blah.com"})
-    return greetingTaskResult.output
 }

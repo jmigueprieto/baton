@@ -88,7 +88,7 @@ Improving the error handling and messaging is in the TODO list.
 java -jar build/libs/baton-1.0-SNAPSHOT.jar -f samples/sample0.baton
 ```
 
-![alt text](docs/images/parse-tree-sample0.png)
+![parse tree](docs/images/parse-tree-sample0.png)
 
 ## Language constructs (WIP)
 
@@ -96,6 +96,93 @@ Baton intends to offer intuitive language constructs, like **IF statements** (WI
 will result familiar to any developer. While Netflix Conductor does have built-in tasks for these operations,
 its JSON DSL can be somewhat challenging to read and understand; after all JSON is a data language and was
 not intended to support things like control structures or type checking.
+
+### If Statements
+
+An `if` is probably the simplest and most used control structure of all. Baton uses Conductor's [Switch Operator](https://conductor.netflix.com/reference-docs/switch-task.html).
+
+This Baton workflow
+```
+workflow Payment (input : { uid: String, amount: Integer }, version : 1, ownerEmail: "someone@email.com") {
+    def balance = execute CheckBalance(input : {uid : input.uid})
+    if (balance.credit > input.amount) {
+        execute PayWithCredit()
+    } else {
+        execute ErrorEmail()
+        execute CancelOrder()
+    }
+}
+```
+
+is translated to this JSON
+```json
+{
+  "name" : "Payment",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "CheckBalance",
+    "taskReferenceName" : "balance",
+    "inputParameters" : {
+      "uid" : "${workflow.input.uid}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "if_stmt_3",
+    "taskReferenceName" : "if_stmt_3",
+    "inputParameters" : {
+      "input" : "${workflow.input}",
+      "balance" : "${balance.output}"
+    },
+    "type" : "SWITCH",
+    "decisionCases" : {
+      "true" : [ {
+        "name" : "PayWithCredit",
+        "taskReferenceName" : "PayWithCredit_4",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      } ],
+      "false" : [ {
+        "name" : "ErrorEmail",
+        "taskReferenceName" : "ErrorEmail_6",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      }, {
+        "name" : "CancelOrder",
+        "taskReferenceName" : "CancelOrder_7",
+        "inputParameters" : { },
+        "type" : "SIMPLE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false
+      } ]
+    },
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false,
+    "evaluatorType" : "javascript",
+    "expression" : "$.balance.credit > $.input.amount"
+  } ],
+  "inputParameters" : [ "uid", "amount" ],
+  "outputParameters" : { },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "ownerEmail" : "someone@email.com",
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0
+}
+```
+
+![payment workflow](docs/images/payement_wf.png)
 
 ## Type safety (WIP)
 

@@ -6,11 +6,10 @@ import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.grammar.BatonLexer;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
-import me.mprieto.baton.workflows.WorkflowListener;
+import me.mprieto.baton.workflows.WorkflowVisitor;
 import org.antlr.v4.runtime.BailErrorStrategy;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.apache.commons.cli.*;
 
 import java.io.File;
@@ -62,12 +61,10 @@ public class Main {
         var taskVisitor = new TaskVisitor(structDefinitions);
         var taskDefinitions = taskVisitor.visit(tree);
 
-        var listener = new WorkflowListener(structDefinitions, taskDefinitions);
-        var walker = new ParseTreeWalker();
-        walker.walk(listener, tree);
+        var workflowVisitor = new WorkflowVisitor(structDefinitions, taskDefinitions);
+        var workflow = workflowVisitor.visit(tree.workflowDeclaration());
 
         //TODO include tasks in output directory
-        var workflow = listener.getWorkflowDef();
         var jsonFilePath = getOutputJsonFilePath(dir, workflow.getName());
         try (var outputStream = output(jsonFilePath)) {
             objectMapper

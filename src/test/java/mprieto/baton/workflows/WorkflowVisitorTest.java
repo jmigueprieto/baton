@@ -5,9 +5,8 @@ import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
 import me.mprieto.baton.exceptions.InvalidTypeException;
 import me.mprieto.baton.structs.StructVisitor;
 import me.mprieto.baton.tasks.TaskVisitor;
-import me.mprieto.baton.workflows.WorkflowListener;
+import me.mprieto.baton.workflows.WorkflowVisitor;
 import mprieto.baton.TestUtils;
-import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -16,7 +15,7 @@ import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class WorkflowListenerTest {
+public class WorkflowVisitorTest {
 
     @DisplayName("it should parse helloworld successfully and populate the WorkflowDef instance")
     @Test
@@ -25,11 +24,9 @@ public class WorkflowListenerTest {
         var structDefinitions = (new StructVisitor()).visit(parseTree);
         var taskDefinitions = (new TaskVisitor(structDefinitions)).visit(parseTree);
 
-        var listener = new WorkflowListener(structDefinitions, taskDefinitions);
-        var walker = new ParseTreeWalker();
-        walker.walk(listener, parseTree);
+        var workflowVisitor = new WorkflowVisitor(structDefinitions, taskDefinitions);
+        var workflowDef = workflowVisitor.visit(parseTree.workflowDeclaration());
 
-        var workflowDef = listener.getWorkflowDef();
         assertEquals("HelloWorld", workflowDef.getName());
         assertEquals(3, workflowDef.getVersion());
         assertEquals(Map.of("message", "${result.output.message}"), workflowDef.getOutputParameters());
@@ -57,10 +54,9 @@ public class WorkflowListenerTest {
         var structDefinitions = (new StructVisitor()).visit(parseTree);
         var taskDefinitions = (new TaskVisitor(structDefinitions)).visit(parseTree);
 
-        var listener = new WorkflowListener(structDefinitions, taskDefinitions);
-        var walker = new ParseTreeWalker();
+        var workflowVisitor = new WorkflowVisitor(structDefinitions, taskDefinitions);
 
-        var thrown = assertThrows(InvalidTypeException.class, () -> walker.walk(listener, parseTree));
+        var thrown = assertThrows(InvalidTypeException.class, () -> workflowVisitor.visit(parseTree.workflowDeclaration()));
 
         assertEquals("Expected x to be INTEGER but got STRING. Line: 18", thrown.getMessage());
     }

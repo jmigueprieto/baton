@@ -1,0 +1,257 @@
+package me.mprieto.baton.workflows;
+
+import com.netflix.conductor.common.metadata.tasks.TaskType;
+import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
+import me.mprieto.baton.exceptions.InvalidTypeException;
+import me.mprieto.baton.grammar.Baton;
+import me.mprieto.baton.model.BObj;
+import me.mprieto.baton.model.BType;
+import me.mprieto.baton.model.BVar;
+
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+
+public class StatementVisitor extends Visitor<WorkflowTask> {
+
+    private final BlockVisitor blockVisitor;
+
+    StatementVisitor(VisitorContext vCtx, BlockVisitor blockVisitor) {
+        super(vCtx);
+        this.blockVisitor = blockVisitor;
+    }
+
+    @Override
+    public WorkflowTask visitIfStmt(Baton.IfStmtContext ctx) {
+        var ifTask = new WorkflowTask();
+        var name = implicitVarName("if_stmt", ctx.getStart());
+        var decisionCases = new HashMap<String, List<WorkflowTask>>();
+
+        ifTask.setType(TaskType.TASK_TYPE_SWITCH);
+        ifTask.setEvaluatorType("javascript");
+        ifTask.setName(name);
+        ifTask.setTaskReferenceName(name);
+        ifTask.setDecisionCases(decisionCases);
+
+        decisionCases.put("true", blockVisitor.visitBlock(ctx.block(0)));
+        if (ctx.block().size() == 2) {
+            decisionCases.put("false", blockVisitor.visitBlock(ctx.block(1)));
+        }
+
+        return ifTask;
+    }
+
+    @Override
+    public WorkflowTask visitWhileStmt(Baton.WhileStmtContext ctx) {
+        return super.visitWhileStmt(ctx);
+    }
+
+    @Override
+    public WorkflowTask visitVarDeclStmt(Baton.VarDeclStmtContext ctx) {
+        var identifier = ctx.IDENTIFIER().getText();
+        if ("input".equals(identifier)) {
+            throw new RuntimeException("input is an implicit variable for the workflow input");
+        }
+
+        vCtx.addVar(identifier, new BVar(ctx, null, null));
+        return visit(ctx.expression());
+    }
+
+    @Override
+    public WorkflowTask visitAssignmentStmt(Baton.AssignmentStmtContext ctx) {
+        return super.visitAssignmentStmt(ctx);
+    }
+
+    @Override
+    public WorkflowTask visitExprStmt(Baton.ExprStmtContext ctx) {
+        return visit(ctx.expression());
+    }
+
+    @Override
+    public WorkflowTask visitReturnStmt(Baton.ReturnStmtContext ctx) {
+        if (ctx.object() != null) {
+            //TODO type check with structDefinitions "workflow.output"
+            var objectCtx = ctx.object();
+            var retObj = vCtx.objParser().parse(objectCtx);
+            var map = convertToMap(retObj);
+            vCtx.workflowDef().setOutputParameters(map);
+        }
+
+        return null;
+    }
+
+    // Expressions
+    @Override
+    public WorkflowTask visitExecuteExpr(Baton.ExecuteExprContext ctx) {
+        var varName = getVarName(ctx);
+        var taskType = getTaskType(ctx);
+        var taskDefinition = vCtx.getTaskDef(taskType);
+
+        if (varName != null && taskDefinition != null) {
+            var output = taskDefinition.getOutput();
+            if (output != null) {
+                var variable = vCtx.getVar(varName);
+                variable.setType(BType.OBJECT);
+                variable.setStruct(getMetadataIOStruct(output));
+            }
+        } else if (taskDefinition == null) {
+            var variable = vCtx.getVar(varName);
+            variable.setType(BType.UNKNOWN);
+        } else {
+            varName = implicitVarName(taskType, ctx.getStart());
+            var variable = vCtx.getVar(varName);
+            variable.setType(BType.UNKNOWN);
+        }
+
+        var task = new WorkflowTask();
+        if (Arrays.stream(TaskType.values()).anyMatch(t -> t.name().toLowerCase().equals(taskType))) {
+            task.setType(taskType.toUpperCase());
+            task.setName(varName);
+        } else {
+            task.setType(TaskType.SIMPLE.name());
+            task.setName(varName);
+        }
+
+        task.setTaskReferenceName(varName);
+
+        if (ctx.execParams() != null) {
+            loadTaskParams(ctx, taskType, task);
+        }
+
+        return task;
+    }
+
+    // PRIVATE
+    private String getVarName(Baton.ExecuteExprContext ctx) {
+        if (ctx.getParent() instanceof Baton.VarDeclStmtContext) {
+            return ((Baton.VarDeclStmtContext) ctx.getParent()).IDENTIFIER().getText();
+        }
+
+        return null;
+    }
+
+    private String getTaskType(Baton.ExecuteExprContext ctx) {
+        if (ctx.IDENTIFIER() != null) {
+            return ctx.IDENTIFIER().getText();
+        }
+
+        if (ctx.LITERAL_STRING() != null) {
+            var str = ctx.LITERAL_STRING().getText();
+            return str.substring(1, str.length() - 1);
+        }
+
+        throw new RuntimeException("Cannot get task type");
+    }
+
+    private void typeCheck(String taskType, BObj input) {
+        if (!vCtx.containsTaskDef(taskType)) {
+            return;
+        }
+
+        var taskDefinition = vCtx.getTaskDef(taskType);
+        var taskDefinitionInputProperty = taskDefinition.getInput();
+        if (taskDefinitionInputProperty == null) {
+            return;
+        }
+
+        final var struct = getMetadataIOStruct(taskDefinitionInputProperty);
+        for (var prop : input.list()) {
+            var s = struct;
+            var structProperty = s.get(prop.getName());
+            var expectedType = structProperty.getType();
+            while (expectedType == BType.IDENTIFIER) {
+                s = vCtx.getStruct(structProperty.getIdentifier());
+                structProperty = s.get(prop.getName());
+                expectedType = structProperty.getType();
+            }
+
+            var actualType = getType(prop);
+            if (expectedType != actualType) {
+                throw new InvalidTypeException(String.format("Expected %s to be %s but got %s. Line: %d",
+                        prop.getName(),
+                        expectedType,
+                        actualType,
+                        prop.getCtx().getStart().getLine()));
+            }
+        }
+    }
+
+    private void loadTaskParams(Baton.ExecuteExprContext ctx, String taskType, WorkflowTask task) {
+        //TODO complete
+        var params = vCtx.objParser().parse(ctx.execParams());
+        var inputProperty = params.get("input");
+        if (inputProperty != null) {
+            if (inputProperty.getType() != BType.OBJECT) {
+                throw new InvalidTypeException("Task input must be an Object. " +
+                        "Line: " + inputProperty.getCtx().getStart().getLine());
+            }
+
+            var inputObj = inputProperty.asBObj();
+            typeCheck(taskType, inputObj);
+            task.setInputParameters(convertToMap(inputObj));
+        }
+
+        var description = params.get("description");
+        if (description != null) {
+            task.setDescription(description.asString());
+        }
+
+        var startDelay = params.get("startDelay");
+        if (startDelay != null) {
+            task.setStartDelay(startDelay.asInteger());
+        }
+
+        var optional = params.get("optional");
+        if (optional != null) {
+            task.setOptional(optional.asBoolean());
+        }
+
+        var asyncComplete = params.get("asyncComplete");
+        if (asyncComplete != null) {
+            task.setAsyncComplete(asyncComplete.asBoolean());
+        }
+
+        var retryCount = params.get("retryCount");
+        if (retryCount != null) {
+            task.setRetryCount(retryCount.asInteger());
+        }
+
+        //TODO if there's any unsupported param throw an Exception
+    }
+
+    private BType getType(BObj.Property prop) {
+        if (prop.getType() == BType.IDENTIFIER) {
+            // lookup the type
+            return getVariableType(prop.asString());
+        }
+
+        return prop.getType();
+    }
+
+    private BType getVariableType(String identifier) {
+        var split = identifier.split("\\.");
+        var variable = vCtx.getVar(split[0]);
+        var type = variable.getType();
+
+        if (split.length > 1 && type != BType.OBJECT) {
+            throw new RuntimeException(String.format("%s is not an Object, cannot access %s", split[0], identifier));
+        }
+
+        var struct = variable.getStruct();
+        for (int i = 1; i < split.length; i++) {
+            var id = split[i];
+            if (type != BType.OBJECT) {
+                throw new RuntimeException(String.format("%s is not an Object, cannot access %s", id, identifier));
+            }
+
+            type = struct.get(id).getType();
+            while (type == BType.IDENTIFIER) {
+                struct = vCtx.getStruct(id);
+                type = struct.get(id).getType();
+            }
+
+        }
+
+        return type;
+    }
+}

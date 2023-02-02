@@ -15,10 +15,12 @@ import java.util.List;
 public class StatementVisitor extends Visitor<WorkflowTask> {
 
     private final BlockVisitor blockVisitor;
+    private final CondExprJSVisitor condExprJSVisitor;
 
     StatementVisitor(VisitorContext vCtx, BlockVisitor blockVisitor) {
         super(vCtx);
         this.blockVisitor = blockVisitor;
+        this.condExprJSVisitor = new CondExprJSVisitor(vCtx);
     }
 
     @Override
@@ -29,21 +31,18 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
 
         ifTask.setType(TaskType.TASK_TYPE_SWITCH);
         ifTask.setEvaluatorType("javascript");
+        ifTask.setExpression(condExprJSVisitor.visit(ctx.parExpression()));
+        ifTask.setInputParameters(new CondExprInputParamsVisitor(vCtx).visit(ctx.parExpression()));
         ifTask.setName(name);
         ifTask.setTaskReferenceName(name);
         ifTask.setDecisionCases(decisionCases);
 
-        decisionCases.put("true", blockVisitor.visitBlock(ctx.block(0)));
+        decisionCases.put("true", blockVisitor.visit(ctx.block(0)));
         if (ctx.block().size() == 2) {
-            decisionCases.put("false", blockVisitor.visitBlock(ctx.block(1)));
+            decisionCases.put("false", blockVisitor.visit(ctx.block(1)));
         }
 
         return ifTask;
-    }
-
-    @Override
-    public WorkflowTask visitWhileStmt(Baton.WhileStmtContext ctx) {
-        return super.visitWhileStmt(ctx);
     }
 
     @Override
@@ -55,11 +54,6 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
 
         vCtx.addVar(identifier, new BVar(ctx, null, null));
         return visit(ctx.expression());
-    }
-
-    @Override
-    public WorkflowTask visitAssignmentStmt(Baton.AssignmentStmtContext ctx) {
-        return super.visitAssignmentStmt(ctx);
     }
 
     @Override
@@ -94,13 +88,11 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
                 variable.setType(BType.OBJECT);
                 variable.setStruct(getMetadataIOStruct(output));
             }
-        } else if (taskDefinition == null) {
+        } else if (varName != null) {
             var variable = vCtx.getVar(varName);
             variable.setType(BType.UNKNOWN);
         } else {
             varName = implicitVarName(taskType, ctx.getStart());
-            var variable = vCtx.getVar(varName);
-            variable.setType(BType.UNKNOWN);
         }
 
         var task = new WorkflowTask();
@@ -109,7 +101,7 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
             task.setName(varName);
         } else {
             task.setType(TaskType.SIMPLE.name());
-            task.setName(varName);
+            task.setName(taskType);
         }
 
         task.setTaskReferenceName(varName);

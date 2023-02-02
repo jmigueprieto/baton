@@ -1,13 +1,11 @@
 package me.mprieto.baton.workflows;
 
 import com.netflix.conductor.common.metadata.workflow.WorkflowDef;
-import com.netflix.conductor.common.metadata.workflow.WorkflowTask;
 import me.mprieto.baton.exceptions.InvalidTypeException;
 import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.model.*;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -34,7 +32,7 @@ public class WorkflowVisitor extends Visitor<WorkflowDef> {
             visitWorkflowOutput(ctx.workflowOutput());
         }
 
-        List<WorkflowTask> tasks = blockVisitor.visit(ctx.block());
+        var tasks = blockVisitor.visit(ctx.block());
         workflowDef.setTasks(tasks);
 
         return workflowDef;

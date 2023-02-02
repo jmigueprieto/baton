@@ -97,17 +97,16 @@ statement
     : IF parExpression block (ELSE block)?              # ifStmt
     | WHILE parExpression block                         # whileStmt
     | DEF IDENTIFIER (ASSIGNMENT expression)?           # varDeclStmt
-    | IDENTIFIER ASSIGNMENT expression                  # assignmentStmt
     | RETURN object?                                    # returnStmt
     | expression                                        # exprStmt
     ;
 
+//TODO there's a lot of missing stuff here like basic aritmethic operations (+,-,*,/)
 expression
-    : (IDENTIFIER | literal | parExpression)                           # primaryExpr
-    | EXECUTE (IDENTIFIER | LITERAL_STRING) execParams?                # executeExpr
-    | expression DOT IDENTIFIER expression?                            # dotExpr
-    | (NOT | MINUS) expression                                         # prefixExpr
-    | expression (EQ | NEQ) expression                                 # eqExpr
+    : (identifier | literal | parExpression)                           # primaryExpr
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) execParams?                # executeExpr // consider moving this up to stmt
+    | NOT expression                                                   # negationExpr
+    | expression (EQ | NEQ | LT | GT | LTE | GTE) expression           # compExpr
     | expression (AND | OR) expression                                 # logicExpr
     ;
 

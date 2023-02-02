@@ -47,10 +47,6 @@ class VisitorContext {
         return structDefinitions.containsKey(name);
     }
 
-    void addTaskDef(String name, BMetadataParams metadataParams) {
-        taskDefinitions.put(name, metadataParams);
-    }
-
     BMetadataParams getTaskDef(String name) {
         return taskDefinitions.get(name);
     }

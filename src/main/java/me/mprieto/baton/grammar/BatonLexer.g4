@@ -25,9 +25,16 @@ COMMA:              ',';
 DOT:                '.';
 ASSIGNMENT:         '=';
 NOT:                '!';
-MINUS:              '-';
+SUB:                '-';
+ADD:                '+';
+MULT:               '*';
+DIV:                '/';
 EQ:                 '==';
 NEQ:                '!=';
+LT:                 '<';
+GT:                 '>';
+LTE:                '>=';
+GTE:                '<=';
 AND:                '&&';
 OR:                 '||';
 

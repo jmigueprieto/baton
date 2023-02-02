@@ -234,18 +234,6 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code assignmentStmt}
-	 * labeled alternative in {@link Baton#statement}.
-	 * @param ctx the parse tree
-	 */
-	void enterAssignmentStmt(Baton.AssignmentStmtContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code assignmentStmt}
-	 * labeled alternative in {@link Baton#statement}.
-	 * @param ctx the parse tree
-	 */
-	void exitAssignmentStmt(Baton.AssignmentStmtContext ctx);
-	/**
 	 * Enter a parse tree produced by the {@code returnStmt}
 	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
@@ -270,41 +258,17 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitExprStmt(Baton.ExprStmtContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code prefixExpr}
+	 * Enter a parse tree produced by the {@code negationExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void enterPrefixExpr(Baton.PrefixExprContext ctx);
+	void enterNegationExpr(Baton.NegationExprContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code prefixExpr}
+	 * Exit a parse tree produced by the {@code negationExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 */
-	void exitPrefixExpr(Baton.PrefixExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code eqExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterEqExpr(Baton.EqExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code eqExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitEqExpr(Baton.EqExprContext ctx);
-	/**
-	 * Enter a parse tree produced by the {@code dotExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 */
-	void enterDotExpr(Baton.DotExprContext ctx);
-	/**
-	 * Exit a parse tree produced by the {@code dotExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 */
-	void exitDotExpr(Baton.DotExprContext ctx);
+	void exitNegationExpr(Baton.NegationExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code primaryExpr}
 	 * labeled alternative in {@link Baton#expression}.
@@ -317,6 +281,18 @@ public interface BatonListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrimaryExpr(Baton.PrimaryExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterCompExpr(Baton.CompExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitCompExpr(Baton.CompExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code logicExpr}
 	 * labeled alternative in {@link Baton#expression}.

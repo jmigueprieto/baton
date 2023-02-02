@@ -146,13 +146,6 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code assignmentStmt}
-	 * labeled alternative in {@link Baton#statement}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitAssignmentStmt(Baton.AssignmentStmtContext ctx);
-	/**
 	 * Visit a parse tree produced by the {@code returnStmt}
 	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
@@ -167,26 +160,12 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitExprStmt(Baton.ExprStmtContext ctx);
 	/**
-	 * Visit a parse tree produced by the {@code prefixExpr}
+	 * Visit a parse tree produced by the {@code negationExpr}
 	 * labeled alternative in {@link Baton#expression}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
-	T visitPrefixExpr(Baton.PrefixExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code eqExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitEqExpr(Baton.EqExprContext ctx);
-	/**
-	 * Visit a parse tree produced by the {@code dotExpr}
-	 * labeled alternative in {@link Baton#expression}.
-	 * @param ctx the parse tree
-	 * @return the visitor result
-	 */
-	T visitDotExpr(Baton.DotExprContext ctx);
+	T visitNegationExpr(Baton.NegationExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code primaryExpr}
 	 * labeled alternative in {@link Baton#expression}.
@@ -194,6 +173,13 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitPrimaryExpr(Baton.PrimaryExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code compExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitCompExpr(Baton.CompExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code logicExpr}
 	 * labeled alternative in {@link Baton#expression}.

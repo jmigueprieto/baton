@@ -35,7 +35,7 @@ public class WorkflowVisitorTest {
         var tasks = workflowDef.getTasks();
         assertEquals(1, tasks.size());
         var task0 = tasks.get(0);
-        assertEquals("result", task0.getName());
+        assertEquals("GreetingTask", task0.getName());
         assertEquals("result", task0.getTaskReferenceName());
         assertEquals(TaskType.SIMPLE.name(), task0.getType());
         assertEquals(Map.of("name", "${workflow.input.name}"), task0.getInputParameters());
@@ -59,5 +59,51 @@ public class WorkflowVisitorTest {
         var thrown = assertThrows(InvalidTypeException.class, () -> workflowVisitor.visit(parseTree.workflowDeclaration()));
 
         assertEquals("Expected x to be INTEGER but got STRING. Line: 18", thrown.getMessage());
+    }
+
+    @DisplayName("it should generate a switch task for the if statement")
+    @Test
+    void payment() {
+        var parseTree = TestUtils.fromResource("/payment.baton");
+        var structDefinitions = (new StructVisitor()).visit(parseTree);
+        var taskDefinitions = (new TaskVisitor(structDefinitions)).visit(parseTree);
+
+        var workflowVisitor = new WorkflowVisitor(structDefinitions, taskDefinitions);
+        var workflowDef = workflowVisitor.visit(parseTree.workflowDeclaration());
+
+        assertEquals("Payment", workflowDef.getName());
+        assertEquals(1, workflowDef.getVersion());
+        assertEquals(Map.of(), workflowDef.getOutputParameters());
+        assertEquals(List.of("uid", "amount"), workflowDef.getInputParameters());
+
+        var tasks = workflowDef.getTasks();
+        assertEquals(2, tasks.size());
+        var checkBalanceTask = tasks.get(0);
+        assertEquals("CheckBalance", checkBalanceTask.getName());
+        assertEquals("balance", checkBalanceTask.getTaskReferenceName());
+        assertEquals(TaskType.SIMPLE.name(), checkBalanceTask.getType());
+        assertEquals(Map.of("uid", "${workflow.input.uid}"), checkBalanceTask.getInputParameters());
+
+        var switchTask = tasks.get(1);
+        assertNotNull(switchTask.getName());
+        assertNotNull(switchTask.getTaskReferenceName());
+        assertEquals(TaskType.SWITCH.name(), switchTask.getType());
+
+        var decisionCases = switchTask.getDecisionCases();
+        var trueCaseList = decisionCases.get("true");
+        assertEquals(1, trueCaseList.size());
+        var trueTask = trueCaseList.get(0);
+        assertEquals(TaskType.SIMPLE.name(), trueTask.getType());
+        assertEquals("PayWithCredit", trueTask.getName());
+        var falseCaseList = decisionCases.get("false");
+        assertEquals(2, falseCaseList.size());
+
+        var falseTask0 = falseCaseList.get(0);
+        assertEquals(TaskType.SIMPLE.name(), falseTask0.getType());
+        assertEquals("ErrorEmail", falseTask0.getName());
+
+        var falseTask1 = falseCaseList.get(1);
+        assertEquals(TaskType.SIMPLE.name(), falseTask1.getType());
+        assertEquals("CancelOrder", falseTask1.getName());
     }
 }

@@ -1,0 +1,9 @@
+workflow Payment (input : { uid: String, amount: Integer }, version : 1) {
+    def balance = execute CheckBalance(input : {uid : input.uid})
+    if (balance.credit > input.amount) {
+        execute PayWithCredit()
+    } else {
+        execute ErrorEmail()
+        execute CancelOrder()
+    }
+}

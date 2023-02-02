@@ -22,10 +22,11 @@ class BlockVisitor extends Visitor<List<WorkflowTask>> {
             return List.of();
         }
 
+        // A block is defined as '{' statement* '}'.
+        // Statements either map to a Task or mutate the state of WorkflowDef in the contevt
         return ctx.statement().stream()
-                .map(tree -> statementVisitor.visit(tree))
+                .map(statementVisitor::visit)
                 .filter(Objects::nonNull)
                 .collect(Collectors.toList());
-
     }
 }

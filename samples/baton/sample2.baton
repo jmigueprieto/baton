@@ -1,4 +1,4 @@
-workflow Payment (input : { uid: String, amount: Integer }, version : 1) {
+workflow Payment (input : { uid: String, amount: Integer }, version : 1, ownerEmail: "someone@email.com") {
     def balance = execute CheckBalance(input : {uid : input.uid})
     if (balance.credit > input.amount) {
         execute PayWithCredit()

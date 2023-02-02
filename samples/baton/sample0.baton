@@ -8,7 +8,8 @@ task GreetingTask {
 workflow HelloWorld (
     input : { name: String },
     description: "Hello Baton!",
-    version : 2
+    version : 2,
+    ownerEmail: "someone@email.com"
 ) : { message : String } {
     def greetingTask = execute GreetingTask(input : {name: input.name},
         description: "Use GreetingTask to say hi!",

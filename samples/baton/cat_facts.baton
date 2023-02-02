@@ -1,4 +1,4 @@
-workflow cat_facts (description: "Random cat facts", version: 1) {
+workflow cat_facts (description: "Random cat facts", version: 1, ownerEmail: "someone@email.com") {
     def get_random_fact = execute http(input : {
             uri: "https://catfact.ninja/fact",
             method: "GET",

@@ -1,5 +1,5 @@
 workflow Loop (input : { uid: String }, version : 1, ownerEmail: "someone@email.com") {
-    def active = IsUserActive(input : {uid : input.uid})
+    active := IsUserActive(input : {uid : input.uid})
     while(!active) {
         active = IsUserActive(input : {uid : input.uid})
     }

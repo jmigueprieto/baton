@@ -1,5 +1,5 @@
 workflow cat_facts (description: "Random cat facts", version: 1, ownerEmail: "someone@email.com") {
-    def get_random_fact = http(input : {
+    get_random_fact := http(input : {
             uri: "https://catfact.ninja/fact",
             method: "GET",
             connectionTimeOut: 3000,

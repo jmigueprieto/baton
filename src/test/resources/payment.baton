@@ -1,5 +1,5 @@
 workflow Payment (input : { uid: String, amount: Integer }, version : 1) {
-    def balance = CheckBalance(input : {uid : input.uid})
+    balance := CheckBalance(input : {uid : input.uid})
     if (balance.credit > input.amount) {
         PayWithCredit()
     } else {

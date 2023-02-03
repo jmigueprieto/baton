@@ -23,6 +23,6 @@ workflow HelloWorld (
     timeoutPolicy: "TIME_OUT_WF",
     timeoutSeconds: 1800
 ) : WorkflowOutput {
-    def result = GreetingTask(input : {name : input.name})
+    result := GreetingTask(input : {name : input.name})
     return { message: result.output.message }
 }

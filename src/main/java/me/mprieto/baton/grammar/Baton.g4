@@ -96,7 +96,7 @@ block
 statement
     : IF parExpression block (ELSE block)?              # ifStmt
     | WHILE parExpression block                         # whileStmt
-    | DEF IDENTIFIER (ASSIGNMENT expression)?           # varDeclStmt
+    | IDENTIFIER (COLON ASSIGNMENT expression)?         # varDeclStmt
     | IDENTIFIER ASSIGNMENT expression                  # assignmentStmt // should this be indentifier instead of IDENTIFIER?
     | RETURN object?                                    # returnStmt
     | expression                                        # exprStmt

@@ -25,7 +25,7 @@ workflow HelloWorld (
     description: "Hello Baton!",
     version : 2
 ) : { message : String } {
-    def greetingTask = GreetingTask(input : {name: input.name},
+    greetingTask := GreetingTask(input : {name: input.name},
         description: "Use GreetingTask to say hi!",
         retryCount: 10)
     return { message: greetingTask.output.message }
@@ -104,7 +104,7 @@ An `if` is probably the simplest and most used control structure of all. Baton u
 This Baton workflow
 ```
 workflow Payment (input : { uid: String, amount: Integer }, version : 1, ownerEmail: "someone@email.com") {
-    def balance = CheckBalance(input : {uid : input.uid})
+    balance := CheckBalance(input : {uid : input.uid})
     if (balance.credit > input.amount) {
         PayWithCredit()
     } else {

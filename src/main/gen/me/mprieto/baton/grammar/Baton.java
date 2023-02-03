@@ -1403,7 +1403,7 @@ public class Baton extends Parser {
 			setState(176);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 140256460415360L) != 0) {
+			while (((_la) & ~0x3f) == 0 && ((1L << _la) & 140256460415232L) != 0) {
 				{
 				{
 				setState(173);
@@ -1558,8 +1558,8 @@ public class Baton extends Parser {
 	}
 	@SuppressWarnings("CheckReturnValue")
 	public static class VarDeclStmtContext extends StatementContext {
-		public TerminalNode DEF() { return getToken(Baton.DEF, 0); }
 		public TerminalNode IDENTIFIER() { return getToken(Baton.IDENTIFIER, 0); }
+		public TerminalNode COLON() { return getToken(Baton.COLON, 0); }
 		public TerminalNode ASSIGNMENT() { return getToken(Baton.ASSIGNMENT, 0); }
 		public ExpressionContext expression() {
 			return getRuleContext(ExpressionContext.class,0);
@@ -1629,14 +1629,14 @@ public class Baton extends Parser {
 				enterOuterAlt(_localctx, 3);
 				{
 				setState(192);
-				match(DEF);
-				setState(193);
 				match(IDENTIFIER);
 				setState(196);
 				_errHandler.sync(this);
 				_la = _input.LA(1);
-				if (_la==ASSIGNMENT) {
+				if (_la==COLON) {
 					{
+					setState(193);
+					match(COLON);
 					setState(194);
 					match(ASSIGNMENT);
 					setState(195);
@@ -2308,9 +2308,9 @@ public class Baton extends Parser {
 		"\u0000\u0000\u0000\u00ba\u00bb\u0001\u0000\u0000\u0000\u00bb\u00cf\u0001"+
 		"\u0000\u0000\u0000\u00bc\u00bd\u0005\'\u0000\u0000\u00bd\u00be\u0003,"+
 		"\u0016\u0000\u00be\u00bf\u0003$\u0012\u0000\u00bf\u00cf\u0001\u0000\u0000"+
-		"\u0000\u00c0\u00c1\u0005\u0007\u0000\u0000\u00c1\u00c4\u0005.\u0000\u0000"+
+		"\u0000\u00c0\u00c4\u0005.\u0000\u0000\u00c1\u00c2\u0005\u0013\u0000\u0000"+
 		"\u00c2\u00c3\u0005\u0016\u0000\u0000\u00c3\u00c5\u0003(\u0014\u0000\u00c4"+
-		"\u00c2\u0001\u0000\u0000\u0000\u00c4\u00c5\u0001\u0000\u0000\u0000\u00c5"+
+		"\u00c1\u0001\u0000\u0000\u0000\u00c4\u00c5\u0001\u0000\u0000\u0000\u00c5"+
 		"\u00cf\u0001\u0000\u0000\u0000\u00c6\u00c7\u0005.\u0000\u0000\u00c7\u00c8"+
 		"\u0005\u0016\u0000\u0000\u00c8\u00cf\u0003(\u0014\u0000\u00c9\u00cb\u0005"+
 		"(\u0000\u0000\u00ca\u00cc\u0003\u001c\u000e\u0000\u00cb\u00ca\u0001\u0000"+

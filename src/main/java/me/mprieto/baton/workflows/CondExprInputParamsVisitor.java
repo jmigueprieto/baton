@@ -25,11 +25,12 @@ class CondExprInputParamsVisitor extends Visitor<Map<String, Object>> {
     @Override
     public Map<String, Object> visitPrimaryExpr(Baton.PrimaryExprContext ctx) {
         if (ctx.identifier() != null) {
-            var identifier = ctx.identifier().getText();
-            var root = identifier.split("\\.")[0];
+            var identifier = ctx.identifier().IDENTIFIER().getText();
             //TODO check that this identifier is valid. Check the variables.
             //var variable = vCtx.getVar(root);
-            inputParams.put(root, String.format("${%s}", "input".equals(root) ? "workflow." + root : root + ".output"));
+            var value = "input".equals(identifier) ? String.format("${workflow.%s}", identifier) :
+                    String.format("${workflow.variables.%s}", identifier);
+            inputParams.put(identifier, value);
         } else if (ctx.parExpression() != null) {
             visit(ctx.parExpression());
         }

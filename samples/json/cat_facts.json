@@ -5,7 +5,7 @@
   "version" : 1,
   "tasks" : [ {
     "name" : "get_random_fact",
-    "taskReferenceName" : "get_random_fact",
+    "taskReferenceName" : "get_random_fact_2",
     "inputParameters" : {
       "http_request" : {
         "method" : "GET",
@@ -18,10 +18,20 @@
     "startDelay" : 0,
     "optional" : false,
     "asyncComplete" : false
+  }, {
+    "name" : "set_get_random_fact_2",
+    "taskReferenceName" : "set_get_random_fact_2",
+    "inputParameters" : {
+      "get_random_fact" : "${get_random_fact_2.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
   } ],
   "inputParameters" : [ ],
   "outputParameters" : {
-    "data" : "${get_random_fact.output.response.body.fact}"
+    "data" : "${workflow.variables.get_random_fact.response.body.fact}"
   },
   "schemaVersion" : 2,
   "restartable" : true,

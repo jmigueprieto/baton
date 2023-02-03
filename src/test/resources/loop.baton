@@ -1,8 +1,6 @@
 workflow Loop (input : { uid: String }, version : 1, ownerEmail: "someone@email.com") {
   user := GetUserByID(input : {uid : input.uid})
-  // active wait for the user to be activated
   while(!user.active) {
       user = GetUserByID(input : {uid : input.uid})
-      // in real life there should be a wait here and a limit for the loop
   }
 }

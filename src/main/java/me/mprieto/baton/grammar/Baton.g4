@@ -103,6 +103,7 @@ statement
     ;
 
 //TODO there's a lot of missing stuff here like basic aritmethic operations (+,-,*,/)
+//TODO include 'const' or '@=' to just keep the reference. Will not create a SET_VARIABLE taks.
 expression
     : (identifier | literal | parExpression)                           # primaryExpr
     | IDENTIFIER execParams                                            # executeExpr // consider moving this up to stmt

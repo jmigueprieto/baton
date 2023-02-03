@@ -4,7 +4,7 @@
   "version" : 1,
   "tasks" : [ {
     "name" : "CheckBalance",
-    "taskReferenceName" : "balance",
+    "taskReferenceName" : "balance_2",
     "inputParameters" : {
       "uid" : "${workflow.input.uid}"
     },
@@ -13,11 +13,21 @@
     "optional" : false,
     "asyncComplete" : false
   }, {
+    "name" : "set_balance_2",
+    "taskReferenceName" : "set_balance_2",
+    "inputParameters" : {
+      "balance" : "${balance_2.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
     "name" : "if_stmt_3",
     "taskReferenceName" : "if_stmt_3",
     "inputParameters" : {
       "input" : "${workflow.input}",
-      "balance" : "${balance.output}"
+      "balance" : "${workflow.variables.balance}"
     },
     "type" : "SWITCH",
     "decisionCases" : {

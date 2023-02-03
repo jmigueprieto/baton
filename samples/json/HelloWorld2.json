@@ -1,0 +1,57 @@
+{
+  "accessPolicy" : { },
+  "name" : "HelloWorld2",
+  "description" : "This is a sample workflow",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "SimpleTask1",
+    "taskReferenceName" : "task1_23",
+    "inputParameters" : {
+      "name" : "${workflow.input.name}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "set_task1_23",
+    "taskReferenceName" : "set_task1_23",
+    "inputParameters" : {
+      "task1" : "${task1_23.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "SimpleTask2",
+    "taskReferenceName" : "task2_24",
+    "inputParameters" : {
+      "name" : "${workflow.variables.task2.something}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "set_task2_24",
+    "taskReferenceName" : "set_task2_24",
+    "inputParameters" : {
+      "task2" : "${task2_24.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  } ],
+  "inputParameters" : [ "name" ],
+  "outputParameters" : { },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "ownerEmail" : "someone@email.com",
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
+}

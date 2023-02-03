@@ -7,11 +7,14 @@ import me.mprieto.baton.grammar.Baton;
 import me.mprieto.baton.model.BObj;
 import me.mprieto.baton.model.BType;
 import me.mprieto.baton.model.BVar;
+import org.antlr.v4.runtime.Token;
 
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 class StatementVisitor extends Visitor<List<WorkflowTask>> {
 
@@ -39,12 +42,14 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
     @Override
     public List<WorkflowTask> visitWhileStmt(Baton.WhileStmtContext ctx) {
         var whileTask = new WorkflowTask();
-        var whileTaskName = implicitVarName("if_while_stmt", ctx.getStart());
+        var whileTaskName = implicitVarName("do_while_stmt", ctx.getStart());
 
         whileTask.setType(TaskType.TASK_TYPE_DO_WHILE);
         whileTask.setName(whileTaskName);
         whileTask.setTaskReferenceName(whileTaskName);
         whileTask.setLoopCondition(condExprJSVisitor.visit(ctx.parExpression()));
+        whileTask.setInputParameters(new CondExprInputParamsVisitor(vCtx).visit(ctx.parExpression()));
+        //TODO include a way to access the implicit loop task iterator
         whileTask.setLoopOver(blockVisitor.visit(ctx.block()));
 
         var ifTask = createIfTask(ctx.parExpression());
@@ -81,7 +86,16 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
         }
 
         vCtx.addVar(identifier, new BVar(ctx, null, null));
-        return visit(ctx.expression());
+
+        //TODO this only covers variable declarations when
+        // the right expression is a task execution
+        // should provide support to my_var := "A String", my_var = false, etc.
+        var visited = visit(ctx.expression());
+        var setVarTask = createSetVariableTask(identifier,
+                ctx.getStart(),
+                visited.get(0).getTaskReferenceName());
+        return Stream.concat(visited.stream(), Stream.of(setVarTask))
+                .collect(Collectors.toList());
     }
 
     @Override
@@ -108,6 +122,7 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
         var varName = getVarName(ctx);
         var taskType = getTaskType(ctx);
         var taskDefinition = vCtx.getTaskDef(taskType);
+        var task = new WorkflowTask();
 
         if (varName != null && taskDefinition != null) {
             var output = taskDefinition.getOutput();
@@ -116,14 +131,17 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
                 variable.setType(BType.OBJECT);
                 variable.setStruct(getMetadataIOStruct(output));
             }
+            task.setTaskReferenceName(varName + "_" + ctx.getStart().getLine());
         } else if (varName != null) {
             var variable = vCtx.getVar(varName);
             variable.setType(BType.UNKNOWN);
+            task.setTaskReferenceName(varName + "_" + ctx.getStart().getLine());
         } else {
             varName = implicitVarName(taskType, ctx.getStart());
+            task.setTaskReferenceName(varName);
         }
 
-        var task = new WorkflowTask();
+
         if (Arrays.stream(TaskType.values()).anyMatch(t -> t.name().toLowerCase().equals(taskType))) {
             task.setType(taskType.toUpperCase());
             task.setName(varName);
@@ -132,7 +150,6 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
             task.setName(taskType);
         }
 
-        task.setTaskReferenceName(varName);
 
         if (ctx.execParams() != null) {
             loadTaskParams(ctx, taskType, task);
@@ -143,13 +160,30 @@ class StatementVisitor extends Visitor<List<WorkflowTask>> {
 
     @Override
     public List<WorkflowTask> visitAssignmentStmt(Baton.AssignmentStmtContext ctx) {
-        return super.visitAssignmentStmt(ctx);
+        var visited = visit(ctx.expression());
+        var identifier = ctx.IDENTIFIER().getText();
+        var setVarTask = createSetVariableTask(identifier,
+                ctx.getStart(),
+                visited.get(0).getTaskReferenceName());
+        return List.of(visited.get(0), setVarTask);
+    }
+
+    private static WorkflowTask createSetVariableTask(String identifier, Token ctx, String taskReferenceName) {
+        var setVarTask = new WorkflowTask();
+        setVarTask.setName(String.format("set_%s_%d", identifier, ctx.getLine()));
+        setVarTask.setTaskReferenceName(setVarTask.getName());
+        setVarTask.setType(TaskType.SET_VARIABLE.name());
+        setVarTask.setInputParameters(Map.of(
+                identifier, String.format("${%s.output}", taskReferenceName)));
+        return setVarTask;
     }
 
     // PRIVATE
     private String getVarName(Baton.ExecuteExprContext ctx) {
         if (ctx.getParent() instanceof Baton.VarDeclStmtContext) {
             return ((Baton.VarDeclStmtContext) ctx.getParent()).IDENTIFIER().getText();
+        } else if (ctx.getParent() instanceof Baton.AssignmentStmtContext) {
+            return ((Baton.AssignmentStmtContext) ctx.getParent()).IDENTIFIER().getText();
         }
 
         return null;

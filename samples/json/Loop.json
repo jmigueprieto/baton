@@ -4,8 +4,8 @@
   "version": 1,
   "tasks": [
     {
-      "name": "IsUserActive",
-      "taskReferenceName": "active",
+      "name": "GetUserByID",
+      "taskReferenceName": "user_2",
       "inputParameters": {
         "uid": "${workflow.input.uid}"
       },
@@ -15,31 +15,55 @@
       "asyncComplete": false
     },
     {
-      "name": "if_stmt_3",
-      "taskReferenceName": "if_stmt_3",
+      "name": "set_user_2",
+      "taskReferenceName": "set_user_2",
       "inputParameters": {
-        "active": "${active.output}"
+        "user": "${user_2.output}"
+      },
+      "type": "SET_VARIABLE",
+      "startDelay": 0,
+      "optional": false,
+      "asyncComplete": false
+    },
+    {
+      "name": "if_stmt_4",
+      "taskReferenceName": "if_stmt_4",
+      "inputParameters": {
+        "user": "${workflow.variables.user}"
       },
       "type": "SWITCH",
       "decisionCases": {
         "true": [
           {
-            "name": "if_while_stmt_3",
-            "taskReferenceName": "if_while_stmt_3",
-            "inputParameters": {},
+            "name": "do_while_stmt_4",
+            "taskReferenceName": "do_while_stmt_4",
+            "inputParameters": {
+              "user": "${workflow.variables.user}"
+            },
             "type": "DO_WHILE",
             "startDelay": 0,
             "optional": false,
             "asyncComplete": false,
-            "loopCondition": "!$.active",
+            "loopCondition": "!$.user.active",
             "loopOver": [
               {
-                "name": "IsUserActive",
-                "taskReferenceName": "active",
+                "name": "GetUserByID",
+                "taskReferenceName": "user_5",
                 "inputParameters": {
                   "uid": "${workflow.input.uid}"
                 },
                 "type": "SIMPLE",
+                "startDelay": 0,
+                "optional": false,
+                "asyncComplete": false
+              },
+              {
+                "name": "set_user_5",
+                "taskReferenceName": "set_user_5",
+                "inputParameters": {
+                  "user": "${user_5.output}"
+                },
+                "type": "SET_VARIABLE",
                 "startDelay": 0,
                 "optional": false,
                 "asyncComplete": false
@@ -52,7 +76,7 @@
       "optional": false,
       "asyncComplete": false,
       "evaluatorType": "javascript",
-      "expression": "!$.active"
+      "expression": "!$.user.active"
     }
   ],
   "inputParameters": [

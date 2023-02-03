@@ -14,5 +14,5 @@ workflow HelloWorld (
     greetingTask := GreetingTask(input : {name: input.name},
         description: "Use GreetingTask to say hi!",
         retryCount: 10)
-    return { message: greetingTask.output.message }
+    return { message: greetingTask.message }
 }

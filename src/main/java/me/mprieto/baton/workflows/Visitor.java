@@ -53,7 +53,7 @@ abstract class Visitor<T> extends BatonBaseVisitor<T> {
                 throw new UnknownSymbolException("Unknown variable " + rootObj +
                         " line " + prop.getCtx().getStart().getLine());
             }
-            return String.format("${%s}", identifier);
+            return String.format("${workflow.variables.%s}", identifier);
         } else {
             return String.format("${workflow.%s}", identifier);
         }

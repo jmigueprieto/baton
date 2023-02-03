@@ -6,5 +6,5 @@ workflow cat_facts (description: "Random cat facts", version: 1, ownerEmail: "so
             readTimeOut: 3000
         })
 
-    return { data: get_random_fact.output.response.body.fact }
+    return { data: get_random_fact.response.body.fact }
 }

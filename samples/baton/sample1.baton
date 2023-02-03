@@ -21,5 +21,5 @@ workflow HelloWorld2 (
     ownerEmail: "someone@email.com"
 ) : { data : String, "fact Length" : Integer } {
     task1 := SimpleTask1(input : {name: input.name})
-    task2 := SimpleTask2(input : {name: task2.output.something})
+    task2 := SimpleTask2(input : {name: task2.something})
 }

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class StatementVisitor extends Visitor<WorkflowTask> {
+class StatementVisitor extends Visitor<List<WorkflowTask>> {
 
     private final BlockVisitor blockVisitor;
     private final CondExprJSVisitor condExprJSVisitor;
@@ -25,7 +25,7 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
     }
 
     @Override
-    public WorkflowTask visitIfStmt(Baton.IfStmtContext ctx) {
+    public List<WorkflowTask> visitIfStmt(Baton.IfStmtContext ctx) {
         var ifTask = createIfTask(ctx.parExpression());
         var decisionCases = ifTask.getDecisionCases();
         decisionCases.put("true", blockVisitor.visit(ctx.block(0)));
@@ -33,11 +33,11 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
             decisionCases.put("false", blockVisitor.visit(ctx.block(1)));
         }
 
-        return ifTask;
+        return List.of(ifTask);
     }
 
     @Override
-    public WorkflowTask visitWhileStmt(Baton.WhileStmtContext ctx) {
+    public List<WorkflowTask> visitWhileStmt(Baton.WhileStmtContext ctx) {
         var whileTask = new WorkflowTask();
         var whileTaskName = implicitVarName("if_while_stmt", ctx.getStart());
 
@@ -49,7 +49,7 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
 
         var ifTask = createIfTask(ctx.parExpression());
         ifTask.getDecisionCases().put("true", List.of(whileTask));
-        return ifTask;
+        return List.of(ifTask);
     }
 
     private WorkflowTask createIfTask(Baton.ParExpressionContext ctx) {
@@ -66,7 +66,7 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
     }
 
     @Override
-    public WorkflowTask visitVarDeclStmt(Baton.VarDeclStmtContext ctx) {
+    public List<WorkflowTask> visitVarDeclStmt(Baton.VarDeclStmtContext ctx) {
         var identifier = ctx.IDENTIFIER().getText();
         if ("input".equals(identifier)) {
             throw new RuntimeException("input is an implicit variable for the workflow input");
@@ -85,12 +85,12 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
     }
 
     @Override
-    public WorkflowTask visitExprStmt(Baton.ExprStmtContext ctx) {
+    public List<WorkflowTask> visitExprStmt(Baton.ExprStmtContext ctx) {
         return visit(ctx.expression());
     }
 
     @Override
-    public WorkflowTask visitReturnStmt(Baton.ReturnStmtContext ctx) {
+    public List<WorkflowTask> visitReturnStmt(Baton.ReturnStmtContext ctx) {
         if (ctx.object() != null) {
             //TODO type check with structDefinitions "workflow.output"
             var objectCtx = ctx.object();
@@ -99,12 +99,12 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
             vCtx.workflowDef().setOutputParameters(map);
         }
 
-        return null;
+        return List.of();
     }
 
     // Expressions
     @Override
-    public WorkflowTask visitExecuteExpr(Baton.ExecuteExprContext ctx) {
+    public List<WorkflowTask> visitExecuteExpr(Baton.ExecuteExprContext ctx) {
         var varName = getVarName(ctx);
         var taskType = getTaskType(ctx);
         var taskDefinition = vCtx.getTaskDef(taskType);
@@ -138,7 +138,12 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
             loadTaskParams(ctx, taskType, task);
         }
 
-        return task;
+        return List.of(task);
+    }
+
+    @Override
+    public List<WorkflowTask> visitAssignmentStmt(Baton.AssignmentStmtContext ctx) {
+        return super.visitAssignmentStmt(ctx);
     }
 
     // PRIVATE

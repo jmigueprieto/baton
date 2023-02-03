@@ -1,7 +1,7 @@
 # Baton
 
-> _This is a Work In Progress!!! Even though an initial grammar has been defined, the translator
-is not fully functional yet but early feedback will be much appreciated._
+> _This is a Work In Progress!!! The translator
+is not fully functional yet and the language grammar is still changing._
 
 Baton is a language designed to simplify the process of creating and maintaining workflows
 for developers using Netflix Conductor.

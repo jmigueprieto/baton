@@ -72,6 +72,14 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
             throw new RuntimeException("input is an implicit variable for the workflow input");
         }
 
+        if (vCtx.containsVar(identifier)) {
+            var v = vCtx.getVar(identifier);
+            throw new RuntimeException(String.format("'%s' already declared in line: %d. Line: %d",
+                    identifier,
+                    v.getCtx().getStart().getLine(),
+                    ctx.getStart().getLine()));
+        }
+
         vCtx.addVar(identifier, new BVar(ctx, null, null));
         return visit(ctx.expression());
     }

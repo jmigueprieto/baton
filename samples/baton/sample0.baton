@@ -11,7 +11,7 @@ workflow HelloWorld (
     version : 2,
     ownerEmail: "someone@email.com"
 ) : { message : String } {
-    def greetingTask = execute GreetingTask(input : {name: input.name},
+    def greetingTask = GreetingTask(input : {name: input.name},
         description: "Use GreetingTask to say hi!",
         retryCount: 10)
     return { message: greetingTask.output.message }

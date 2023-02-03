@@ -1,0 +1,70 @@
+{
+  "accessPolicy": {},
+  "name": "Loop",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "IsUserActive",
+      "taskReferenceName": "active",
+      "inputParameters": {
+        "uid": "${workflow.input.uid}"
+      },
+      "type": "SIMPLE",
+      "startDelay": 0,
+      "optional": false,
+      "asyncComplete": false
+    },
+    {
+      "name": "if_stmt_3",
+      "taskReferenceName": "if_stmt_3",
+      "inputParameters": {
+        "active": "${active.output}"
+      },
+      "type": "SWITCH",
+      "decisionCases": {
+        "true": [
+          {
+            "name": "if_while_stmt_3",
+            "taskReferenceName": "if_while_stmt_3",
+            "inputParameters": {},
+            "type": "DO_WHILE",
+            "startDelay": 0,
+            "optional": false,
+            "asyncComplete": false,
+            "loopCondition": "!$.active",
+            "loopOver": [
+              {
+                "name": "IsUserActive",
+                "taskReferenceName": "active",
+                "inputParameters": {
+                  "uid": "${workflow.input.uid}"
+                },
+                "type": "SIMPLE",
+                "startDelay": 0,
+                "optional": false,
+                "asyncComplete": false
+              }
+            ]
+          }
+        ]
+      },
+      "startDelay": 0,
+      "optional": false,
+      "asyncComplete": false,
+      "evaluatorType": "javascript",
+      "expression": "!$.active"
+    }
+  ],
+  "inputParameters": [
+    "uid"
+  ],
+  "outputParameters": {},
+  "schemaVersion": 2,
+  "restartable": true,
+  "workflowStatusListenerEnabled": false,
+  "ownerEmail": "someone@email.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0,
+  "variables": {},
+  "inputTemplate": {}
+}

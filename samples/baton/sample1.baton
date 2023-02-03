@@ -20,6 +20,6 @@ workflow HelloWorld2 (
     version : 1,
     ownerEmail: "someone@email.com"
 ) : { data : String, "fact Length" : Integer } {
-    def task1 = execute SimpleTask1(input : {name: input.name})
-    def task2 = execute SimpleTask2(input : {name: task2.output.something})
+    def task1 = SimpleTask1(input : {name: input.name})
+    def task2 = SimpleTask2(input : {name: task2.output.something})
 }

@@ -26,23 +26,42 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
 
     @Override
     public WorkflowTask visitIfStmt(Baton.IfStmtContext ctx) {
-        var ifTask = new WorkflowTask();
-        var name = implicitVarName("if_stmt", ctx.getStart());
-        var decisionCases = new HashMap<String, List<WorkflowTask>>();
-
-        ifTask.setType(TaskType.TASK_TYPE_SWITCH);
-        ifTask.setEvaluatorType("javascript");
-        ifTask.setExpression(condExprJSVisitor.visit(ctx.parExpression()));
-        ifTask.setInputParameters(new CondExprInputParamsVisitor(vCtx).visit(ctx.parExpression()));
-        ifTask.setName(name);
-        ifTask.setTaskReferenceName(name);
-        ifTask.setDecisionCases(decisionCases);
-
+        var ifTask = createIfTask(ctx.parExpression());
+        var decisionCases = ifTask.getDecisionCases();
         decisionCases.put("true", blockVisitor.visit(ctx.block(0)));
         if (ctx.block().size() == 2) {
             decisionCases.put("false", blockVisitor.visit(ctx.block(1)));
         }
 
+        return ifTask;
+    }
+
+    @Override
+    public WorkflowTask visitWhileStmt(Baton.WhileStmtContext ctx) {
+        var whileTask = new WorkflowTask();
+        var whileTaskName = implicitVarName("if_while_stmt", ctx.getStart());
+
+        whileTask.setType(TaskType.TASK_TYPE_DO_WHILE);
+        whileTask.setName(whileTaskName);
+        whileTask.setTaskReferenceName(whileTaskName);
+        whileTask.setLoopCondition(condExprJSVisitor.visit(ctx.parExpression()));
+        whileTask.setLoopOver(blockVisitor.visit(ctx.block()));
+
+        var ifTask = createIfTask(ctx.parExpression());
+        ifTask.getDecisionCases().put("true", List.of(whileTask));
+        return ifTask;
+    }
+
+    private WorkflowTask createIfTask(Baton.ParExpressionContext ctx) {
+        var ifTask = new WorkflowTask();
+        var name = implicitVarName("if_stmt", ctx.getParent().getStart());
+
+        ifTask.setType(TaskType.TASK_TYPE_SWITCH);
+        ifTask.setEvaluatorType("javascript");
+        ifTask.setExpression(condExprJSVisitor.visit(ctx));
+        ifTask.setInputParameters(new CondExprInputParamsVisitor(vCtx).visit(ctx));
+        ifTask.setName(name);
+        ifTask.setTaskReferenceName(name);
         return ifTask;
     }
 
@@ -124,16 +143,7 @@ public class StatementVisitor extends Visitor<WorkflowTask> {
     }
 
     private String getTaskType(Baton.ExecuteExprContext ctx) {
-        if (ctx.IDENTIFIER() != null) {
-            return ctx.IDENTIFIER().getText();
-        }
-
-        if (ctx.LITERAL_STRING() != null) {
-            var str = ctx.LITERAL_STRING().getText();
-            return str.substring(1, str.length() - 1);
-        }
-
-        throw new RuntimeException("Cannot get task type");
+        return ctx.IDENTIFIER().getText();
     }
 
     private void typeCheck(String taskType, BObj input) {

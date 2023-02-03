@@ -15,5 +15,5 @@ workflow Addition (
     version : 3
 ) {
     // This should be caught as a type error by Baton
-    def sum = execute AdditionTask(input : {x: input.x, y: input.y})
+    def sum = AdditionTask(input : {x: input.x, y: input.y})
 }

@@ -281,6 +281,18 @@ public class BatonBaseListener implements BatonListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterAssignmentStmt(Baton.AssignmentStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitAssignmentStmt(Baton.AssignmentStmtContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterReturnStmt(Baton.ReturnStmtContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -348,6 +360,18 @@ public class BatonBaseListener implements BatonListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitLogicExpr(Baton.LogicExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterExecuteCmdExpr(Baton.ExecuteCmdExprContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitExecuteCmdExpr(Baton.ExecuteCmdExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

@@ -146,6 +146,13 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
+	 * Visit a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link Baton#statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitAssignmentStmt(Baton.AssignmentStmtContext ctx);
+	/**
 	 * Visit a parse tree produced by the {@code returnStmt}
 	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
@@ -187,6 +194,13 @@ public interface BatonVisitor<T> extends ParseTreeVisitor<T> {
 	 * @return the visitor result
 	 */
 	T visitLogicExpr(Baton.LogicExprContext ctx);
+	/**
+	 * Visit a parse tree produced by the {@code executeCmdExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitExecuteCmdExpr(Baton.ExecuteCmdExprContext ctx);
 	/**
 	 * Visit a parse tree produced by the {@code executeExpr}
 	 * labeled alternative in {@link Baton#expression}.

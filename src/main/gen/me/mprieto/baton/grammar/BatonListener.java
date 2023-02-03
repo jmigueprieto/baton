@@ -234,6 +234,18 @@ public interface BatonListener extends ParseTreeListener {
 	 */
 	void exitVarDeclStmt(Baton.VarDeclStmtContext ctx);
 	/**
+	 * Enter a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link Baton#statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterAssignmentStmt(Baton.AssignmentStmtContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code assignmentStmt}
+	 * labeled alternative in {@link Baton#statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitAssignmentStmt(Baton.AssignmentStmtContext ctx);
+	/**
 	 * Enter a parse tree produced by the {@code returnStmt}
 	 * labeled alternative in {@link Baton#statement}.
 	 * @param ctx the parse tree
@@ -305,6 +317,18 @@ public interface BatonListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitLogicExpr(Baton.LogicExprContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code executeCmdExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 */
+	void enterExecuteCmdExpr(Baton.ExecuteCmdExprContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code executeCmdExpr}
+	 * labeled alternative in {@link Baton#expression}.
+	 * @param ctx the parse tree
+	 */
+	void exitExecuteCmdExpr(Baton.ExecuteCmdExprContext ctx);
 	/**
 	 * Enter a parse tree produced by the {@code executeExpr}
 	 * labeled alternative in {@link Baton#expression}.

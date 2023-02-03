@@ -97,6 +97,7 @@ statement
     : IF parExpression block (ELSE block)?              # ifStmt
     | WHILE parExpression block                         # whileStmt
     | DEF IDENTIFIER (ASSIGNMENT expression)?           # varDeclStmt
+    | IDENTIFIER ASSIGNMENT expression                  # assignmentStmt // should this be indentifier instead of IDENTIFIER?
     | RETURN object?                                    # returnStmt
     | expression                                        # exprStmt
     ;
@@ -104,7 +105,8 @@ statement
 //TODO there's a lot of missing stuff here like basic aritmethic operations (+,-,*,/)
 expression
     : (identifier | literal | parExpression)                           # primaryExpr
-    | EXECUTE (IDENTIFIER | LITERAL_STRING) execParams?                # executeExpr // consider moving this up to stmt
+    | IDENTIFIER execParams                                            # executeExpr // consider moving this up to stmt
+    | EXECUTE (IDENTIFIER | LITERAL_STRING) execParams?                # executeCmdExpr
     | NOT expression                                                   # negationExpr
     | expression (EQ | NEQ | LT | GT | LTE | GTE) expression           # compExpr
     | expression (AND | OR) expression                                 # logicExpr

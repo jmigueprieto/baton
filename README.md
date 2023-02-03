@@ -10,7 +10,7 @@ Where does the name come from? a baton is a light, thin stick used by a conducto
 
 ## Hello World!
 
-This Baton Workflow
+This Baton Workflow:
 
 ```
 // Task declarations provide type safety
@@ -32,7 +32,7 @@ workflow HelloWorld (
 }
 ```
 
-translates to this Conductor Workflow
+translates to this Conductor Workflow:
 
 ```json
 {
@@ -90,6 +90,7 @@ java -jar build/libs/baton-1.0-SNAPSHOT.jar -f samples/sample0.baton
 
 ![parse tree](docs/images/parse-tree-sample0.png)
 
+---
 ## Language constructs (WIP)
 
 Baton intends to offer intuitive language constructs, like **IF statements** (WIP) and **WHILE loops** (WIP), which
@@ -101,7 +102,7 @@ not intended to support things like control structures or type checking.
 
 An `if` is probably the simplest and most used control structure of all. Baton uses Conductor's [Switch Operator](https://conductor.netflix.com/reference-docs/switch-task.html).
 
-This Baton workflow
+This Baton workflow:
 ```
 workflow Payment (input : { uid: String, amount: Integer }, version : 1, ownerEmail: "someone@email.com") {
     balance := CheckBalance(input : {uid : input.uid})
@@ -114,14 +115,15 @@ workflow Payment (input : { uid: String, amount: Integer }, version : 1, ownerEm
 }
 ```
 
-is translated to this JSON
+is translated to:
 ```json
 {
+  "accessPolicy" : { },
   "name" : "Payment",
   "version" : 1,
   "tasks" : [ {
     "name" : "CheckBalance",
-    "taskReferenceName" : "balance",
+    "taskReferenceName" : "balance_2",
     "inputParameters" : {
       "uid" : "${workflow.input.uid}"
     },
@@ -130,11 +132,21 @@ is translated to this JSON
     "optional" : false,
     "asyncComplete" : false
   }, {
+    "name" : "set_balance_2",
+    "taskReferenceName" : "set_balance_2",
+    "inputParameters" : {
+      "balance" : "${balance_2.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
     "name" : "if_stmt_3",
     "taskReferenceName" : "if_stmt_3",
     "inputParameters" : {
       "input" : "${workflow.input}",
-      "balance" : "${balance.output}"
+      "balance" : "${workflow.variables.balance}"
     },
     "type" : "SWITCH",
     "decisionCases" : {
@@ -178,12 +190,133 @@ is translated to this JSON
   "workflowStatusListenerEnabled" : false,
   "ownerEmail" : "someone@email.com",
   "timeoutPolicy" : "ALERT_ONLY",
-  "timeoutSeconds" : 0
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
 }
 ```
 
-![payment workflow](docs/images/payement_wf.png)
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jmigueprieto/baton/main/docs/images/payment_wf.png" alt="Payment WF"/>
+</p>
 
+### While Statements
+
+Conductor has a [DO WHILE operator](https://conductor.netflix.com/reference-docs/do-while-task.html) for loops and as 
+expected it behaves like the control structure, which means that all task in the loop are 
+executed once. But, it seems that some people find this loop counterintuitive, 
+e.g. [Uber Cadence VS Netflix Conductor](https://www.instaclustr.com/blog/workflow-comparison-uber-cadence-vs-netflix-conductor/).
+
+To give WHILE semantics (nothing in the loop is executed if the condition is not met) the translated workflow
+uses a SWITCH task as an IF guard and then a DO WHILE task. It also stores the output of the tasks in a workflow
+variable (`workflows.variables`) using a [SET VARIABLE task](https://conductor.netflix.com/reference-docs/set-variable-task.html)
+to reference it and update it.
+
+This Baton workflow:
+```
+workflow Loop (input : { uid: String }, version : 1, ownerEmail: "someone@email.com") {
+  user := GetUserByID(input : {uid : input.uid})
+  // active wait for the user to be activated
+  while(!user.active) {
+      user = GetUserByID(input : {uid : input.uid})
+      // in real life there should be a wait here and a limit for the loop
+  }
+}
+```
+
+is translated to:
+
+```json
+{
+  "accessPolicy" : { },
+  "name" : "Loop",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "GetUserByID",
+    "taskReferenceName" : "user_2",
+    "inputParameters" : {
+      "uid" : "${workflow.input.uid}"
+    },
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "set_user_2",
+    "taskReferenceName" : "set_user_2",
+    "inputParameters" : {
+      "user" : "${user_2.output}"
+    },
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "if_stmt_4",
+    "taskReferenceName" : "if_stmt_4",
+    "inputParameters" : {
+      "user" : "${workflow.variables.user}"
+    },
+    "type" : "SWITCH",
+    "decisionCases" : {
+      "true" : [ {
+        "name" : "do_while_stmt_4",
+        "taskReferenceName" : "do_while_stmt_4",
+        "inputParameters" : {
+          "user" : "${workflow.variables.user}"
+        },
+        "type" : "DO_WHILE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false,
+        "loopCondition" : "!$.user.active",
+        "loopOver" : [ {
+          "name" : "GetUserByID",
+          "taskReferenceName" : "user_5",
+          "inputParameters" : {
+            "uid" : "${workflow.input.uid}"
+          },
+          "type" : "SIMPLE",
+          "startDelay" : 0,
+          "optional" : false,
+          "asyncComplete" : false
+        }, {
+          "name" : "set_user_5",
+          "taskReferenceName" : "set_user_5",
+          "inputParameters" : {
+            "user" : "${user_5.output}"
+          },
+          "type" : "SET_VARIABLE",
+          "startDelay" : 0,
+          "optional" : false,
+          "asyncComplete" : false
+        } ]
+      } ]
+    },
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false,
+    "evaluatorType" : "javascript",
+    "expression" : "!$.user.active"
+  } ],
+  "inputParameters" : [ "uid" ],
+  "outputParameters" : { },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "ownerEmail" : "someone@email.com",
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
+}
+```
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/jmigueprieto/baton/main/docs/images/loop_wf.png" alt="Loop example WF"/>
+</p>
+
+---
 ## Type safety (WIP)
 
 Baton includes built-in (optional) type checking to ensure that your workflows are correct.
@@ -195,6 +328,7 @@ and [this test](https://github.com/jmigueprieto/baton/blob/15e4d7aefd5c9a0e1414d
 
 However, keep in mind that when executing in Conductor these types won't be enforced. Think of this as type-erasure.
 
+---
 ## Code generators (WIP)
 
 Last but not least when defining Tasks in Baton these definitions could be used to generate

@@ -1,94 +1,83 @@
 {
-  "accessPolicy": {},
-  "name": "Loop",
-  "version": 1,
-  "tasks": [
-    {
-      "name": "GetUserByID",
-      "taskReferenceName": "user_2",
-      "inputParameters": {
-        "uid": "${workflow.input.uid}"
-      },
-      "type": "SIMPLE",
-      "startDelay": 0,
-      "optional": false,
-      "asyncComplete": false
+  "accessPolicy" : { },
+  "name" : "Loop",
+  "version" : 1,
+  "tasks" : [ {
+    "name" : "GetUserByID",
+    "taskReferenceName" : "user_2",
+    "inputParameters" : {
+      "uid" : "${workflow.input.uid}"
     },
-    {
-      "name": "set_user_2",
-      "taskReferenceName": "set_user_2",
-      "inputParameters": {
-        "user": "${user_2.output}"
-      },
-      "type": "SET_VARIABLE",
-      "startDelay": 0,
-      "optional": false,
-      "asyncComplete": false
+    "type" : "SIMPLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "set_user_2",
+    "taskReferenceName" : "set_user_2",
+    "inputParameters" : {
+      "user" : "${user_2.output}"
     },
-    {
-      "name": "if_stmt_4",
-      "taskReferenceName": "if_stmt_4",
-      "inputParameters": {
-        "user": "${workflow.variables.user}"
-      },
-      "type": "SWITCH",
-      "decisionCases": {
-        "true": [
-          {
-            "name": "do_while_stmt_4",
-            "taskReferenceName": "do_while_stmt_4",
-            "inputParameters": {
-              "user": "${workflow.variables.user}"
-            },
-            "type": "DO_WHILE",
-            "startDelay": 0,
-            "optional": false,
-            "asyncComplete": false,
-            "loopCondition": "!$.user.active",
-            "loopOver": [
-              {
-                "name": "GetUserByID",
-                "taskReferenceName": "user_5",
-                "inputParameters": {
-                  "uid": "${workflow.input.uid}"
-                },
-                "type": "SIMPLE",
-                "startDelay": 0,
-                "optional": false,
-                "asyncComplete": false
-              },
-              {
-                "name": "set_user_5",
-                "taskReferenceName": "set_user_5",
-                "inputParameters": {
-                  "user": "${user_5.output}"
-                },
-                "type": "SET_VARIABLE",
-                "startDelay": 0,
-                "optional": false,
-                "asyncComplete": false
-              }
-            ]
-          }
-        ]
-      },
-      "startDelay": 0,
-      "optional": false,
-      "asyncComplete": false,
-      "evaluatorType": "javascript",
-      "expression": "!$.user.active"
-    }
-  ],
-  "inputParameters": [
-    "uid"
-  ],
-  "outputParameters": {},
-  "schemaVersion": 2,
-  "restartable": true,
-  "workflowStatusListenerEnabled": false,
-  "ownerEmail": "someone@email.com",
-  "timeoutPolicy": "ALERT_ONLY",
-  "timeoutSeconds": 0,
-  "variables": {},
-  "inputTemplate": {}
+    "type" : "SET_VARIABLE",
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false
+  }, {
+    "name" : "if_stmt_4",
+    "taskReferenceName" : "if_stmt_4",
+    "inputParameters" : {
+      "user" : "${workflow.variables.user}"
+    },
+    "type" : "SWITCH",
+    "decisionCases" : {
+      "true" : [ {
+        "name" : "do_while_stmt_4",
+        "taskReferenceName" : "do_while_stmt_4",
+        "inputParameters" : {
+          "user" : "${workflow.variables.user}"
+        },
+        "type" : "DO_WHILE",
+        "startDelay" : 0,
+        "optional" : false,
+        "asyncComplete" : false,
+        "loopCondition" : "!$.user.active",
+        "loopOver" : [ {
+          "name" : "GetUserByID",
+          "taskReferenceName" : "user_5",
+          "inputParameters" : {
+            "uid" : "${workflow.input.uid}"
+          },
+          "type" : "SIMPLE",
+          "startDelay" : 0,
+          "optional" : false,
+          "asyncComplete" : false
+        }, {
+          "name" : "set_user_5",
+          "taskReferenceName" : "set_user_5",
+          "inputParameters" : {
+            "user" : "${user_5.output}"
+          },
+          "type" : "SET_VARIABLE",
+          "startDelay" : 0,
+          "optional" : false,
+          "asyncComplete" : false
+        } ]
+      } ]
+    },
+    "startDelay" : 0,
+    "optional" : false,
+    "asyncComplete" : false,
+    "evaluatorType" : "javascript",
+    "expression" : "!$.user.active"
+  } ],
+  "inputParameters" : [ "uid" ],
+  "outputParameters" : { },
+  "schemaVersion" : 2,
+  "restartable" : true,
+  "workflowStatusListenerEnabled" : false,
+  "ownerEmail" : "someone@email.com",
+  "timeoutPolicy" : "ALERT_ONLY",
+  "timeoutSeconds" : 0,
+  "variables" : { },
+  "inputTemplate" : { }
 }

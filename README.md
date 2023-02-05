@@ -203,9 +203,8 @@ is translated to:
 ### While Statements
 
 Conductor has a [DO WHILE operator](https://conductor.netflix.com/reference-docs/do-while-task.html) for loops and as 
-expected it behaves like the control structure, which means that all task in the loop are 
-executed once. But, it seems that some people find this loop counterintuitive, 
-e.g. [Uber Cadence VS Netflix Conductor](https://www.instaclustr.com/blog/workflow-comparison-uber-cadence-vs-netflix-conductor/).
+expected it behaves like the control structure, which means that all tasks in the loop are 
+executed once. But, it seems this could be counterintuitive; read: [Uber Cadence VS Netflix Conductor](https://www.instaclustr.com/blog/workflow-comparison-uber-cadence-vs-netflix-conductor/).
 
 To give WHILE semantics (nothing in the loop is executed if the condition is not met) the translated workflow
 uses a SWITCH task as an IF guard and then a DO WHILE task. It also stores the output of the tasks in a workflow

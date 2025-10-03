@@ -1,5 +1,7 @@
 plugins {
     id 'java'
+    id 'application'
+    id 'org.graalvm.buildtools.native' version '0.10.1'
 }
 
 group 'me.mprieto'
@@ -13,10 +15,11 @@ ext {
     versions = [
             antlr4    : '4.11.1',
             commonsCli: '1.4',
-            lombok    : '1.18.24',
+            lombok    : '1.18.30',
             jackson   : '2.14.1',
-            conductor : '3.13.2',
-            junit     : '5.8.1'
+            conductor : '3.21.19',
+            junit     : '5.8.1',
+            graalvmSdk: '23.1.2'
     ]
 }
 
@@ -29,7 +32,8 @@ dependencies {
     annotationProcessor "org.projectlombok:lombok:${versions.lombok}"
     implementation "com.fasterxml.jackson.core:jackson-databind:${versions.jackson}"
     implementation "com.fasterxml.jackson.core:jackson-core:${versions.jackson}"
-    implementation "com.netflix.conductor:conductor-common:${versions.conductor}"
+    implementation "org.conductoross:conductor-common:${versions.conductor}"
+    compileOnly "org.graalvm.sdk:graal-sdk:${versions.graalvmSdk}"
 
     testCompileOnly "org.projectlombok:lombok:${versions.lombok}"
     testAnnotationProcessor "org.projectlombok:lombok:${versions.lombok}"
@@ -50,15 +54,65 @@ test {
     useJUnitPlatform()
 }
 
-jar {
+application {
+    mainClass = 'me.mprieto.baton.Main'
+}
+
+run {
+    args = ['-f', 'samples/baton/sample0.baton']
+}
+
+// Regular JAR task for fat JAR
+tasks.register('fatJar', Jar) {
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    archiveBaseName = 'baton'
 
     manifest {
         attributes 'Main-Class': 'me.mprieto.baton.Main'
     }
 
     from {
-        configurations.compileClasspath.collect { it.isDirectory() ? it : zipTree(it) }
+        configurations.runtimeClasspath.collect { it.isDirectory() ? it : zipTree(it) }
     }
-    baseName 'baton'
+    with jar
+}
+
+// Standard JAR without dependencies (for native-image)
+jar {
+    archiveBaseName = 'baton-classes-only'
+    manifest {
+        attributes 'Main-Class': 'me.mprieto.baton.Main'
+    }
+}
+
+graalvmNative {
+    toolchainDetection = false
+
+    binaries {
+        main {
+            mainClass = 'me.mprieto.baton.Main'
+            imageName = 'baton'
+            buildArgs.add('--no-fallback')
+            buildArgs.add('-H:+ReportExceptionStackTraces')
+        }
+    }
+
+    agent {
+        defaultMode = "standard"
+        builtinCallerFilter = true
+        builtinHeuristicFilter = true
+        enableExperimentalPredefinedClasses = false
+        enableExperimentalUnsafeAllocationTracing = false
+        trackReflectionMetadata = true
+
+        modes {
+            standard {}
+        }
+
+        metadataCopy {
+            inputTaskNames.add("run")
+            outputDirectories.add("src/main/resources/META-INF/native-image")
+            mergeWithExisting = true
+        }
+    }
 }
